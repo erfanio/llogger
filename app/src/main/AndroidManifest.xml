@@ -38,6 +38,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.erfan.llogger.activity.HistoryActivity"/>
         </activity>
+        <activity
+            android:name=".NewDriveActivity"
+            android:label="@string/title_activity_new_drive"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.erfan.llogger.activity.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

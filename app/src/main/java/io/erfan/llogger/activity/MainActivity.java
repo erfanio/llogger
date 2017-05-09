@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.Date;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.NewDriveActivity;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
@@ -40,21 +41,23 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Drive drive = new Drive();
-                Log.d("DBG", String.format("ID: %d", drive.getMId()));
-                drive.setDuration((long) (Math.random() * 7200));
-                drive.setLocation("Clayton");
-                drive.setCar("Dad's Car");
-                drive.setSupervisor("Dad");
-                drive.setTime(new Date());
-                drive.setLight(Drive.Light.DAY);
-                drive.setTraffic(Drive.Traffic.MEDIUM);
-                drive.setWeather(Drive.Weather.DRY);
-
-                mDriveDao.insert(drive);
-
-                Snackbar.make(view, String.format("Inserted new note, ID: %d, duration: %d %f", drive.getId(), drive.getDuration(), Math.random()), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Drive drive = new Drive();
+//                Log.d("DBG", String.format("ID: %d", drive.getMId()));
+//                drive.setDuration((long) (Math.random() * 7200));
+//                drive.setLocation("Clayton");
+//                drive.setCar("Dad's Car");
+//                drive.setSupervisor("Dad");
+//                drive.setTime(new Date());
+//                drive.setLight(Drive.Light.DAY);
+//                drive.setTraffic(Drive.Traffic.MEDIUM);
+//                drive.setWeather(Drive.Weather.DRY);
+//
+//                mDriveDao.insert(drive);
+//
+//                Snackbar.make(view, String.format("Inserted new note, ID: %d, duration: %d %f", drive.getId(), drive.getDuration(), Math.random()), Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(view.getContext(), NewDriveActivity.class);
+                startActivity(intent);
             }
         });
 
