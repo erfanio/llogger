@@ -11,4 +11,5 @@
     <string name="title_activity_history">Past Drives</string>
     <string name="title_activity_drive_detail">Drive Detail</string>
     <string name="title_activity_new_drive">Start Driving</string>
+    <string name="title_activity_driving">DrivingActivity</string>
 </resources>

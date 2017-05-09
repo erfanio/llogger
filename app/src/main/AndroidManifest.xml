@@ -39,13 +39,18 @@
                 android:value="io.erfan.llogger.activity.HistoryActivity"/>
         </activity>
         <activity
-            android:name=".NewDriveActivity"
+            android:name=".activity.NewDriveActivity"
             android:label="@string/title_activity_new_drive"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.erfan.llogger.activity.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".activity.DrivingActivity"
+            android:label="@string/title_activity_driving"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="io.erfan.llogger.NewDriveActivity"
+    tools:context="io.erfan.llogger.activity.NewDriveActivity"
     tools:showIn="@layout/activity_new_drive">
 
     <android.support.design.widget.TextInputLayout
