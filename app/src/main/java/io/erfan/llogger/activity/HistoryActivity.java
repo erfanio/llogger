@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,7 @@ import io.erfan.llogger.model.DriveDao;
 
 public class HistoryActivity extends AppCompatActivity {
     DriveDao mDriveDao;
+    Query<Drive> mQuery;
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -37,21 +40,19 @@ public class HistoryActivity extends AppCompatActivity {
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         mDriveDao = daoSession.getDriveDao();
 
-        List<Drive> drives = new ArrayList<>();
-        drives.add(new Drive((long) 0, (long) 1440, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 1440, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 1623, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 3214, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 1440, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 1440, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
-        drives.add(new Drive((long) 0, (long) 9834, "Clayton", "Dad's Car", "Dad", new Date(), Drive.Light.DAY, Drive.Traffic.MEDIUM, Drive.Weather.DRY));
+        mQuery = mDriveDao.queryBuilder().orderAsc(DriveDao.Properties.MTime).build();
+        List<Drive> drives = mQuery.list();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_list);
-        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DriveRecyclerViewAdapter(drives);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void updateDrives() {
+        List<Drive> drives = mQuery.list();
+        ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
     }
 
 }

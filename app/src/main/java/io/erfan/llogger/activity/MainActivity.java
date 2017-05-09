@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Drive drive = new Drive();
-                drive.setDuration(1440);
+                Log.d("DBG", String.format("ID: %d", drive.getMId()));
+                drive.setDuration((long) (Math.random() * 7200));
                 drive.setLocation("Clayton");
                 drive.setCar("Dad's Car");
                 drive.setSupervisor("Dad");
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 
                 mDriveDao.insert(drive);
 
-                Snackbar.make(view, "Inserted new note, ID: " + drive.getId(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, String.format("Inserted new note, ID: %d, duration: %d %f", drive.getId(), drive.getDuration(), Math.random()), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

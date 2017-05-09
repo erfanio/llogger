@@ -55,6 +55,11 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
         Log.d("DBG", String.format("init size: %d", mDrives.size()));
     }
 
+    public void updateList(List<Drive> drives) {
+        mDrives = drives;
+        notifyDataSetChanged();
+    }
+
     @Override
     public DriveRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("DBG", "Get VH");

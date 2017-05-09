@@ -7,6 +7,8 @@ import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.converter.PropertyConverter;
 
 import java.text.DateFormat;
@@ -14,19 +16,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-@Entity
+@Entity(indexes = {
+        @Index(value = "mTime DESC", unique = true)
+})
 public class Drive implements Parcelable {
     @Id(autoincrement = true)
-    long mId;
-    long mDuration;
+    Long mId;
+    @Property(nameInDb = "DURATION")
+    Long mDuration;
+    @Property(nameInDb = "LOCATION")
     String mLocation;
+    @Property(nameInDb = "CAR")
     String mCar;
+    @Property(nameInDb = "SUPERVISOR")
     String mSupervisor;
+    @Property(nameInDb = "TIME")
     Date mTime;
+    @Property(nameInDb = "LIGHT")
     @Convert(converter = LightConverter.class, columnType = String.class)
     Light mLight;
+    @Property(nameInDb = "TRAFFIC")
     @Convert(converter = TrafficConverter.class, columnType = String.class)
     Traffic mTraffic;
+    @Property(nameInDb = "WEATHER")
     @Convert(converter = WeatherConverter.class, columnType = String.class)
     Weather mWeather;
 
@@ -34,8 +46,8 @@ public class Drive implements Parcelable {
     public enum Traffic { LIGHT, MEDIUM, HEAVY }
     public enum Weather { DRY, WET }
 
-    @Generated(hash = 645993903)
-    public Drive(long mId, long mDuration, String mLocation, String mCar, String mSupervisor,
+    @Generated(hash = 481769962)
+    public Drive(Long mId, Long mDuration, String mLocation, String mCar, String mSupervisor,
             Date mTime, Light mLight, Traffic mTraffic, Weather mWeather) {
         this.mId = mId;
         this.mDuration = mDuration;
@@ -211,19 +223,19 @@ public class Drive implements Parcelable {
         mWeather = weather;
     }
 
-    public long getId() {
+    public Long getId() {
         return mId;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         mId = id;
     }
 
-    public long getDuration() {
+    public Long getDuration() {
         return mDuration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(Long duration) {
         mDuration = duration;
     }
 
@@ -251,19 +263,19 @@ public class Drive implements Parcelable {
         mTime = time;
     }
 
-    public long getMId() {
+    public Long getMId() {
         return this.mId;
     }
 
-    public void setMId(long mId) {
+    public void setMId(Long mId) {
         this.mId = mId;
     }
 
-    public long getMDuration() {
+    public Long getMDuration() {
         return this.mDuration;
     }
 
-    public void setMDuration(long mDuration) {
+    public void setMDuration(Long mDuration) {
         this.mDuration = mDuration;
     }
 
