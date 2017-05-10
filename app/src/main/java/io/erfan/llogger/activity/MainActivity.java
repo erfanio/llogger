@@ -3,6 +3,9 @@ package io.erfan.llogger.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +15,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
+import org.greenrobot.greendao.query.Query;
+
+import java.util.List;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.DriveRecyclerViewAdapter;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
+import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    DriveDao mDriveDao;
+    Query<Drive> mQuery;
+
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +54,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        CardView loadMore = (CardView) findViewById(R.id.main_load_more);
+        loadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -46,6 +73,30 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // get the drive DAO
+        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        mDriveDao = daoSession.getDriveDao();
+
+        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.MTime).build();
+        List<Drive> drives = mQuery.list().subList(0, 4);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.main_history_list);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new DriveRecyclerViewAdapter(drives);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setNestedScrollingEnabled(false);
+    }
+
+    public void updateDrives() {
+        List<Drive> drives = mQuery.list().subList(0, 4);
+        ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDrives();
     }
 
     @Override
@@ -89,7 +140,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_drive) {
-
+            Intent intent = new Intent(this, NewDriveActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_stats) {
 
         } else if (id == R.id.nav_history) {
