@@ -21,8 +21,6 @@ import io.erfan.llogger.model.DriveDao;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    DriveDao mDriveDao;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,21 +32,6 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Drive drive = new Drive();
-//                Log.d("DBG", String.format("ID: %d", drive.getMId()));
-//                drive.setDuration((long) (Math.random() * 7200));
-//                drive.setLocation("Clayton");
-//                drive.setCar("Dad's Car");
-//                drive.setSupervisor("Dad");
-//                drive.setTime(new Date());
-//                drive.setLight(Drive.Light.DAY);
-//                drive.setTraffic(Drive.Traffic.MEDIUM);
-//                drive.setWeather(Drive.Weather.DRY);
-//
-//                mDriveDao.insert(drive);
-//
-//                Snackbar.make(view, String.format("Inserted new note, ID: %d, duration: %d %f", drive.getId(), drive.getDuration(), Math.random()), Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 Intent intent = new Intent(view.getContext(), NewDriveActivity.class);
                 startActivity(intent);
             }
@@ -63,9 +46,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // get the drive DAO
-        DaoSession daoSession = ((App) getApplication()).getDaoSession();
-        mDriveDao = daoSession.getDriveDao();
     }
 
     @Override

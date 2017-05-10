@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static io.erfan.llogger.Utils.formatDuration;
+
 @Entity(indexes = {
         @Index(value = "mTime DESC", unique = true)
 })
@@ -143,13 +145,7 @@ public class Drive implements Parcelable {
     }
 
     public String getFormattedDuration() {
-        if (mDuration < 3600) {
-            return String.format(Locale.ENGLISH, "%dm", mDuration / 60);
-        } else if (mDuration % 3600 < 60) {
-            return String.format(Locale.ENGLISH, "%dh", mDuration / 3600);
-        } else {
-            return String.format(Locale.ENGLISH, "%dh %dm", mDuration / 3600, (mDuration % 3600) / 60);
-        }
+        return formatDuration(mDuration);
     }
 
     public String getFormattedTime() {

@@ -28,7 +28,7 @@
             android:id="@+id/driving_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="47m"
+            android:text="0s"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="36sp"/>
 
@@ -43,7 +43,7 @@
             android:id="@+id/driving_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7.2km"
+            android:text="0m"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="36sp"/>
 
