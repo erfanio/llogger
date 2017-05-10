@@ -65,11 +65,11 @@ public class Drive implements Parcelable {
     }
 
     public Drive(Parcel in) {
-        mId = in.readLong();
-        mDuration = in.readLong();
-        mLocation = in.readString();
-        mCar = in.readString();
-        mSupervisor = in.readString();
+        mId = (Long) in.readValue(Long.class.getClassLoader());
+        mDuration = (Long) in.readValue(Long.class.getClassLoader());
+        mLocation = (String) in.readValue(String.class.getClassLoader());
+        mCar = (String) in.readValue(String.class.getClassLoader());
+        mSupervisor = (String) in.readValue(String.class.getClassLoader());
         mTime = (Date) in.readSerializable();
         mLight = (Light) in.readSerializable();
         mTraffic = (Traffic) in.readSerializable();
@@ -131,11 +131,11 @@ public class Drive implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(mId);
-        dest.writeLong(mDuration);
-        dest.writeString(mLocation);
-        dest.writeString(mCar);
-        dest.writeString(mSupervisor);
+        dest.writeValue(mId);
+        dest.writeValue(mDuration);
+        dest.writeValue(mLocation);
+        dest.writeValue(mCar);
+        dest.writeValue(mSupervisor);
         dest.writeSerializable(mTime);
         dest.writeSerializable(mLight);
         dest.writeSerializable(mTraffic);
