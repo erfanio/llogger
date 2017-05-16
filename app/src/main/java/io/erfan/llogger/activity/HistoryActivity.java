@@ -40,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         mDriveDao = daoSession.getDriveDao();
 
-        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.MTime).build();
+        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.history_list);

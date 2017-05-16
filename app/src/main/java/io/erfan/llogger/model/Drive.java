@@ -3,6 +3,9 @@ package io.erfan.llogger.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -11,55 +14,55 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.converter.PropertyConverter;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static io.erfan.llogger.Utils.formatDuration;
 
 @Entity(indexes = {
-        @Index(value = "mTime DESC", unique = true)
+        @Index(value = "time DESC", unique = true)
 })
 public class Drive implements Parcelable {
     @Id(autoincrement = true)
-    Long mId;
-    @Property(nameInDb = "DURATION")
-    Long mDuration;
-    @Property(nameInDb = "LOCATION")
-    String mLocation;
-    @Property(nameInDb = "CAR")
-    String mCar;
-    @Property(nameInDb = "SUPERVISOR")
-    String mSupervisor;
-    @Property(nameInDb = "TIME")
-    Date mTime;
-    @Property(nameInDb = "LIGHT")
+    public Long id;
+    public Long duration;
+    public Long distance;
+    public String location;
+    @Convert(converter = StringListConverter.class, columnType = String.class)
+    public List<String> path;
+    public String car;
+    public String supervisor;
+    public Date time;
     @Convert(converter = LightConverter.class, columnType = String.class)
-    Light mLight;
-    @Property(nameInDb = "TRAFFIC")
+    public Light light;
     @Convert(converter = TrafficConverter.class, columnType = String.class)
-    Traffic mTraffic;
-    @Property(nameInDb = "WEATHER")
+    public Traffic traffic;
     @Convert(converter = WeatherConverter.class, columnType = String.class)
-    Weather mWeather;
+    public Weather weather;
 
     public enum Light { DAY, NIGHT }
     public enum Traffic { LIGHT, MEDIUM, HEAVY }
     public enum Weather { DRY, WET }
 
-    @Generated(hash = 481769962)
-    public Drive(Long mId, Long mDuration, String mLocation, String mCar, String mSupervisor,
-            Date mTime, Light mLight, Traffic mTraffic, Weather mWeather) {
-        this.mId = mId;
-        this.mDuration = mDuration;
-        this.mLocation = mLocation;
-        this.mCar = mCar;
-        this.mSupervisor = mSupervisor;
-        this.mTime = mTime;
-        this.mLight = mLight;
-        this.mTraffic = mTraffic;
-        this.mWeather = mWeather;
+    @Generated(hash = 1376662561)
+    public Drive(Long id, Long duration, Long distance, String location, List<String> path, String car, String supervisor, Date time, Light light, Traffic traffic,
+            Weather weather) {
+        this.id = id;
+        this.duration = duration;
+        this.distance = distance;
+        this.location = location;
+        this.path = path;
+        this.car = car;
+        this.supervisor = supervisor;
+        this.time = time;
+        this.light = light;
+        this.traffic = traffic;
+        this.weather = weather;
     }
 
     @Generated(hash = 1022087461)
@@ -67,15 +70,48 @@ public class Drive implements Parcelable {
     }
 
     public Drive(Parcel in) {
-        mId = (Long) in.readValue(Long.class.getClassLoader());
-        mDuration = (Long) in.readValue(Long.class.getClassLoader());
-        mLocation = (String) in.readValue(String.class.getClassLoader());
-        mCar = (String) in.readValue(String.class.getClassLoader());
-        mSupervisor = (String) in.readValue(String.class.getClassLoader());
-        mTime = (Date) in.readSerializable();
-        mLight = (Light) in.readSerializable();
-        mTraffic = (Traffic) in.readSerializable();
-        mWeather = (Weather) in.readSerializable();
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.duration = (Long) in.readValue(Long.class.getClassLoader());
+        this.distance = (Long) in.readValue(Long.class.getClassLoader());
+        this.location = (String) in.readValue(String.class.getClassLoader());
+        this.path = new ArrayList<>();
+        in.readList(this.path, List.class.getClassLoader());
+        this.car = (String) in.readValue(String.class.getClassLoader());
+        this.supervisor = (String) in.readValue(String.class.getClassLoader());
+        this.time = (Date) in.readSerializable();
+        this.light = (Light) in.readSerializable();
+        this.traffic = (Traffic) in.readSerializable();
+        this.weather = (Weather) in.readSerializable();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(duration);
+        dest.writeValue(distance);
+        dest.writeValue(location);
+        dest.writeList(path);
+        dest.writeValue(car);
+        dest.writeValue(supervisor);
+        dest.writeSerializable(time);
+        dest.writeSerializable(light);
+        dest.writeSerializable(traffic);
+        dest.writeSerializable(weather);
+    }
+
+    static class StringListConverter implements PropertyConverter<List<String>, String> {
+        @Override
+        public List<String> convertToEntityProperty(String databaseValue) {
+            Gson gson = new Gson();
+            Type stringListType = new TypeToken<List<String>>(){}.getType();
+            return gson.fromJson(databaseValue, stringListType);
+        }
+
+        @Override
+        public String convertToDatabaseValue(List<String> entityProperty) {
+            Gson gson = new Gson();
+            return gson.toJson(entityProperty);
+        }
     }
 
     static class LightConverter implements PropertyConverter<Light, String> {
@@ -131,44 +167,19 @@ public class Drive implements Parcelable {
         }
     };
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(mId);
-        dest.writeValue(mDuration);
-        dest.writeValue(mLocation);
-        dest.writeValue(mCar);
-        dest.writeValue(mSupervisor);
-        dest.writeSerializable(mTime);
-        dest.writeSerializable(mLight);
-        dest.writeSerializable(mTraffic);
-        dest.writeSerializable(mWeather);
-    }
-
+    // format members
     public String getFormattedDuration() {
-        return formatDuration(mDuration);
+        return formatDuration(duration);
     }
 
     public String getFormattedTime() {
         // format date into Wed, 2 Jun 12 8:06 pm
         DateFormat df = new SimpleDateFormat("EEE, d MMM yy h:mm a", Locale.ENGLISH);
-        return df.format(mTime);
-    }
-
-    // getters and setter
-    public String getSupervisor() {
-        return mSupervisor;
-    }
-
-    public void setSupervisor(String supervisor) {
-        mSupervisor = supervisor;
-    }
-
-    public Light getLight() {
-        return mLight;
+        return df.format(time);
     }
 
     public String getLightString() {
-        switch (mLight) {
+        switch (light) {
             case DAY:
                 return "Day";
             case NIGHT:
@@ -177,16 +188,8 @@ public class Drive implements Parcelable {
         return null;
     }
 
-    public void setLight(Light light) {
-        mLight = light;
-    }
-
-    public Traffic getTraffic() {
-        return mTraffic;
-    }
-
     public String getTrafficString() {
-        switch (mTraffic) {
+        switch (traffic) {
             case LIGHT:
                 return "Light";
             case MEDIUM:
@@ -197,16 +200,8 @@ public class Drive implements Parcelable {
         return null;
     }
 
-    public void setTraffic(Traffic traffic) {
-        mTraffic = traffic;
-    }
-
-    public Weather getWeather() {
-        return mWeather;
-    }
-
     public String getWeatherString() {
-        switch (mWeather) {
+        switch (weather) {
             case DRY:
                 return "Dry";
             case WET:
@@ -215,119 +210,91 @@ public class Drive implements Parcelable {
         return null;
     }
 
-    public void setWeather(Weather weather) {
-        mWeather = weather;
-    }
-
     public Long getId() {
-        return mId;
+        return this.id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public Long getDuration() {
-        return mDuration;
+        return this.duration;
     }
 
     public void setDuration(Long duration) {
-        mDuration = duration;
+        this.duration = duration;
+    }
+
+    public Long getDistance() {
+        return this.distance;
+    }
+
+    public void setDistance(Long distance) {
+        this.distance = distance;
     }
 
     public String getLocation() {
-        return mLocation;
+        return this.location;
     }
 
     public void setLocation(String location) {
-        mLocation = location;
+        this.location = location;
+    }
+
+    public List<String> getPath() {
+        return this.path;
+    }
+
+    public void setPath(List<String> path) {
+        this.path = path;
     }
 
     public String getCar() {
-        return mCar;
+        return this.car;
     }
 
     public void setCar(String car) {
-        mCar = car;
+        this.car = car;
+    }
+
+    public String getSupervisor() {
+        return this.supervisor;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
     }
 
     public Date getTime() {
-        return mTime;
+        return this.time;
     }
 
     public void setTime(Date time) {
-        mTime = time;
+        this.time = time;
     }
 
-    public Long getMId() {
-        return this.mId;
+    public Light getLight() {
+        return this.light;
     }
 
-    public void setMId(Long mId) {
-        this.mId = mId;
+    public void setLight(Light light) {
+        this.light = light;
     }
 
-    public Long getMDuration() {
-        return this.mDuration;
+    public Traffic getTraffic() {
+        return this.traffic;
     }
 
-    public void setMDuration(Long mDuration) {
-        this.mDuration = mDuration;
+    public void setTraffic(Traffic traffic) {
+        this.traffic = traffic;
     }
 
-    public String getMLocation() {
-        return this.mLocation;
+    public Weather getWeather() {
+        return this.weather;
     }
 
-    public void setMLocation(String mLocation) {
-        this.mLocation = mLocation;
-    }
-
-    public String getMCar() {
-        return this.mCar;
-    }
-
-    public void setMCar(String mCar) {
-        this.mCar = mCar;
-    }
-
-    public String getMSupervisor() {
-        return this.mSupervisor;
-    }
-
-    public void setMSupervisor(String mSupervisor) {
-        this.mSupervisor = mSupervisor;
-    }
-
-    public Date getMTime() {
-        return this.mTime;
-    }
-
-    public void setMTime(Date mTime) {
-        this.mTime = mTime;
-    }
-
-    public Light getMLight() {
-        return this.mLight;
-    }
-
-    public void setMLight(Light mLight) {
-        this.mLight = mLight;
-    }
-
-    public Traffic getMTraffic() {
-        return this.mTraffic;
-    }
-
-    public void setMTraffic(Traffic mTraffic) {
-        this.mTraffic = mTraffic;
-    }
-
-    public Weather getMWeather() {
-        return this.mWeather;
-    }
-
-    public void setMWeather(Weather mWeather) {
-        this.mWeather = mWeather;
+    public void setWeather(Weather weather) {
+        this.weather = weather;
     }
 }

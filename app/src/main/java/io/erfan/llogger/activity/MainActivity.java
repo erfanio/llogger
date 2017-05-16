@@ -77,21 +77,30 @@ public class MainActivity extends AppCompatActivity
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         mDriveDao = daoSession.getDriveDao();
 
-        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.MTime).build();
-        List<Drive> drives = mQuery.list().subList(0, 4);
+        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.main_history_list);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new DriveRecyclerViewAdapter(drives);
+        mAdapter = new DriveRecyclerViewAdapter(getShortDriveList());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    public void updateDrives() {
-        List<Drive> drives = mQuery.list().subList(0, 4);
-        ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
+    public List<Drive> getShortDriveList() {
+        List<Drive> allDrives = mQuery.list();
+
+        if (allDrives.size() >= 4) {
+            return allDrives.subList(0, 4);
+        } else {
+            return allDrives.subList(0, allDrives.size());
+        }
     }
+
+    public void updateDrives() {
+        ((DriveRecyclerViewAdapter) mAdapter).updateList(getShortDriveList());
+    }
+
 
     @Override
     protected void onResume() {

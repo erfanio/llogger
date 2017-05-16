@@ -35,8 +35,8 @@ public class NewDriveActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), DrivingActivity.class);
 
                 Drive drive = new Drive();
-                drive.setCar(mVehicle.getEditText().getText().toString());
-                drive.setSupervisor(mSupervisor.getEditText().getText().toString());
+                drive.car = mVehicle.getEditText().getText().toString();
+                drive.supervisor = mSupervisor.getEditText().getText().toString();
 
                 intent.putExtra("Drive", drive);
                 startActivity(intent);

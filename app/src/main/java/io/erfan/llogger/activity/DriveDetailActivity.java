@@ -6,6 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.Drive;
 
@@ -40,10 +52,28 @@ public class DriveDetailActivity extends AppCompatActivity {
         mDrive = intent.getParcelableExtra("Drive");
 
         mViewDuration.setText(mDrive.getFormattedDuration());
-        mViewVehicle.setText(mDrive.getCar());
-        mViewSupervisor.setText(mDrive.getSupervisor());
+        mViewVehicle.setText(mDrive.car);
+        mViewSupervisor.setText(mDrive.supervisor);
         mViewLigth.setText(mDrive.getLightString());
         mViewTraffic.setText(mDrive.getTrafficString());
         mViewWeather.setText(mDrive.getWeatherString());
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                for (String encodedPath : mDrive.path) {
+                    List<LatLng> path = PolyUtil.decode(encodedPath);
+                    if (path.size() > 0) {
+                        googleMap.addPolyline(
+                                new PolylineOptions()
+                                        .addAll(path)
+                        );
+
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(path.get(0), 15));
+                    }
+                }
+            }
+        });
     }
 }
