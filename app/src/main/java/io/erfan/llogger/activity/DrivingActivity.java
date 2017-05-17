@@ -255,9 +255,7 @@ public class DrivingActivity extends AppCompatActivity {
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
         mBuilder.setContentTitle("Driving with LLogger");
         mBuilder.setContentText(String.format(Locale.ENGLISH, "Driving with %s in %s.", mDrive.supervisor, mDrive.car));
-        NotificationCompat.MediaStyle notiStyle = new NotificationCompat.MediaStyle();
-        notiStyle.setShowActionsInCompactView(0);
-        mBuilder.setStyle(notiStyle);
+        mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         mBuilder.setOngoing(true);
