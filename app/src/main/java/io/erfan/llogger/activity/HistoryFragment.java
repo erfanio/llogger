@@ -1,15 +1,16 @@
 package io.erfan.llogger.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.greenrobot.greendao.query.Query;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.erfan.llogger.App;
@@ -19,7 +20,7 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryFragment extends Fragment {
     DriveDao mDriveDao;
     Query<Drive> mQuery;
 
@@ -27,27 +28,25 @@ public class HistoryActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.history_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
 
         // get the drive DAO
-        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         mDriveDao = daoSession.getDriveDao();
 
         mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.history_list);
-        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.history_list);
+        mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DriveRecyclerViewAdapter(drives);
         mRecyclerView.setAdapter(mAdapter);
+
+        return view;
     }
 
     public void updateDrives() {
@@ -55,4 +54,9 @@ public class HistoryActivity extends AppCompatActivity {
         ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateDrives();
+    }
 }

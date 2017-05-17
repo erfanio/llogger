@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,14 +26,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
@@ -47,7 +44,6 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
-import static io.erfan.llogger.Utils.formatDistance;
 import static io.erfan.llogger.Utils.formatDuration;
 
 public class DrivingActivity extends AppCompatActivity {
@@ -111,6 +107,7 @@ public class DrivingActivity extends AppCompatActivity {
 
                 mDrive.location = "Clayton";
                 mDrive.path = mPaths;
+                mDrive.distance = mPathDistance;
                 mDrive.duration = mElapsed;
                 mDrive.light = Drive.Light.DAY;
                 mDrive.traffic = Drive.Traffic.MEDIUM;
@@ -191,12 +188,6 @@ public class DrivingActivity extends AppCompatActivity {
 
                                 mPolyline.setPoints(path);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                //mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
-//                                MarkerOptions options = new MarkerOptions()
-//                                        .position(latLng)
-//                                        .title("I am here!");
-//                                mMap.addMarker(options);
-//                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                             }
                         });
                     }
@@ -237,7 +228,7 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     void goHome() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
