@@ -261,6 +261,7 @@ public class DrivingActivity extends AppCompatActivity {
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         mBuilder.setOngoing(true);
+        mBuilder.setShowWhen(false);
 
         // tapping the notification will bring this activity to the foreground
         Intent intent = new Intent(this, DrivingActivity.class);
