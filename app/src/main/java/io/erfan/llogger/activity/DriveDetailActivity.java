@@ -14,12 +14,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.erfan.llogger.App;
 import io.erfan.llogger.R;
+import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
+import io.erfan.llogger.model.DriveDao;
 
 public class DriveDetailActivity extends AppCompatActivity {
     Drive mDrive;
@@ -52,6 +56,7 @@ public class DriveDetailActivity extends AppCompatActivity {
         mDrive = intent.getParcelableExtra("Drive");
 
         mViewDuration.setText(mDrive.getFormattedDuration());
+        mViewDistance.setText(mDrive.getFormattedDistance());
         mViewVehicle.setText(mDrive.car);
         mViewSupervisor.setText(mDrive.supervisor);
         mViewLigth.setText(mDrive.getLightString());
@@ -62,6 +67,7 @@ public class DriveDetailActivity extends AppCompatActivity {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                boolean first = true;
                 for (String encodedPath : mDrive.path) {
                     List<LatLng> path = PolyUtil.decode(encodedPath);
                     if (path.size() > 0) {
@@ -70,7 +76,10 @@ public class DriveDetailActivity extends AppCompatActivity {
                                         .addAll(path)
                         );
 
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(path.get(0), 15));
+                        if (first) {
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(path.get(0), 15));
+                            first = false;
+                        }
                     }
                 }
             }

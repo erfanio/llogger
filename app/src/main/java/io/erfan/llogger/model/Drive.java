@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static io.erfan.llogger.Utils.formatDistance;
 import static io.erfan.llogger.Utils.formatDuration;
 
 @Entity(indexes = {
@@ -170,6 +171,10 @@ public class Drive implements Parcelable {
     // format members
     public String getFormattedDuration() {
         return formatDuration(duration);
+    }
+
+    public String getFormattedDistance() {
+        return formatDistance(distance);
     }
 
     public String getFormattedTime() {
