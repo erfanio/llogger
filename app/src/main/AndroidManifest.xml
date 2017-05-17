@@ -27,22 +27,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.HistoryFragment"
-            android:label="@string/title_activity_history"
+            android:name=".activity.DriveDetailActivity"
+            android:label="@string/title_activity_drive_detail"
             android:parentActivityName=".activity.RootActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.erfan.llogger.activity.RootActivity"/>
-        </activity>
-        <activity
-            android:name=".activity.DriveDetailActivity"
-            android:label="@string/title_activity_drive_detail"
-            android:parentActivityName=".activity.HistoryFragment"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.erfan.llogger.activity.HistoryFragment"/>
         </activity>
         <activity
             android:name=".activity.NewDriveActivity"
@@ -56,7 +47,8 @@
         <activity
             android:name=".activity.DrivingActivity"
             android:label="@string/title_activity_driving"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

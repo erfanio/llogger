@@ -1,6 +1,9 @@
 package io.erfan.llogger.activity;
 
 import android.Manifest;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +38,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,6 +53,9 @@ import static io.erfan.llogger.Utils.formatDuration;
 
 public class DrivingActivity extends AppCompatActivity {
     public static final String TAG = DrivingActivity.class.getSimpleName();
+    public static final int NOTIFICATION_ID = 0;
+    public static final String NOTIFICATION_PAUSE = "PAUSE_DRIVING";
+    public static final String NOTIFICATION_RESUME = "RESUME_DRIVING";
 
     FloatingActionButton mMainFab;
     FloatingActionButton mSecondFab;
@@ -58,6 +66,7 @@ public class DrivingActivity extends AppCompatActivity {
     LocationRequest mLocationRequest;
     GoogleMap mMap;
     Polyline mPolyline;
+    NotificationCompat.Builder mBuilder;
 
     boolean mPaused;
     Drive mDrive;
@@ -74,6 +83,7 @@ public class DrivingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.driving_toolbar);
         setSupportActionBar(toolbar);
 
+        Log.d(TAG, "OnCreate called");
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra("Drive");
         mDrive.time = Calendar.getInstance().getTime();
@@ -122,7 +132,9 @@ public class DrivingActivity extends AppCompatActivity {
         mDuration = (TextView) findViewById(R.id.driving_duration);
         mDistance = (TextView) findViewById(R.id.driving_distance);
 
+        setupNotification();
         setupMap();
+        mGoogleApiClient.connect();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.driving_map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -133,6 +145,17 @@ public class DrivingActivity extends AppCompatActivity {
                 mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d(TAG, "New Intent");
+        if (intent.getAction() == NOTIFICATION_PAUSE) {
+            pause();
+        } else if (intent.getAction() == NOTIFICATION_RESUME) {
+            resume();
+        }
     }
 
     @Override
@@ -169,6 +192,7 @@ public class DrivingActivity extends AppCompatActivity {
 
                         mMap.setMyLocationEnabled(true);
                         setupTimer();
+                        showNotification();
                         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
                             @Override
                             public void onLocationChanged(Location location) {
@@ -214,17 +238,52 @@ public class DrivingActivity extends AppCompatActivity {
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable()
-                {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         mElapsed++;
                         mDuration.setText(formatDuration(mElapsed));
+                        Log.d(TAG, String.valueOf(mPaused));
                     }
                 });
             }
         }, 1000, 1000);
+    }
+
+    void setupNotification() {
+        mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
+        mBuilder.setContentTitle("Driving with LLogger");
+        mBuilder.setContentText(String.format(Locale.ENGLISH, "Driving with %s in %s.", mDrive.supervisor, mDrive.car));
+        NotificationCompat.MediaStyle notiStyle = new NotificationCompat.MediaStyle();
+        notiStyle.setShowActionsInCompactView(0);
+        mBuilder.setStyle(notiStyle);
+        mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        mBuilder.setOngoing(true);
+
+        // tapping the notification will bring this activity to the foreground
+        Intent intent = new Intent(this, DrivingActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+
+        if (mPaused) {
+            intent = new Intent(this, DrivingActivity.class);
+            intent.setAction(NOTIFICATION_RESUME);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(R.drawable.ic_play_black, "Resume", pendingIntent);
+        } else {
+            // pause button
+            intent = new Intent(this, DrivingActivity.class);
+            intent.setAction(NOTIFICATION_PAUSE);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.addAction(R.drawable.ic_pause_black, "Pause", pendingIntent);
+        }
+    }
+
+    void showNotification() {
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                .notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     void goHome() {
@@ -235,14 +294,16 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     void resume() {
+        mPaused = false;
         mMainFab.setImageResource(R.drawable.ic_pause_white);
         mSecondFab.setVisibility(View.GONE);
         setTitle(R.string.title_activity_driving);
         mGoogleApiClient.connect();
-        mPaused = false;
+        setupNotification();
     }
 
     void pause() {
+        mPaused = true;
         mMainFab.setImageResource(R.drawable.ic_play_white);
         mSecondFab.setVisibility(View.VISIBLE);
         setTitle(R.string.title_activity_driving_paused);
@@ -253,7 +314,8 @@ public class DrivingActivity extends AppCompatActivity {
         mMap.addPolyline(new PolylineOptions().addAll(PolyUtil.decode(mPath)));
         mPaths.add(mPath);
         mPath = "";
-        mPaused = true;
+        setupNotification();
+        showNotification();
     }
 
     @Override
@@ -269,15 +331,11 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
     }
 }
