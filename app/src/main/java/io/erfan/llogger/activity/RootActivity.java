@@ -16,7 +16,7 @@ import io.erfan.llogger.R;
 
 public class RootActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    FragmentManager mFragmentManager;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

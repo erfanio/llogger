@@ -20,8 +20,8 @@ import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
 public class SelectDriverFragment extends Fragment {
-    Query<Driver> mQuery;
-    RecyclerView.Adapter mAdapter;
+    private Query<Driver> mQuery;
+    private RecyclerView.Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

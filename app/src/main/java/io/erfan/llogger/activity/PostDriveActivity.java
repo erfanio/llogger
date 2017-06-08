@@ -18,11 +18,11 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class PostDriveActivity extends AppCompatActivity {
-    FloatingActionButton mFab;
-    TextView mDuration;
-    TextView mDistance;
+    private FloatingActionButton mFab;
+    private TextView mDuration;
+    private TextView mDistance;
 
-    Drive mDrive;
+    private Drive mDrive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +112,7 @@ public class PostDriveActivity extends AppCompatActivity {
         return true;
     }
 
-    void goHome() {
+    private void goHome() {
         Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 
 import org.greenrobot.greendao.query.Query;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import io.erfan.llogger.App;
@@ -27,12 +25,12 @@ import io.erfan.llogger.model.DriveDao;
 
 public class HomeFragment extends Fragment {
 
-    DriveDao mDriveDao;
-    Query<Drive> mQuery;
+    private DriveDao mDriveDao;
+    private Query<Drive> mQuery;
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Nullable
     @Override
@@ -92,7 +90,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public List<Drive> getShortDriveList() {
+    private List<Drive> getShortDriveList() {
         List<Drive> allDrives = mQuery.list();
 
         if (allDrives.size() >= 4) {
@@ -102,7 +100,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void updateDrives() {
+    private void updateDrives() {
         ((DriveRecyclerViewAdapter) mAdapter).updateList(getShortDriveList());
     }
 

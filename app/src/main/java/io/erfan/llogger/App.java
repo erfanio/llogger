@@ -11,7 +11,7 @@ import io.erfan.llogger.model.DaoSession;
 public class App extends Application {
 
     private DaoSession daoSession;
-    public static int LOCATION_PERMISSION_REQUEST_CODE = 0;
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 0;
 
     @Override
     public void onCreate() {

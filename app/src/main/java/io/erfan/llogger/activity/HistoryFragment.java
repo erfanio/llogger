@@ -21,12 +21,12 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class HistoryFragment extends Fragment {
-    DriveDao mDriveDao;
-    Query<Drive> mQuery;
+    private DriveDao mDriveDao;
+    private Query<Drive> mQuery;
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Nullable
     @Override
@@ -49,7 +49,7 @@ public class HistoryFragment extends Fragment {
         return view;
     }
 
-    public void updateDrives() {
+    private void updateDrives() {
         List<Drive> drives = mQuery.list();
         ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
     }

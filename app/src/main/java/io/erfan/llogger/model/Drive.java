@@ -178,7 +178,7 @@ public class Drive implements Parcelable {
         }
     };
 
-    public Drive(Parcel in) {
+    private Drive(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.time = (Date) in.readSerializable();
         this.dayDuration = (Long) in.readValue(Long.class.getClassLoader());

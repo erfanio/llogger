@@ -51,7 +51,7 @@
             android:name=".activity.DrivingActivity"
             android:label="@string/title_activity_driving"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.PostDriveActivity"

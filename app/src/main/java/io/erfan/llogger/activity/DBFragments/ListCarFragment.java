@@ -20,8 +20,8 @@ import io.erfan.llogger.model.Car;
 import io.erfan.llogger.model.CarDao;
 
 public class ListCarFragment extends Fragment {
-    Query<Car> mQuery;
-    RecyclerView.Adapter mAdapter;
+    private Query<Car> mQuery;
+    private RecyclerView.Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

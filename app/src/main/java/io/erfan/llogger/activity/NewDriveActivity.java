@@ -3,7 +3,6 @@ package io.erfan.llogger.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +12,9 @@ import io.erfan.llogger.R;
 import io.erfan.llogger.model.Drive;
 
 public class NewDriveActivity extends AppCompatActivity {
-    TextInputLayout mVehicle;
-    TextInputLayout mOdometer;
-    TextInputLayout mSupervisor;
+    private TextInputLayout mVehicle;
+    private TextInputLayout mOdometer;
+    private TextInputLayout mSupervisor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

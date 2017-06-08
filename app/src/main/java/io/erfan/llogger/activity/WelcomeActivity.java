@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,11 +19,11 @@ import io.erfan.llogger.activity.welcome.WelcomeFragment;
 import io.erfan.llogger.activity.welcome.WelcomeSupervisorFragment;
 
 public class WelcomeActivity extends AppCompatActivity {
-    FragmentManager mFragmentManager;
-    int mPosition;
+    private FragmentManager mFragmentManager;
+    private int mPosition;
 
     // create a list of fragments
-    List<Fragment> pages = Arrays.asList(new WelcomeFragment(),
+    private List<Fragment> pages = Arrays.asList(new WelcomeFragment(),
             new WelcomeDriverFragment(), new WelcomeSupervisorFragment(),
             new WelcomeCarFragment());
 

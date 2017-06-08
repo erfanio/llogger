@@ -20,8 +20,8 @@ import io.erfan.llogger.model.Supervisor;
 import io.erfan.llogger.model.SupervisorDao;
 
 public class ListSupervisorFragment extends Fragment {
-    Query<Supervisor> mQuery;
-    RecyclerView.Adapter mAdapter;
+    private Query<Supervisor> mQuery;
+    private RecyclerView.Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

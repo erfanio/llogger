@@ -40,7 +40,6 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,29 +51,29 @@ import io.erfan.llogger.model.Drive;
 import static io.erfan.llogger.Utils.formatDuration;
 
 public class DrivingActivity extends AppCompatActivity {
-    public static final String TAG = DrivingActivity.class.getSimpleName();
-    public static final int NOTIFICATION_ID = 0;
-    public static final String NOTIFICATION_PAUSE = "PAUSE_DRIVING";
-    public static final String NOTIFICATION_RESUME = "RESUME_DRIVING";
+    private static final String TAG = DrivingActivity.class.getSimpleName();
+    private static final int NOTIFICATION_ID = 0;
+    private static final String NOTIFICATION_PAUSE = "PAUSE_DRIVING";
+    private static final String NOTIFICATION_RESUME = "RESUME_DRIVING";
 
-    FloatingActionButton mMainFab;
-    FloatingActionButton mSecondFab;
-    TextView mDuration;
-    TextView mDistance;
+    private FloatingActionButton mMainFab;
+    private FloatingActionButton mSecondFab;
+    private TextView mDuration;
+    private TextView mDistance;
 
-    GoogleApiClient mGoogleApiClient;
-    LocationRequest mLocationRequest;
-    GoogleMap mMap;
-    Polyline mPolyline;
-    NotificationCompat.Builder mBuilder;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private GoogleMap mMap;
+    private Polyline mPolyline;
+    private NotificationCompat.Builder mBuilder;
 
-    boolean mPaused;
-    Drive mDrive;
-    Long mElapsed;
-    Timer mTimer;
-    String mPath;
-    List<String> mPaths;
-    Long mPathDistance;
+    private boolean mPaused;
+    private Drive mDrive;
+    private Long mElapsed;
+    private Timer mTimer;
+    private String mPath;
+    private List<String> mPaths;
+    private Long mPathDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,7 +238,7 @@ public class DrivingActivity extends AppCompatActivity {
                 .build();
     }
 
-    void setupTimer() {
+    private void setupTimer() {
         Log.d(TAG, "SETUP TIMER");
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
@@ -257,7 +256,7 @@ public class DrivingActivity extends AppCompatActivity {
         }, 1000, 1000);
     }
 
-    void setupNotification() {
+    private void setupNotification() {
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
         mBuilder.setContentTitle("Driving with LLogger");
@@ -288,19 +287,19 @@ public class DrivingActivity extends AppCompatActivity {
         }
     }
 
-    void showNotification() {
+    private void showNotification() {
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                 .notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    void goHome() {
+    private void goHome() {
         Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
 
-    void resume() {
+    private void resume() {
         mPaused = false;
         mMainFab.setImageResource(R.drawable.ic_pause_white);
         mSecondFab.setVisibility(View.GONE);
@@ -309,7 +308,7 @@ public class DrivingActivity extends AppCompatActivity {
         setupNotification();
     }
 
-    void pause() {
+    private void pause() {
         mPaused = true;
         mMainFab.setImageResource(R.drawable.ic_play_white);
         mSecondFab.setVisibility(View.VISIBLE);
