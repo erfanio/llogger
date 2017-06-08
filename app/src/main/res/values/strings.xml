@@ -15,4 +15,8 @@
     <string name="title_activity_driving_paused">Driving (Paused)</string>
     <string name="title_activity_stats">StatusActivity</string>
     <string name="title_activity_post_drive">Finish Driving</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
