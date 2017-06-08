@@ -21,6 +21,7 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="name">Name</string>
+    <string name="add">Add</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>

@@ -12,14 +12,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher_round"/>
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/welcome_title"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="24sp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
