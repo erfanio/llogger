@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
 //                paths.add("~|xeFeoeuZIy@Ci@Go@Eq@Ek@Ck@Is@Ek@Ei@Em@Ai@Ag@?m@?k@Bm@@k@Bk@Dk@Bm@Bq@Fm@Bk@Bm@Bq@Do@Dm@Bm@@i@Dk@Bg@Hk@Di@Dk@?s@Fk@De@Dm@Jg@@o@Dk@@m@He@Fi@?g@@k@Bm@Bk@@m@Bi@Bi@Bk@Fe@Bg@@k@@c@Bi@Do@Bk@Dk@@m@Bq@Bm@Fk@Bq@Bu@Bu@Bq@Cm@@m@Dq@Do@Bk@Dk@Bo@Dm@Dm@Bk@Di@Bi@Bi@Di@Bi@Bi@Bi@Bg@Di@@g@Cg@?e@Cc@Cc@G[E_@E[EUEOESK@M@OFQFUFYF[D_@D]D]Bk@Tg@Je@He@La@Pa@La@Je@Lc@H_@Fa@Fa@Fa@@a@?_@Ie@Mc@Qa@W_@Wc@]c@[Oc@Yi@Y_@Oq@Ks@Uu@Oq@So@Qq@So@Uq@[k@Qi@Oq@Qm@Mm@Km@Kq@Mm@Kq@Gc@Ik@Mm@KcABe@Ci@Ao@@k@?o@Aq@?s@?q@Bm@Bo@@m@Bm@@o@Bi@Bk@?m@Fk@De@@a@B_@FY?YB[BO@W@QAI@KAIAG?FBCABAA???E?K@S@Q@YB]@Y?[@a@?i@@i@Bk@?m@@m@?k@@m@@k@?k@?m@?e@?k@Ag@?k@Co@?o@Am@Bm@?q@Bo@Aq@@o@Bo@@k@@m@Bm@@k@Hk@Bk@Bm@Dk@Bi@Di@Bc@Be@Ba@B_@@_@@YBYFS@M?MBK?G@G??A?A@?A??@AA??A?@????A@?@A?????????????@??????????????????????????????????A???????????????????????????????????????????????????????a@H_@@a@?_@Bg@?i@Bm@Dk@Bm@Fm@Do@Do@Fo@Dk@Ho@Hk@Fk@Bk@Bo@Am@Am@Am@Ik@Km@Mi@Og@Qk@Wa@Wa@Ya@U_@[c@Y_@Y_@Wc@Sc@Wg@Ue@Sg@Mi@Og@Ii@Mg@Ke@Ee@Gc@E[G[EYEWEWE_@E]G]Gg@Ic@Ig@Kk@Gi@Ik@Kk@Ek@Gg@Kk@Ii@Ik@Ki@Ii@Ki@Ki@Mi@Me@Mg@Sg@Se@Uc@Y_@[_@Y]_@[[]]]_@]]Y]][Y[W[Y]WU_@[[[[][Y[]Y[Y]Y]Y]]e@W_@YY]_@]_@Y_@[W_@[[g@W][[W[Y[W[UWWSUWSUSUSQKGSIKQEK?EHKLOLQTQPOPOPQRKPMJGHIBEGEEGKIKGIKQKSKQKMGKGI?IAIBK@EBEBE@A@A@AA????A@@??@?A???????");
 //                drive.path = paths;
 //                drive.distance = 12350l;
-//                drive.duration = 1161l;
+//                drive.dayDuration = 1161l;
 //                drive.light = Drive.Light.NIGHT;
 //                drive.traffic = Drive.Traffic.LIGHT;
 //                drive.weather = Drive.Weather.DRY;

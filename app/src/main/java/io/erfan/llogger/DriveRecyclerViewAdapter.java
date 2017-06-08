@@ -78,7 +78,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
 //        holder.mViewSpecies.setText(mDrives.get(position).getSpecies());
         holder.mViewDuration.setText(mDrives.get(position).getFormattedDuration());
         holder.mViewLocation.setText(mDrives.get(position).getLocation());
-        holder.mViewCar.setText(mDrives.get(position).getCar());
+//        holder.mViewCar.setText(mDrives.get(position).getCar());
         holder.mViewTime.setText(mDrives.get(position).getFormattedTime());
 
     }

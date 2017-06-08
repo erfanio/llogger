@@ -50,45 +50,45 @@ public class PostDriveActivity extends AppCompatActivity {
 
                 switch (((RadioGroup) findViewById(R.id.post_drive_light)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_light_day:
-                        mDrive.light = Drive.Light.DAY;
+                        mDrive.setLight(Drive.Light.DAY);
                         break;
 
                     case R.id.post_drive_light_night:
-                        mDrive.light = Drive.Light.NIGHT;
+                        mDrive.setLight(Drive.Light.NIGHT);
                         break;
 
                     default:
-                        mDrive.light = Drive.Light.DAY;
+                        mDrive.setLight(Drive.Light.DAY);
                 }
 
                 switch (((RadioGroup) findViewById(R.id.post_drive_weather)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_weather_dry:
-                        mDrive.weather = Drive.Weather.DRY;
+                        mDrive.setWeather(Drive.Weather.DRY);
                         break;
 
                     case R.id.post_drive_weather_wet:
-                        mDrive.weather = Drive.Weather.WET;
+                        mDrive.setWeather(Drive.Weather.WET);
                         break;
 
                     default:
-                        mDrive.weather = Drive.Weather.DRY;
+                        mDrive.setWeather(Drive.Weather.DRY);
                 }
 
                 switch (((RadioGroup) findViewById(R.id.post_drive_traffic)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_traffic_light:
-                        mDrive.traffic = Drive.Traffic.LIGHT;
+                        mDrive.setTraffic(Drive.Traffic.LIGHT);
                         break;
 
                     case R.id.post_drive_traffic_medium:
-                        mDrive.traffic = Drive.Traffic.MEDIUM;
+                        mDrive.setTraffic(Drive.Traffic.MEDIUM);
                         break;
 
                     case R.id.post_drive_traffic_heavy:
-                        mDrive.traffic = Drive.Traffic.HEAVY;
+                        mDrive.setTraffic(Drive.Traffic.HEAVY);
                         break;
 
                     default:
-                        mDrive.traffic = Drive.Traffic.LIGHT;
+                        mDrive.setTraffic(Drive.Traffic.LIGHT);
                 }
 
                 driveDao.insert(mDrive);

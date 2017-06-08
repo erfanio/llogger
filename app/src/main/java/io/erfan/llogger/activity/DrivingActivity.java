@@ -47,9 +47,7 @@ import java.util.TimerTask;
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
 import io.erfan.llogger.Utils;
-import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
-import io.erfan.llogger.model.DriveDao;
 
 import static io.erfan.llogger.Utils.formatDuration;
 
@@ -88,7 +86,7 @@ public class DrivingActivity extends AppCompatActivity {
         Log.d(TAG, "OnCreate called");
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra("Drive");
-        mDrive.time = Calendar.getInstance().getTime();
+        mDrive.setTime(Calendar.getInstance().getTime());
 
         mPaused = false;
         mElapsed = (long) 0;
@@ -113,10 +111,10 @@ public class DrivingActivity extends AppCompatActivity {
         mSecondFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrive.location = "Clayton";
-                mDrive.path = mPaths;
-                mDrive.distance = mPathDistance;
-                mDrive.duration = mElapsed;
+                mDrive.setLocation("Clayton");
+                mDrive.setPath(mPaths);
+                mDrive.setDistance(mPathDistance);
+                mDrive.setDayDuration(mElapsed);
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
                 intent.putExtra("Drive", mDrive);
                 startActivity(intent);
@@ -263,7 +261,8 @@ public class DrivingActivity extends AppCompatActivity {
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
         mBuilder.setContentTitle("Driving with LLogger");
-        mBuilder.setContentText(String.format(Locale.ENGLISH, "Driving with %s in %s.", mDrive.supervisor, mDrive.car));
+//        mBuilder.setContentText(String.format(Locale.ENGLISH, "Driving with %s in %s.", mDrive.supervisor, mDrive.car));
+        mBuilder.setContentText("Driving....");
         mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);

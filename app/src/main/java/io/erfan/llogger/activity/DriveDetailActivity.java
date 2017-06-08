@@ -58,8 +58,8 @@ public class DriveDetailActivity extends AppCompatActivity {
 
         mViewDuration.setText(mDrive.getFormattedDuration());
         mViewDistance.setText(mDrive.getFormattedDistance());
-        mViewVehicle.setText(mDrive.car);
-        mViewSupervisor.setText(mDrive.supervisor);
+//        mViewVehicle.setText(mDrive.car);
+//        mViewSupervisor.setText(mDrive.supervisor);
         mViewLigth.setText(mDrive.getLightString());
         mViewTraffic.setText(mDrive.getTrafficString());
         mViewWeather.setText(mDrive.getWeatherString());
@@ -69,7 +69,7 @@ public class DriveDetailActivity extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 boolean first = true;
-                for (String encodedPath : mDrive.path) {
+                for (String encodedPath : mDrive.getPath()) {
                     List<LatLng> path = PolyUtil.decode(encodedPath);
                     if (path.size() > 0) {
                         googleMap.addPolyline(

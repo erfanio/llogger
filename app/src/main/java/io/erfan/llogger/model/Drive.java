@@ -11,7 +11,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.converter.PropertyConverter;
 
 import java.lang.reflect.Type;
@@ -24,82 +24,90 @@ import java.util.Locale;
 
 import static io.erfan.llogger.Utils.formatDistance;
 import static io.erfan.llogger.Utils.formatDuration;
+import org.greenrobot.greendao.DaoException;
 
 @Entity(indexes = {
         @Index(value = "time DESC", unique = true)
 })
 public class Drive implements Parcelable {
     @Id(autoincrement = true)
-    public Long id;
-    public Long duration;
-    public Long distance;
-    public String location;
+    private Long id;
+    private Date time;
+    private Long dayDuration;
+    private Long nightDuration;
+    private Long distance;
+    private String location;
     @Convert(converter = StringListConverter.class, columnType = String.class)
-    public List<String> path;
-    public String car;
-    public String supervisor;
-    public Date time;
+    private List<String> path;
+    private Long driverId;
+    @ToOne(joinProperty = "driverId")
+    private Driver driver;
+    private Long carId;
+    @ToOne(joinProperty = "carId")
+    private Car car;
+    private Long supervisorId;
+    @ToOne(joinProperty = "supervisorId")
+    private Supervisor supervisor;
     @Convert(converter = LightConverter.class, columnType = String.class)
-    public Light light;
+    private Light light;
     @Convert(converter = TrafficConverter.class, columnType = String.class)
-    public Traffic traffic;
+    private Traffic traffic;
     @Convert(converter = WeatherConverter.class, columnType = String.class)
-    public Weather weather;
+    private Weather weather;
 
     public enum Light { DAY, NIGHT }
     public enum Traffic { LIGHT, MEDIUM, HEAVY }
     public enum Weather { DRY, WET }
 
-    @Generated(hash = 1376662561)
-    public Drive(Long id, Long duration, Long distance, String location, List<String> path, String car, String supervisor, Date time, Light light, Traffic traffic,
-            Weather weather) {
-        this.id = id;
-        this.duration = duration;
-        this.distance = distance;
-        this.location = location;
-        this.path = path;
-        this.car = car;
-        this.supervisor = supervisor;
-        this.time = time;
-        this.light = light;
-        this.traffic = traffic;
-        this.weather = weather;
+    //region format members
+    public String getFormattedDuration() {
+        return formatDuration(dayDuration + nightDuration);
     }
 
-    @Generated(hash = 1022087461)
-    public Drive() {
+    public String getFormattedDistance() {
+        return formatDistance(distance);
     }
 
-    public Drive(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.duration = (Long) in.readValue(Long.class.getClassLoader());
-        this.distance = (Long) in.readValue(Long.class.getClassLoader());
-        this.location = (String) in.readValue(String.class.getClassLoader());
-        this.path = new ArrayList<>();
-        in.readList(this.path, List.class.getClassLoader());
-        this.car = (String) in.readValue(String.class.getClassLoader());
-        this.supervisor = (String) in.readValue(String.class.getClassLoader());
-        this.time = (Date) in.readSerializable();
-        this.light = (Light) in.readSerializable();
-        this.traffic = (Traffic) in.readSerializable();
-        this.weather = (Weather) in.readSerializable();
+    public String getFormattedTime() {
+        // format date into Wed, 2 Jun 12 8:06 pm
+        DateFormat df = new SimpleDateFormat("EEE, d MMM yy h:mm a", Locale.ENGLISH);
+        return df.format(time);
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(duration);
-        dest.writeValue(distance);
-        dest.writeValue(location);
-        dest.writeList(path);
-        dest.writeValue(car);
-        dest.writeValue(supervisor);
-        dest.writeSerializable(time);
-        dest.writeSerializable(light);
-        dest.writeSerializable(traffic);
-        dest.writeSerializable(weather);
+    public String getLightString() {
+        switch (light) {
+            case DAY:
+                return "Day";
+            case NIGHT:
+                return  "Night";
+        }
+        return null;
     }
 
+    public String getTrafficString() {
+        switch (traffic) {
+            case LIGHT:
+                return "Light";
+            case MEDIUM:
+                return "Medium";
+            case HEAVY:
+                return "Heavy";
+        }
+        return null;
+    }
+
+    public String getWeatherString() {
+        switch (weather) {
+            case DRY:
+                return "Dry";
+            case WET:
+                return "Wet";
+        }
+        return null;
+    }
+    //endregion
+
+    //region greendao converters
     static class StringListConverter implements PropertyConverter<List<String>, String> {
         @Override
         public List<String> convertToEntityProperty(String databaseValue) {
@@ -150,7 +158,9 @@ public class Drive implements Parcelable {
             return entityProperty.name();
         }
     }
+    //endregion
 
+    //region parcelable stuff
     @Override
     public int describeContents() {
         return 0;
@@ -168,52 +178,77 @@ public class Drive implements Parcelable {
         }
     };
 
-    // format members
-    public String getFormattedDuration() {
-        return formatDuration(duration);
+    public Drive(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.time = (Date) in.readSerializable();
+        this.dayDuration = (Long) in.readValue(Long.class.getClassLoader());
+        this.nightDuration = (Long) in.readValue(Long.class.getClassLoader());
+        this.distance = (Long) in.readValue(Long.class.getClassLoader());
+        this.location = (String) in.readValue(String.class.getClassLoader());
+        this.path = new ArrayList<>();
+        this.driverId = (Long) in.readValue(Long.class.getClassLoader());
+        this.carId = (Long) in.readValue(Long.class.getClassLoader());
+        this.supervisorId = (Long) in.readValue(Long.class.getClassLoader());
+        this.light = (Light) in.readSerializable();
+        this.traffic = (Traffic) in.readSerializable();
+        this.weather = (Weather) in.readSerializable();
     }
 
-    public String getFormattedDistance() {
-        return formatDistance(distance);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeSerializable(time);
+        dest.writeValue(dayDuration);
+        dest.writeValue(nightDuration);
+        dest.writeValue(distance);
+        dest.writeValue(location);
+        dest.writeList(path);
+        dest.writeValue(driverId);
+        dest.writeValue(carId);
+        dest.writeValue(supervisorId);
+        dest.writeSerializable(light);
+        dest.writeSerializable(traffic);
+        dest.writeSerializable(weather);
+    }
+    //endregion
+
+    //region greendao stuff
+
+
+    @Generated(hash = 650349961)
+    public Drive(Long id, Date time, Long dayDuration, Long nightDuration, Long distance, String location, List<String> path, Long driverId, Long carId, Long supervisorId,
+                 Light light, Traffic traffic, Weather weather) {
+        this.id = id;
+        this.time = time;
+        this.dayDuration = dayDuration;
+        this.nightDuration = nightDuration;
+        this.distance = distance;
+        this.location = location;
+        this.path = path;
+        this.driverId = driverId;
+        this.carId = carId;
+        this.supervisorId = supervisorId;
+        this.light = light;
+        this.traffic = traffic;
+        this.weather = weather;
     }
 
-    public String getFormattedTime() {
-        // format date into Wed, 2 Jun 12 8:06 pm
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yy h:mm a", Locale.ENGLISH);
-        return df.format(time);
+    @Generated(hash = 1022087461)
+    public Drive() {
     }
 
-    public String getLightString() {
-        switch (light) {
-            case DAY:
-                return "Day";
-            case NIGHT:
-                return  "Night";
-        }
-        return null;
-    }
-
-    public String getTrafficString() {
-        switch (traffic) {
-            case LIGHT:
-                return "Light";
-            case MEDIUM:
-                return "Medium";
-            case HEAVY:
-                return "Heavy";
-        }
-        return null;
-    }
-
-    public String getWeatherString() {
-        switch (weather) {
-            case DRY:
-                return "Dry";
-            case WET:
-                return "Wet";
-        }
-        return null;
-    }
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+    /** Used for active entity operations. */
+    @Generated(hash = 36176704)
+    private transient DriveDao myDao;
+    @Generated(hash = 655189286)
+    private transient Long driver__resolvedKey;
+    @Generated(hash = 440805916)
+    private transient Long car__resolvedKey;
+    @Generated(hash = 1350296901)
+    private transient Long supervisor__resolvedKey;
 
     public Long getId() {
         return this.id;
@@ -223,12 +258,12 @@ public class Drive implements Parcelable {
         this.id = id;
     }
 
-    public Long getDuration() {
-        return this.duration;
+    public Long getDayDuration() {
+        return this.dayDuration;
     }
 
-    public void setDuration(Long duration) {
-        this.duration = duration;
+    public void setDayDuration(Long dayDuration) {
+        this.dayDuration = dayDuration;
     }
 
     public Long getDistance() {
@@ -253,22 +288,6 @@ public class Drive implements Parcelable {
 
     public void setPath(List<String> path) {
         this.path = path;
-    }
-
-    public String getCar() {
-        return this.car;
-    }
-
-    public void setCar(String car) {
-        this.car = car;
-    }
-
-    public String getSupervisor() {
-        return this.supervisor;
-    }
-
-    public void setSupervisor(String supervisor) {
-        this.supervisor = supervisor;
     }
 
     public Date getTime() {
@@ -302,4 +321,168 @@ public class Drive implements Parcelable {
     public void setWeather(Weather weather) {
         this.weather = weather;
     }
+
+    public Long getNightDuration() {
+        return this.nightDuration;
+    }
+
+    public void setNightDuration(Long nightDuration) {
+        this.nightDuration = nightDuration;
+    }
+
+    public Long getDriverId() {
+        return this.driverId;
+    }
+
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
+    }
+
+    public Long getCarId() {
+        return this.carId;
+    }
+
+    public void setCarId(Long carId) {
+        this.carId = carId;
+    }
+
+    public Long getSupervisorId() {
+        return this.supervisorId;
+    }
+
+    public void setSupervisorId(Long supervisorId) {
+        this.supervisorId = supervisorId;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 1022113171)
+    public Driver getDriver() {
+        Long __key = this.driverId;
+        if (driver__resolvedKey == null || !driver__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            DriverDao targetDao = daoSession.getDriverDao();
+            Driver driverNew = targetDao.load(__key);
+            synchronized (this) {
+                driver = driverNew;
+                driver__resolvedKey = __key;
+            }
+        }
+        return driver;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1644720982)
+    public void setDriver(Driver driver) {
+        synchronized (this) {
+            this.driver = driver;
+            driverId = driver == null ? null : driver.getId();
+            driver__resolvedKey = driverId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 2145005461)
+    public Car getCar() {
+        Long __key = this.carId;
+        if (car__resolvedKey == null || !car__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            CarDao targetDao = daoSession.getCarDao();
+            Car carNew = targetDao.load(__key);
+            synchronized (this) {
+                car = carNew;
+                car__resolvedKey = __key;
+            }
+        }
+        return car;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1613335416)
+    public void setCar(Car car) {
+        synchronized (this) {
+            this.car = car;
+            carId = car == null ? null : car.getId();
+            car__resolvedKey = carId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 643927743)
+    public Supervisor getSupervisor() {
+        Long __key = this.supervisorId;
+        if (supervisor__resolvedKey == null || !supervisor__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            SupervisorDao targetDao = daoSession.getSupervisorDao();
+            Supervisor supervisorNew = targetDao.load(__key);
+            synchronized (this) {
+                supervisor = supervisorNew;
+                supervisor__resolvedKey = __key;
+            }
+        }
+        return supervisor;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1492433334)
+    public void setSupervisor(Supervisor supervisor) {
+        synchronized (this) {
+            this.supervisor = supervisor;
+            supervisorId = supervisor == null ? null : supervisor.getId();
+            supervisor__resolvedKey = supervisorId;
+        }
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 274871058)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getDriveDao() : null;
+    }
+
+    //endregion
 }
