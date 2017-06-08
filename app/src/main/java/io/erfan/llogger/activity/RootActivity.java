@@ -1,17 +1,17 @@
 package io.erfan.llogger.activity;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.R;
 
 public class RootActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +21,16 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PreferenceManager prefMan = new PreferenceManager(this);
+        if (prefMan.isFirstLaunch()) {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(this, 0, 0);
+            startActivity(intent, options.toBundle());
+            return;
+        }
+
         setContentView(R.layout.activity_root);
 
         mFragmentManager = getSupportFragmentManager();

@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import io.erfan.llogger.R;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class StatsFragment extends Fragment {
 
     public StatsFragment() {

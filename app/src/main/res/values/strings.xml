@@ -19,4 +19,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="name">Name</string>
+
+    <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
+    <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
+    <string name="welcome_cont">Continue</string>
+
+    <string name="welcome_add_driver">Add new driver</string>
+    <string name="welcome_next">Next</string>
 </resources>

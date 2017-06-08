@@ -7,7 +7,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -26,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.DriveDetailActivity"
             android:label="@string/title_activity_drive_detail"
@@ -35,6 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.erfan.llogger.activity.RootActivity" />
         </activity>
+
         <activity
             android:name=".activity.NewDriveActivity"
             android:label="@string/title_activity_new_drive"
@@ -44,17 +46,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.erfan.llogger.activity.RootActivity" />
         </activity>
+
         <activity
             android:name=".activity.DrivingActivity"
             android:label="@string/title_activity_driving"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".activity.PostDriveActivity"
             android:label="@string/title_activity_post_drive"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
