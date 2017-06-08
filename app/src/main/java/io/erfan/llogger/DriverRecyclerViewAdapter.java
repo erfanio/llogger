@@ -13,7 +13,7 @@ import java.util.List;
 import io.erfan.llogger.model.Driver;
 
 public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerViewAdapter.ViewHolder> {
-    List<Driver> mDrivers;
+    private List<Driver> mDrivers;
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,9 +45,8 @@ public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.driver_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_driver, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override

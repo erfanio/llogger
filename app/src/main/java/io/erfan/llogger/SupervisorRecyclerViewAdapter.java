@@ -13,7 +13,7 @@ import java.util.List;
 import io.erfan.llogger.model.Supervisor;
 
 public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<SupervisorRecyclerViewAdapter.ViewHolder> {
-    List<Supervisor> mSupervisors;
+    private List<Supervisor> mSupervisors;
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +47,8 @@ public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<Supervis
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.supervisor_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_supervisor, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override

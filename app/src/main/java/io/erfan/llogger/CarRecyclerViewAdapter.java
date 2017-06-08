@@ -13,7 +13,7 @@ import java.util.List;
 import io.erfan.llogger.model.Car;
 
 public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerViewAdapter.ViewHolder> {
-    List<Car> mCars;
+    private List<Car> mCars;
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,9 +47,8 @@ public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerView
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.car_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_car, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
