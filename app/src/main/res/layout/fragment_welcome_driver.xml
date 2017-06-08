@@ -22,7 +22,8 @@
             android:id="@+id/welcome_new_driver_fragment"
             android:name="io.erfan.llogger.activity.DBFragments.NewDriverFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             tools:layout="@layout/fragment_new_driver" />
 
     </LinearLayout>

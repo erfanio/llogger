@@ -51,4 +51,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.AppCompat.Button.Colored"/>
 
+    <fragment
+        android:id="@+id/new_car_list"
+        android:name="io.erfan.llogger.activity.DBFragments.SelectCarFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_car_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout="@layout/recycler_list" />
+    
 </android.support.constraint.ConstraintLayout>

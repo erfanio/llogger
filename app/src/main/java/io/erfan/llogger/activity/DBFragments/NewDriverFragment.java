@@ -22,6 +22,7 @@ public class NewDriverFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_driver, container, false);
         final TextInputLayout nameInput = (TextInputLayout) view.findViewById(R.id.new_driver_name);
+        final SelectDriverFragment driverList = (SelectDriverFragment) getChildFragmentManager().findFragmentById(R.id.new_driver_list);
 
         // get the driver DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
@@ -38,6 +39,8 @@ public class NewDriverFragment extends Fragment {
                     driverDao.insert(driver);
                     Toast.makeText(getContext(), String.format("new driver %s created!", driver.getName()), Toast.LENGTH_SHORT).show();
                     nameInput.getEditText().setText("");
+
+                    driverList.updateDrivers();
                 }
             }
         });
