@@ -19,7 +19,7 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Supervisor;
 import io.erfan.llogger.model.SupervisorDao;
 
-public class SelectSupervisorFragment extends Fragment {
+public class ListSupervisorFragment extends Fragment {
     Query<Supervisor> mQuery;
     RecyclerView.Adapter mAdapter;
 

@@ -23,7 +23,7 @@ public class NewCarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_car, container, false);
         final TextInputLayout nameInput = (TextInputLayout) view.findViewById(R.id.new_car_name);
         final TextInputLayout plateInput = (TextInputLayout) view.findViewById(R.id.new_car_plate);
-        final SelectCarFragment carList = (SelectCarFragment) getChildFragmentManager().findFragmentById(R.id.new_car_list);
+        final ListCarFragment carList = (ListCarFragment) getChildFragmentManager().findFragmentById(R.id.new_car_list);
 
         // get the car DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();

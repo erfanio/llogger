@@ -19,7 +19,7 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Car;
 import io.erfan.llogger.model.CarDao;
 
-public class SelectCarFragment extends Fragment {
+public class ListCarFragment extends Fragment {
     Query<Car> mQuery;
     RecyclerView.Adapter mAdapter;
 

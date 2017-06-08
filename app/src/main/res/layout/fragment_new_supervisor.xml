@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/new_supervisor_list"
-        android:name="io.erfan.llogger.activity.DBFragments.SelectSupervisorFragment"
+        android:name="io.erfan.llogger.activity.DBFragments.ListSupervisorFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

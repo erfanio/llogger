@@ -23,7 +23,7 @@ public class NewSupervisorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_supervisor, container, false);
         final TextInputLayout nameInput = (TextInputLayout) view.findViewById(R.id.new_supervisor_name);
         final TextInputLayout licenceInput = (TextInputLayout) view.findViewById(R.id.new_supervisor_licence);
-        final SelectSupervisorFragment supervisorList = (SelectSupervisorFragment) getChildFragmentManager().findFragmentById(R.id.new_supervisor_list);
+        final ListSupervisorFragment supervisorList = (ListSupervisorFragment) getChildFragmentManager().findFragmentById(R.id.new_supervisor_list);
 
         // get the supervisor DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
