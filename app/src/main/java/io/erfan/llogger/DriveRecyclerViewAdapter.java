@@ -3,7 +3,6 @@ package io.erfan.llogger;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,6 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
 
     public DriveRecyclerViewAdapter(List<Drive> drives) {
         mDrives = drives;
-        Log.d("DBG", String.format("init size: %d", mDrives.size()));
     }
 
     public void updateList(List<Drive> drives) {
@@ -62,7 +60,6 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
 
     @Override
     public DriveRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("DBG", "Get VH");
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.drive_list_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
@@ -71,7 +68,6 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("DBG", "Bind VH");
         // set the correct data in the list
         holder.mDrive = mDrives.get(position);
 //        holder.mViewName.setText(mDrives.get(position).getName());
@@ -86,7 +82,6 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        Log.d("DBG", String.format("size: %d", mDrives.size()));
         return mDrives.size();
     }
 }

@@ -7,9 +7,9 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Car {
     @Id(autoincrement = true)
-    public Long id;
-    public String name;
-    public String plateNo;
+    private Long id;
+    private String name;
+    private String plateNo;
 
     //region green dao stuff
 

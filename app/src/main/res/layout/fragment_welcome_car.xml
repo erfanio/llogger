@@ -20,11 +20,10 @@
 
         <fragment
             android:id="@+id/welcome_new_car_fragment"
-            android:name="io.erfan.llogger.activity.NewCarFragment"
+            android:name="io.erfan.llogger.activity.DBFragments.NewCarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_new_car">
-        </fragment>
+            tools:layout="@layout/fragment_new_car" />
 
     </LinearLayout>
 

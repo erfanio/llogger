@@ -20,11 +20,11 @@
 
         <fragment
             android:id="@+id/welcome_new_supervisor_fragment"
-            android:name="io.erfan.llogger.activity.NewSupervisorFragment"
+            android:name="io.erfan.llogger.activity.DBFragments.NewSupervisorFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_new_supervisor">
-        </fragment>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_new_supervisor" />
 
     </LinearLayout>
 

@@ -7,6 +7,6 @@
     android:layout_height="match_parent"
     tools:context="io.erfan.llogger.activity.HistoryFragment">
 
-    <include layout="@layout/content_history"/>
+    <include layout="@layout/recycler_list"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,8 +7,8 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Driver {
     @Id(autoincrement = true)
-    public Long id;
-    public String name;
+    private Long id;
+    private String name;
 
     //region greendao stuff
 

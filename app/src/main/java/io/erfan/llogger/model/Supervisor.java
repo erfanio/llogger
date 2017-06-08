@@ -7,9 +7,9 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Supervisor {
     @Id(autoincrement = true)
-    public Long id;
-    public String name;
-    public String licenceNo;
+    private Long id;
+    private String name;
+    private String licenceNo;
 
     //region greendao stuff
 

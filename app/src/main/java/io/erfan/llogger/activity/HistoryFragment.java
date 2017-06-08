@@ -40,7 +40,7 @@ public class HistoryFragment extends Fragment {
         mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.history_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DriveRecyclerViewAdapter(drives);
