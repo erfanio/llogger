@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -111,21 +113,13 @@ public class DrivingActivity extends AppCompatActivity {
         mSecondFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get the drive DAO
-                DaoSession daoSession = ((App) getApplication()).getDaoSession();
-                DriveDao driveDao = daoSession.getDriveDao();
-
                 mDrive.location = "Clayton";
                 mDrive.path = mPaths;
                 mDrive.distance = mPathDistance;
                 mDrive.duration = mElapsed;
-                mDrive.light = Drive.Light.DAY;
-                mDrive.traffic = Drive.Traffic.MEDIUM;
-                mDrive.weather = Drive.Weather.DRY;
-
-                driveDao.insert(mDrive);
-
-                goHome();
+                Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
+                intent.putExtra("Drive", mDrive);
+                startActivity(intent);
             }
         });
 
@@ -151,11 +145,26 @@ public class DrivingActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.d(TAG, "New Intent");
-        if (intent.getAction() == NOTIFICATION_PAUSE) {
+        if (intent.getAction().equals(NOTIFICATION_PAUSE)) {
             pause();
-        } else if (intent.getAction() == NOTIFICATION_RESUME) {
+        } else if (intent.getAction().equals(NOTIFICATION_RESUME)) {
             resume();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.drive_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_drive:
+                goHome();
+        }
+        return true;
     }
 
     @Override

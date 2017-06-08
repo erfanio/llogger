@@ -14,4 +14,5 @@
     <string name="title_activity_driving">Driving</string>
     <string name="title_activity_driving_paused">Driving (Paused)</string>
     <string name="title_activity_stats">StatusActivity</string>
+    <string name="title_activity_post_drive">Finish Driving</string>
 </resources>
