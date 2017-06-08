@@ -1,9 +1,7 @@
 package io.erfan.llogger.activity;
 
-
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.Toast;
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
-import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
@@ -26,7 +23,7 @@ public class NewDriverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_driver, container, false);
         final TextInputLayout nameInput = (TextInputLayout) view.findViewById(R.id.new_driver_name);
 
-        // get the drive DAO
+        // get the driver DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         final DriverDao driverDao = daoSession.getDriverDao();
 

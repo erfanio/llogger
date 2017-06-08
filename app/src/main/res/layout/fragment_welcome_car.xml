@@ -16,25 +16,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/welcome_add_driver"/>
+            android:text="@string/welcome_add_car"/>
 
         <fragment
-            android:id="@+id/welcome_new_driver_fragment"
-            android:name="io.erfan.llogger.activity.NewDriverFragment"
+            android:id="@+id/welcome_new_car_fragment"
+            android:name="io.erfan.llogger.activity.NewCarFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_new_driver">
+            tools:layout="@layout/fragment_new_car">
         </fragment>
 
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/welcome_driver_continue"
+        android:id="@+id/welcome_car_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="16dp"
-        android:text="@string/next"
+        android:text="@string/done"
         style="@style/Base.Widget.AppCompat.Button.Colored" />
 
 </LinearLayout>

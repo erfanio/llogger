@@ -1,5 +1,7 @@
 package io.erfan.llogger.activity;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,16 +12,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.R;
+import io.erfan.llogger.activity.welcome.WelcomeCarFragment;
 import io.erfan.llogger.activity.welcome.WelcomeDriverFragment;
 import io.erfan.llogger.activity.welcome.WelcomeFragment;
+import io.erfan.llogger.activity.welcome.WelcomeSupervisorFragment;
 
 public class WelcomeActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     int mPosition;
 
     // create a list of fragments
-    List<Fragment> pages = Arrays.asList(new WelcomeFragment(), new WelcomeDriverFragment());
+    List<Fragment> pages = Arrays.asList(new WelcomeFragment(),
+            new WelcomeDriverFragment(), new WelcomeSupervisorFragment(),
+            new WelcomeCarFragment());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,16 @@ public class WelcomeActivity extends AppCompatActivity {
             changePage(mPosition + 1);
         }
         // do nothing
+    }
+
+    public void done() {
+        PreferenceManager prefMan = new PreferenceManager(this);
+        prefMan.setFirstLaunch(false);
+
+        Intent intent = new Intent(this, RootActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in, android.R.anim.fade_out);
+        startActivity(intent, options.toBundle());
     }
 
     private void changePage(int position) {

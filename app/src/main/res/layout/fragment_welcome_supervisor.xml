@@ -16,20 +16,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/welcome_add_driver"/>
+            android:text="@string/welcome_add_supervisor"/>
 
         <fragment
-            android:id="@+id/welcome_new_driver_fragment"
-            android:name="io.erfan.llogger.activity.NewDriverFragment"
+            android:id="@+id/welcome_new_supervisor_fragment"
+            android:name="io.erfan.llogger.activity.NewSupervisorFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_new_driver">
+            tools:layout="@layout/fragment_new_supervisor">
         </fragment>
 
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/welcome_driver_continue"
+        android:id="@+id/welcome_supervisor_continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

@@ -11,28 +11,28 @@ import android.widget.Toast;
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
 import io.erfan.llogger.activity.WelcomeActivity;
+import io.erfan.llogger.model.CarDao;
 import io.erfan.llogger.model.DaoSession;
-import io.erfan.llogger.model.DriverDao;
 
-public class WelcomeDriverFragment extends Fragment {
+public class WelcomeCarFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_welcome_driver, container, false);
+        View view = inflater.inflate(R.layout.fragment_welcome_car, container, false);
 
-        // get the driver DAO
+        // get the car DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
-        final DriverDao driverDao = daoSession.getDriverDao();
+        final CarDao carDao = daoSession.getCarDao();
 
-        Button button = (Button) view.findViewById(R.id.welcome_driver_continue);
+        Button button = (Button) view.findViewById(R.id.welcome_car_done);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (driverDao.count() > 0) {
-                ((WelcomeActivity) getActivity()).nextPage();
-            } else {
-                Toast.makeText(getContext(), "Please create a driver before proceeding!", Toast.LENGTH_SHORT).show();
-            }
+                if (carDao.count() > 0) {
+                    ((WelcomeActivity) getActivity()).done();
+                } else {
+                    Toast.makeText(getContext(), "Please create a car before proceeding!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

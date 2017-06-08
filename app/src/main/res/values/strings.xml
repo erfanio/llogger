@@ -21,12 +21,17 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="name">Name</string>
+    <string name="licence">Licence Number</string>
+    <string name="plate">Licence Plate</string>
     <string name="add">Add</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
     <string name="welcome_cont">Continue</string>
 
-    <string name="welcome_add_driver">Add new driver</string>
-    <string name="welcome_next">Next</string>
+    <string name="welcome_add_driver">Add new drivers</string>
+    <string name="welcome_add_supervisor">Add new supervisors</string>
+    <string name="welcome_add_car">Add new cars</string>
 </resources>
