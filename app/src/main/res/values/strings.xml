@@ -24,4 +24,8 @@
     <string name="welcome_add_driver">Add new drivers</string>
     <string name="welcome_add_supervisor">Add new supervisors</string>
     <string name="welcome_add_car">Add new cars</string>
+
+    <string name="welcome_current_drivers">Drivers</string>
+    <string name="welcome_current_supervisors">Supervisors</string>
+    <string name="welcome_current_cars">Cars</string>
 </resources>
