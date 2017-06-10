@@ -1,6 +1,7 @@
 package io.erfan.llogger.activity;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +21,10 @@ import io.erfan.llogger.activity.asset.NewDriverFragment;
 import io.erfan.llogger.activity.asset.NewSupervisorFragment;
 
 public class AddAssetsActivity extends AppCompatActivity {
+    // The list of fragments to use
     private static List<Fragment> PAGES = Arrays.asList(new NewDriverFragment(),
             new NewSupervisorFragment(), new NewCarFragment());
+    // list of corresponding titles for each tab
     private static List<Integer> PAGES_TITLE = Arrays.asList(R.string.drivers,
             R.string.supervisors, R.string.cars);
 
@@ -31,11 +35,16 @@ public class AddAssetsActivity extends AppCompatActivity {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // setup the pager adapter (will use the static variable on this class to setup fragments)
         final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        // default activity title is for the first tab
+        toolbar.setTitle(getString(R.string.title_activity_add_assets_param,
+                sectionsPagerAdapter.getPageTitle(0)));
+
+        // Set up the ViewPager with the pager adapter we created.
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -52,6 +61,15 @@ public class AddAssetsActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public SectionsPagerAdapter(FragmentManager fm) {

@@ -61,6 +61,9 @@
             android:label="@string/title_activity_add_assets"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.erfan.llogger.activity.RootActivity"/>
         </activity>
     </application>
 

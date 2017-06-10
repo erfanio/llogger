@@ -22,6 +22,7 @@ public class NewDriveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_drive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.new_drive_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mVehicle = (TextInputLayout) findViewById(R.id.new_drive_vehicle);
         mOdometer = (TextInputLayout) findViewById(R.id.new_drive_odometer);
@@ -41,8 +42,6 @@ public class NewDriveActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }
