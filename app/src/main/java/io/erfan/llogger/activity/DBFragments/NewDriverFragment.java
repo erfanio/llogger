@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +32,15 @@ public class NewDriverFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_driver, container, false);
+
         mNameInput = (TextInputLayout) view.findViewById(R.id.new_driver_name);
-        mDriverList = (SelectDriverFragment) getChildFragmentManager().findFragmentById(R.id.new_driver_list);
+        mDriverList = new SelectDriverFragment();
         Button addButton = (Button) view.findViewById(R.id.new_driver_add);
+
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.new_driver_fragment, mDriverList);
+        ft.commit();
 
         // get the driver DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
@@ -65,8 +73,6 @@ public class NewDriverFragment extends Fragment {
             Driver driver = new Driver();
             driver.setName(name);
             mDriverDao.insert(driver);
-            Toast.makeText(getContext(), String.format("new driver %s created!", driver.getName()), Toast.LENGTH_SHORT).show();
-            mNameInput.getEditText().setText("");
 
             // Check if no view has focus:
             View view = getActivity().getCurrentFocus();

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.InputFilter;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +37,13 @@ public class NewCarFragment extends Fragment {
 
         mNameInput = (TextInputLayout) view.findViewById(R.id.new_car_name);
         mPlateInput = (TextInputLayout) view.findViewById(R.id.new_car_plate);
-        mCarList = (ListCarFragment) getChildFragmentManager().findFragmentById(R.id.new_car_list);
+        mCarList = new ListCarFragment();
         Button addButton = (Button) view.findViewById(R.id.new_car_add);
+
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.new_car_fragment, mCarList);
+        ft.commit();
 
         // get the car DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
@@ -47,6 +55,7 @@ public class NewCarFragment extends Fragment {
                 addCar();
             }
         });
+        mPlateInput.getEditText().setFilters(new InputFilter[] {new InputFilter.AllCaps()});
         mPlateInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -71,9 +80,6 @@ public class NewCarFragment extends Fragment {
             car.setPlateNo(plate);
 
             mCarDao.insert(car);
-            Toast.makeText(getContext(),
-                    String.format("new car %s with plate %s created!", car.getName(), car.getPlateNo()),
-                    Toast.LENGTH_SHORT).show();
 
             mNameInput.getEditText().setText("");
             mPlateInput.getEditText().setText("");

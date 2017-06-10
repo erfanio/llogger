@@ -6,27 +6,19 @@
     android:layout_height="match_parent"
     android:paddingBottom="16dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/welcome_add_car"/>
+
+    <fragment
+        android:id="@+id/welcome_new_car_fragment"
+        android:name="io.erfan.llogger.activity.DBFragments.NewCarFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/welcome_add_car"/>
-
-        <fragment
-            android:id="@+id/welcome_new_car_fragment"
-            android:name="io.erfan.llogger.activity.DBFragments.NewCarFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:layout="@layout/fragment_new_car" />
-
-    </LinearLayout>
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_new_car" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/welcome_car_done"

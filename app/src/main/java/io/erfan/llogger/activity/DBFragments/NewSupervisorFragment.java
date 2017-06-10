@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +33,15 @@ public class NewSupervisorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_supervisor, container, false);
+
         mNameInput = (TextInputLayout) view.findViewById(R.id.new_supervisor_name);
         mLicenceInput = (TextInputLayout) view.findViewById(R.id.new_supervisor_licence);
-        mSupervisorList = (ListSupervisorFragment) getChildFragmentManager().findFragmentById(R.id.new_supervisor_list);
+        mSupervisorList = new ListSupervisorFragment();
+
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.new_supervisor_fragment, mSupervisorList);
+        ft.commit();
 
         // get the supervisor DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
@@ -70,9 +78,6 @@ public class NewSupervisorFragment extends Fragment {
             supervisor.setLicenceNo(licence);
 
             mSupervisorDao.insert(supervisor);
-            Toast.makeText(getContext(),
-                    String.format("new supervisor %s with licence %s created!", supervisor.getName(), supervisor.getLicenceNo()),
-                    Toast.LENGTH_SHORT).show();
 
             mNameInput.getEditText().setText("");
             mLicenceInput.getEditText().setText("");

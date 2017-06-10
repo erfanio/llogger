@@ -1,15 +1,18 @@
 <resources>
     <string name="app_name">Learners Digital Logbook</string>
 
-    <!-- Home screen -->
-    <string name="stats">Stats</string>
 
     <string name="title_activity_drive_detail">Drive Detail</string>
     <string name="title_activity_new_drive">Start Driving</string>
     <string name="title_activity_driving">Driving</string>
     <string name="title_activity_driving_paused">Driving (Paused)</string>
     <string name="title_activity_post_drive">Finish Driving</string>
+    <string name="title_activity_add_assets">Add Assets</string>
 
+    <string name="action_add_assets">Add Assets</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="stats">Stats</string>
     <string name="name">Name</string>
     <string name="licence">Licence Number</string>
     <string name="plate">Licence Plate</string>
@@ -21,11 +24,16 @@
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
     <string name="welcome_cont">Continue</string>
 
-    <string name="welcome_add_driver">Add new drivers</string>
-    <string name="welcome_add_supervisor">Add new supervisors</string>
-    <string name="welcome_add_car">Add new cars</string>
+    <string name="drivers">Drivers</string>
+    <string name="supervisors">Supervisors</string>
+    <string name="car">Car</string>
+
+    <string name="welcome_add_driver">Add New Drivers</string>
+    <string name="welcome_add_supervisor">Add New Supervisors</string>
+    <string name="welcome_add_car">Add New Cars</string>
 
     <string name="welcome_current_drivers">Drivers</string>
     <string name="welcome_current_supervisors">Supervisors</string>
     <string name="welcome_current_cars">Cars</string>
+
 </resources>
