@@ -36,7 +36,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
             mViewTime = (TextView) v.findViewById(R.id.drive_item_time);
             mViewCar = (TextView) v.findViewById(R.id.drive_item_car);
 
-            // set on click to view monster
+            // set on click to view driver details
             mItem = (CardView) v.findViewById(R.id.drive_item);
             mItem.setOnClickListener(new View.OnClickListener() {
                 @Override

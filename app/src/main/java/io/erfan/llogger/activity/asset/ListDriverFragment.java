@@ -19,7 +19,7 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
-public class SelectDriverFragment extends Fragment {
+public class ListDriverFragment extends Fragment {
     private Query<Driver> mQuery;
     private RecyclerView.Adapter mAdapter;
 

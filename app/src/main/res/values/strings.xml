@@ -8,6 +8,7 @@
     <string name="title_activity_driving_paused">Driving (Paused)</string>
     <string name="title_activity_post_drive">Finish Driving</string>
     <string name="title_activity_add_assets">Add Assets</string>
+    <string name="title_activity_add_assets_param">Add %1$s</string>
 
     <string name="action_add_assets">Add New &#8230;</string>
     <string name="action_settings">Settings</string>
@@ -26,7 +27,7 @@
 
     <string name="drivers">Drivers</string>
     <string name="supervisors">Supervisors</string>
-    <string name="car">Car</string>
+    <string name="cars">Cars</string>
 
     <string name="welcome_add_driver">Add New Drivers</string>
     <string name="welcome_add_supervisor">Add New Supervisors</string>

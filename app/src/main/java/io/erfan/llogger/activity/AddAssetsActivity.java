@@ -21,23 +21,32 @@ import io.erfan.llogger.activity.asset.NewSupervisorFragment;
 public class AddAssetsActivity extends AppCompatActivity {
     private static List<Fragment> PAGES = Arrays.asList(new NewDriverFragment(),
             new NewSupervisorFragment(), new NewCarFragment());
-    private static List<Integer> PAGES_TITLE = Arrays.asList(R.string.welcome_add_driver,
-            R.string.welcome_add_supervisor, R.string.welcome_add_car);
+    private static List<Integer> PAGES_TITLE = Arrays.asList(R.string.drivers,
+            R.string.supervisors, R.string.cars);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assets);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                // change the title based on the current tab
+                toolbar.setTitle(getString(R.string.title_activity_add_assets_param,
+                        sectionsPagerAdapter.getPageTitle(position)));
+            }
+        });
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

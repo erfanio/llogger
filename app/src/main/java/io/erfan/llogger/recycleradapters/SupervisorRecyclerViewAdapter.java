@@ -18,7 +18,6 @@ public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<Supervis
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView mItem;
         public TextView mName;
         public TextView mLicence;
 
@@ -30,14 +29,6 @@ public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<Supervis
             // setup ui widgets
             mName = (TextView) v.findViewById(R.id.supervisor_item_name);
             mLicence = (TextView) v.findViewById(R.id.supervisor_item_licence);
-
-            mItem = (CardView) v.findViewById(R.id.supervisor_item);
-            mItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "clicked on " + mSupervisor.getName(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 

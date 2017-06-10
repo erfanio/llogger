@@ -18,7 +18,6 @@ public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerView
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView mItem;
         public TextView mName;
         public TextView mPlate;
 
@@ -30,14 +29,6 @@ public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerView
             // setup ui widgets
             mName = (TextView) v.findViewById(R.id.car_item_name);
             mPlate = (TextView) v.findViewById(R.id.car_item_plate);
-
-            mItem = (CardView) v.findViewById(R.id.car_item);
-            mItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "clicked on " + mCar.getName(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 

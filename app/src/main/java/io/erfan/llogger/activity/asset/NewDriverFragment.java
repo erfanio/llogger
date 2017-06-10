@@ -23,7 +23,7 @@ import io.erfan.llogger.model.DriverDao;
 
 public class NewDriverFragment extends Fragment {
     TextInputLayout mNameInput;
-    SelectDriverFragment mDriverList;
+    ListDriverFragment mDriverList;
     DriverDao mDriverDao;
 
     @Override
@@ -33,7 +33,7 @@ public class NewDriverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_driver, container, false);
 
         mNameInput = (TextInputLayout) view.findViewById(R.id.new_driver_name);
-        mDriverList = new SelectDriverFragment();
+        mDriverList = new ListDriverFragment();
         Button addButton = (Button) view.findViewById(R.id.new_driver_add);
 
         FragmentManager fm = getChildFragmentManager();
