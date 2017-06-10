@@ -9,20 +9,31 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
+import android.widget.Toast;
 
+import java.util.List;
+
+import io.erfan.llogger.App;
 import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.R;
+import io.erfan.llogger.model.DaoSession;
+import io.erfan.llogger.model.Driver;
+import io.erfan.llogger.model.DriverDao;
 
 public class RootActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager mFragmentManager;
+    private List<Driver> mDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // check if this is the first launching the app
         PreferenceManager prefMan = new PreferenceManager(this);
         if (prefMan.isFirstLaunch()) {
             Intent intent = new Intent(this, WelcomeActivity.class);
@@ -34,9 +45,10 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
 
         setContentView(R.layout.activity_root);
 
+        // Home fragment will be added by default
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = mFragmentManager.beginTransaction();
-        ft.add(R.id.root_fragment, new HomeFragment());
+        ft.replace(R.id.root_fragment, new HomeFragment());
         ft.commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,19 +56,69 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
+
+        // get a list of mDrivers
+        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        DriverDao driverDao = daoSession.getDriverDao();
+        mDrivers = driverDao.loadAll();
+
+        if (prefMan.getUser() == null) {
+            // realistically this should never happen (since they are required to create a
+            // driver in the welcome screen) but just in case
+            if (mDrivers.isEmpty()) {
+                // create a driver so we have a driver to work with
+                Driver driver = new Driver();
+                driver.setName("Default");
+                driverDao.insert(driver);
+
+                mDrivers = driverDao.loadAll();
+
+                Toast.makeText(this,
+                        "A default driver has been created",
+                        Toast.LENGTH_LONG).show();
+            }
+
+            // default the current user to the first user in the database
+            Long firstID = driverDao.getKey(mDrivers.get(0));
+            prefMan.setUser(firstID);
+        }
+
+        // test only
+        Driver driver = driverDao.load(prefMan.getUser());
+        Toast.makeText(this, String.format("Logged in as %s", driver.getName()),
+                Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_root, menu);
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // add driver options
+        if (!mDrivers.isEmpty()) {
+            SubMenu subMenu = menu.findItem(R.id.action_change_driver).getSubMenu();
+            subMenu.clear();
+
+            // id will the index in the array
+            int id = 0;
+            for (Driver driver : mDrivers) {
+                // add a menu item and advance id by one
+                subMenu.add(Menu.NONE, id++, Menu.NONE, driver.getName());
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // switch based on item ID
-        switch (item.getItemId()) {
+        int id = item.getItemId();
+        switch (id) {
             case R.id.action_settings:
 
                 return true;
@@ -65,6 +127,19 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
                 Intent intent = new Intent(this, AddAssetsActivity.class);
                 startActivity(intent);
                 return true;
+        }
+
+        if (id < mDrivers.size()) {
+            // setup context
+            PreferenceManager prefMan = new PreferenceManager(this);
+            DaoSession daoSession = ((App) getApplication()).getDaoSession();
+            DriverDao driverDao = daoSession.getDriverDao();
+
+            // change the driver
+            Long driverID = driverDao.getKey(mDrivers.get(id));
+            prefMan.setUser(driverID);
+            // restart the activity to take effect
+            recreate();
         }
 
         return super.onOptionsItemSelected(item);
