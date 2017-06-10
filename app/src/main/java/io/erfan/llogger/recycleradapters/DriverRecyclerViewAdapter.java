@@ -1,4 +1,4 @@
-package io.erfan.llogger;
+package io.erfan.llogger.recycleradapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import io.erfan.llogger.R;
 import io.erfan.llogger.model.Driver;
 
 public class DriverRecyclerViewAdapter extends RecyclerView.Adapter<DriverRecyclerViewAdapter.ViewHolder> {

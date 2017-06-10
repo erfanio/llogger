@@ -1,4 +1,4 @@
-package io.erfan.llogger;
+package io.erfan.llogger.recycleradapters;
 
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import io.erfan.llogger.R;
 import io.erfan.llogger.activity.DriveDetailActivity;
 import io.erfan.llogger.model.Drive;
 

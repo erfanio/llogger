@@ -14,9 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.erfan.llogger.R;
-import io.erfan.llogger.activity.DBFragments.NewCarFragment;
-import io.erfan.llogger.activity.DBFragments.NewDriverFragment;
-import io.erfan.llogger.activity.DBFragments.NewSupervisorFragment;
+import io.erfan.llogger.activity.asset.NewCarFragment;
+import io.erfan.llogger.activity.asset.NewDriverFragment;
+import io.erfan.llogger.activity.asset.NewSupervisorFragment;
 
 public class AddAssetsActivity extends AppCompatActivity {
     private static List<Fragment> PAGES = Arrays.asList(new NewDriverFragment(),

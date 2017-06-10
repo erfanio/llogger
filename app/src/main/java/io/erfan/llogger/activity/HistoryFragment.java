@@ -14,7 +14,7 @@ import org.greenrobot.greendao.query.Query;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.DriveRecyclerViewAdapter;
+import io.erfan.llogger.recycleradapters.DriveRecyclerViewAdapter;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;

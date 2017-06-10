@@ -1,4 +1,4 @@
-package io.erfan.llogger.activity.DBFragments;
+package io.erfan.llogger.activity.asset;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
-import io.erfan.llogger.CarRecyclerViewAdapter;
+import io.erfan.llogger.recycleradapters.CarRecyclerViewAdapter;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Car;
 import io.erfan.llogger.model.CarDao;
