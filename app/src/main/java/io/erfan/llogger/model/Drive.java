@@ -186,6 +186,7 @@ public class Drive implements Parcelable {
         this.distance = (Long) in.readValue(Long.class.getClassLoader());
         this.location = (String) in.readValue(String.class.getClassLoader());
         this.path = new ArrayList<>();
+        in.readList(path, String.class.getClassLoader());
         this.driverId = (Long) in.readValue(Long.class.getClassLoader());
         this.carId = (Long) in.readValue(Long.class.getClassLoader());
         this.supervisorId = (Long) in.readValue(Long.class.getClassLoader());

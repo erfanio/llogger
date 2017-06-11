@@ -58,12 +58,12 @@ public class NewCarFragment extends Fragment {
         mPlateInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
+                // the send action on the keyboard (instead of return key) will add the car
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     addCar();
-                    handled = true;
+                    return true;
                 }
-                return handled;
+                return false;
             }
         });
 

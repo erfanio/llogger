@@ -54,12 +54,12 @@ public class NewDriverFragment extends Fragment {
         mNameInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
+                // the send action on the keyboard (instead of return key) will add the driver
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     addDriver();
-                    handled = true;
+                    return true;
                 }
-                return handled;
+                return false;
             }
         });
 

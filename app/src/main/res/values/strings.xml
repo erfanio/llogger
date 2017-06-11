@@ -21,6 +21,7 @@
     <string name="add">Add</string>
     <string name="next">Next</string>
     <string name="done">Done</string>
+    <string name="odometer">Odometer</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
@@ -37,5 +38,8 @@
     <string name="welcome_current_drivers">Drivers</string>
     <string name="welcome_current_supervisors">Supervisors</string>
     <string name="welcome_current_cars">Cars</string>
+
+    <string name="choose_car">Choose your car</string>
+    <string name="choose_supervisor">Choose your supervisor</string>
 
 </resources>

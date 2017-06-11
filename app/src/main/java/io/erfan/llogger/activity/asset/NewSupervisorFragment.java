@@ -56,12 +56,12 @@ public class NewSupervisorFragment extends Fragment {
         mLicenceInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
+                // the send action on the keyboard (instead of return key) will add the supervisor
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     addSupervisor();
-                    handled = true;
+                    return true;
                 }
-                return handled;
+                return false;
             }
         });
 
