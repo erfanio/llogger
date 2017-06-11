@@ -5,13 +5,13 @@ import java.util.Locale;
 public class Utils {
     public static String formatDuration(Long duration) {
         if (duration < 60) {
-            return String.format(Locale.ENGLISH, "%ds", duration);
+            return String.format(Locale.ENGLISH, "%dsec", duration);
         } else if (duration < 3600) {
-            return String.format(Locale.ENGLISH, "%dm %ds", duration / 60, duration % 60);
+            return String.format(Locale.ENGLISH, "%dmin %dsec", duration / 60, duration % 60);
         } else if (duration % 3600 < 60) {
-            return String.format(Locale.ENGLISH, "%dh", duration / 3600);
+            return String.format(Locale.ENGLISH, "%dhr", duration / 3600);
         } else {
-            return String.format(Locale.ENGLISH, "%dh %dm", duration / 3600, (duration % 3600) / 60);
+            return String.format(Locale.ENGLISH, "%dhr %dmin", duration / 3600, (duration % 3600) / 60);
         }
     }
 

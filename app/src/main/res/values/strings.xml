@@ -10,6 +10,14 @@
     <string name="title_activity_add_assets">Add Assets</string>
     <string name="title_activity_add_assets_param">Add %1$s</string>
 
+    <string name="emoji_day">☀️</string>
+    <string name="emoji_night">🌘</string>
+    <string name="emoji_dry">🌤️</string>
+    <string name="emoji_wet">🌧️</string>
+    <string name="emoji_traffic_light">🏎️</string>
+    <string name="emoji_traffic_medium">🚗</string>
+    <string name="emoji_traffic_heavy">🚶</string>
+
     <string name="action_add_assets">Add New &#8230;</string>
     <string name="action_settings">Settings</string>
     <string name="action_change_driver">Change Driver</string>
@@ -46,5 +54,12 @@
 
     <string name="choose_car">Choose your car</string>
     <string name="choose_supervisor">Choose your supervisor</string>
+    <string name="detail_duration">Duration</string>
+    <string name="detail_day">Day</string>
+    <string name="detail_heavy">Heavy</string>
+    <string name="detail_wet">Wet</string>
+    <string name="detail_distance">Distance</string>
+    <string name="detail_car">Car</string>
+    <string name="detail_supervisor">Supervisor</string>
 
 </resources>

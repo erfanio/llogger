@@ -39,6 +39,8 @@ public class PiechartFragment extends Fragment {
 
         pieChart.setData(generatePieData());
         pieChart.setEntryLabelColor(Color.WHITE);
+        // disables interactions with the chart
+        pieChart.setTouchEnabled(false);
 
         return view;
     }
