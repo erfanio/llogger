@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,137 +9,92 @@
     tools:context="io.erfan.llogger.activity.HomeFragment"
     tools:showIn="@layout/fragment_home">
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
+            android:layout_margin="8dp"
+            app:cardCornerRadius="3dp"
+            app:contentPadding="8dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="3dp"
-                app:contentPadding="8dp">
-                <android.support.constraint.ConstraintLayout
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_stats"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/stats"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_marginRight="8dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        android:id="@+id/textView2"/>
+                <FrameLayout
+                    android:id="@+id/home_pie_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="200dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="\n\n\n\n\n\nPie Chart Goes Here"
-                        android:textAlignment="center"
-                        android:background="@color/colorAccent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2"
-                        android:id="@+id/textView5"
-                        />
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Total Driving Remaining: 20h\nNight Driving Remaining: 2h"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginBottom="8dp"/>
+        </android.support.v7.widget.CardView>
 
-                </android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="3dp"
+            app:contentPaddingTop="8dp"
+            app:contentPaddingBottom="8dp">
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="3dp"
-                app:contentPaddingTop="8dp"
-                app:contentPaddingBottom="8dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home_recent_drives"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
                 <LinearLayout
+                    android:id="@+id/main_history_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="1dp"
+                    android:background="@drawable/top_border"
+                    tools:layout_height="150dp"
+                    tools:layout="@layout/list_item_drive" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/main_load_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    app:cardElevation="0dp"
+                    app:contentPadding="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Recent Drives"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
-                    <LinearLayout
-                        android:id="@+id/main_history_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="1dp"
-                        android:background="@drawable/top_border"
-                        tools:layout_height="150dp"
-                        tools:layout="@layout/list_item_drive" />
-
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/main_load_more"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:clickable="true"
-                        app:cardElevation="0dp"
-                        app:contentPadding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="See More"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginTop="8dp" />
-                    </android.support.v7.widget.CardView>
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-
-        </LinearLayout>
-    </ScrollView>
-
-</android.support.constraint.ConstraintLayout>
+                        android:layout_height="match_parent"
+                        android:text="@string/see_more"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="8dp" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>
