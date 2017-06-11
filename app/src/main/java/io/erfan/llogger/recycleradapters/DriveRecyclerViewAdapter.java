@@ -41,12 +41,21 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
             mItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent openViewMonster = new Intent(v.getContext(), DriveDetailActivity.class);
-                    openViewMonster.putExtra("Drive", mDrive);
+                    Intent openViewDrive = new Intent(v.getContext(), DriveDetailActivity.class);
+                    openViewDrive.putExtra("Drive", mDrive);
 
-                    v.getContext().startActivity(openViewMonster);
+                    v.getContext().startActivity(openViewDrive);
                 }
             });
+        }
+
+        // binding logic is here to be able to use the viewholder outside of recycler view too
+        public void bind(Drive drive) {
+            mDrive = drive;
+            mViewDuration.setText(drive.getFormattedDuration());
+            mViewLocation.setText(drive.getLocation());
+//            mViewCar.setText(drive.getCar());
+            mViewTime.setText(drive.getFormattedTime());
         }
     }
 
@@ -69,13 +78,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // set the correct data in the list
-        holder.mDrive = mDrives.get(position);
-//        holder.mViewName.setText(mDrives.get(position).getName());
-//        holder.mViewSpecies.setText(mDrives.get(position).getSpecies());
-        holder.mViewDuration.setText(mDrives.get(position).getFormattedDuration());
-        holder.mViewLocation.setText(mDrives.get(position).getLocation());
-//        holder.mViewCar.setText(mDrives.get(position).getCar());
-        holder.mViewTime.setText(mDrives.get(position).getFormattedTime());
+        holder.bind(mDrives.get(position));
 
     }
 

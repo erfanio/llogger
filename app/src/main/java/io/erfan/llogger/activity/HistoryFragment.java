@@ -30,8 +30,8 @@ public class HistoryFragment extends Fragment {
         // get the drive DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         DriveDao driveDao = daoSession.getDriveDao();
-
-        mQuery = driveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
+        // get the list of drives
+        mQuery = driveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).limit(2).build();
         List<Drive> drives = mQuery.list();
 
         // setup recycler adapter with a list of driver (maybe limited to a number in getDrives)
