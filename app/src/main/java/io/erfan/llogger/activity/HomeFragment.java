@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
         loadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((RootActivity) getActivity()).switch_fragment(RootActivity.Fragments.HISTORY);
+                ((RootActivity) getActivity()).switchFragment(RootActivity.Pages.HISTORY, true);
             }
         });
 

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -24,10 +23,12 @@ import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
-public class RootActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
+public class RootActivity extends AppCompatActivity {
+    private BottomNavigationView mNavigation;
     private FragmentManager mFragmentManager;
     private List<Driver> mDrivers;
+
+    public enum Pages {HOME, STATS, HISTORY}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,24 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
+        mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                // switch to fragment based on the ID
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        switchFragment(Pages.HOME);
+                        break;
+                    case R.id.nav_stats:
+                        switchFragment(Pages.STATS);
+                        break;
+                    case R.id.nav_history:
+                        switchFragment(Pages.HISTORY);
+                }
+                return true;
+            }
+        });
 
         // get a list of mDrivers
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
@@ -145,39 +162,34 @@ public class RootActivity extends AppCompatActivity implements BottomNavigationV
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        // switch to fragment based on the ID
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                switch_fragment(Fragments.HOME);
-                break;
-            case R.id.nav_stats:
-                switch_fragment(Fragments.STATS);
-                break;
-            case R.id.nav_history:
-                switch_fragment(Fragments.HISTORY);
-        }
-        return true;
-    }
-
-    public enum Fragments {HOME, STATS, HISTORY}
 
     // allows children fragment to change the current fragment
-    public void switch_fragment(Fragments fragment) {
+    public void switchFragment(Pages fragment, boolean updateNav) {
         FragmentTransaction ft = mFragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+
+        Integer destRes = null;
         switch(fragment) {
             case HOME:
                 ft.replace(R.id.root_fragment, new HomeFragment());
+                destRes = R.id.nav_home;
                 break;
             case STATS:
                 ft.replace(R.id.root_fragment, new StatsFragment());
+                destRes = R.id.nav_stats;
                 break;
             case HISTORY:
                 ft.replace(R.id.root_fragment, new HistoryFragment());
+                destRes = R.id.nav_history;
                 break;
         }
         ft.commit();
+
+        if (updateNav && destRes != null) {
+            mNavigation.setSelectedItemId(destRes);
+        }
+    }
+    private void switchFragment(Pages fragment) {
+        switchFragment(fragment, false);
     }
 }
