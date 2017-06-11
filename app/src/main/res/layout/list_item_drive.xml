@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        android:background="@drawable/top_border">
+        android:background="@drawable/bottom_border">
 
         <TextView
             android:id="@+id/drive_item_duration"

@@ -102,13 +102,15 @@
                         android:text="Recent Drives"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <FrameLayout
                         android:id="@+id/main_history_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:spanCount="4"/>
+                        tools:layout_height="150dp"
+                        tools:layout="@layout/recycler_list" />
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/main_load_more"

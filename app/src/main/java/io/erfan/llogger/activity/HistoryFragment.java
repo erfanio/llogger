@@ -1,7 +1,6 @@
 package io.erfan.llogger.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,42 +20,36 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class HistoryFragment extends Fragment {
-    private DriveDao mDriveDao;
     private Query<Drive> mQuery;
-
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.recycler_list, container, false);
 
         // get the drive DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
-        mDriveDao = daoSession.getDriveDao();
+        DriveDao driveDao = daoSession.getDriveDao();
 
-        mQuery = mDriveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
+        mQuery = driveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_list);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        // setup recycler adapter with a list of driver (maybe limited to a number in getDrives)
+        RecyclerView  recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
         mAdapter = new DriveRecyclerViewAdapter(drives);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
+
 
         return view;
-    }
-
-    private void updateDrives() {
-        List<Drive> drives = mQuery.list();
-        ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateDrives();
+        // update the list
+        List<Drive> drives = mQuery.list();
+        ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
     }
 }
