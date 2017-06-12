@@ -14,12 +14,15 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.Toast;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.List;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
+import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
@@ -27,6 +30,8 @@ public class RootActivity extends AppCompatActivity {
     private BottomNavigationView mNavigation;
     private FragmentManager mFragmentManager;
     private List<Driver> mDrivers;
+
+    Query<Driver> mQuery;
 
     public enum Pages {HOME, STATS, HISTORY}
 
@@ -77,7 +82,8 @@ public class RootActivity extends AppCompatActivity {
         // get a list of mDrivers
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         DriverDao driverDao = daoSession.getDriverDao();
-        mDrivers = driverDao.loadAll();
+        mQuery = driverDao.queryBuilder().where(DriverDao.Properties.Id.notEq(prefMan.getUser())).build();
+        mDrivers = mQuery.list();
 
         if (prefMan.getUser() == null) {
             // realistically this should never happen (since they are required to create a
@@ -197,6 +203,6 @@ public class RootActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // update the list of drivers
-        mDrivers = ((App) getApplication()).getDaoSession().getDriverDao().loadAll();
+        mDrivers = mQuery.list();
     }
 }
