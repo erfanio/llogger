@@ -85,7 +85,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/detail_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -99,7 +98,6 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/detail_vehicle_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/car"
@@ -114,7 +112,6 @@
                 android:textAppearance="@style/text_item" />
 
             <TextView
-                android:id="@+id/detail_supervisor_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/supervisor"
@@ -134,7 +131,6 @@
             android:orientation="vertical"
             android:layout_weight="1">
             <TextView
-                android:id="@+id/detail_distance_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/distance"
@@ -149,16 +145,18 @@
                 android:textAppearance="@style/text_item" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/traffic"
+                android:textAppearance="@style/text_item_label" />
+
+            <TextView
                 android:id="@+id/detail_traffic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_menu_drive"
                 android:text="@string/traffic_heavy"
-                android:fontFamily="sans-serif-light"
-                android:textSize="22sp"
-                android:textColor="@android:color/primary_text_light"/>
+                android:textAppearance="@style/text_item" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
