@@ -10,167 +10,244 @@
     tools:context="io.erfan.llogger.activity.PostDriveActivity"
     tools:showIn="@layout/activity_post_drive">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
+
         <LinearLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/duration"
-                android:textAppearance="@style/text_item_label" />
-
-            <TextView
-                android:id="@+id/post_drive_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="1hr 20min"
-                android:textAppearance="@style/text_item"
-                android:textSize="36sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/daylight"
-                android:textAppearance="@style/text_item"
-                android:gravity="center_vertical" />
-
-            <RadioGroup
-                android:id="@+id/post_drive_light"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <RadioButton
-                    android:id="@+id/post_drive_light_day"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/day" />
+                    android:text="@string/duration"
+                    android:textAppearance="@style/text_item_label" />
 
-                <RadioButton
-                    android:id="@+id/post_drive_light_dawn_dusk"
+                <TextView
+                    android:id="@+id/post_drive_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/dawn_dusk" />
+                    tools:text="1hr 20min"
+                    android:textAppearance="@style/text_item"
+                    android:textSize="36sp" />
 
-                <RadioButton
-                    android:id="@+id/post_drive_light_night"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/night" />
-            </RadioGroup>
+                    android:layout_marginTop="16dp"
+                    android:text="@string/daylight"
+                    android:textAppearance="@style/text_item"
+                    android:gravity="center_vertical" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/weather"
-                android:textAppearance="@style/text_item"
-                android:gravity="center_vertical" />
+                <RadioGroup
+                    android:id="@+id/post_drive_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
-            <RadioGroup
-                android:id="@+id/post_drive_weather"
+                    <RadioButton
+                        android:id="@+id/post_drive_light_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/day" />
+
+                    <RadioButton
+                        android:id="@+id/post_drive_light_dawn_dusk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/dawn_dusk" />
+
+                    <RadioButton
+                        android:id="@+id/post_drive_light_night"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/night" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/weather"
+                    android:textAppearance="@style/text_item"
+                    android:gravity="center_vertical" />
+
+                <RadioGroup
+                    android:id="@+id/post_drive_weather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <RadioButton
+                        android:id="@+id/post_drive_weather_dry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/dry" />
+
+                    <RadioButton
+                        android:id="@+id/post_drive_weather_wet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/wet" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/traffic"
+                    android:textAppearance="@style/text_item"
+                    android:gravity="center_vertical" />
+
+                <RadioGroup
+                    android:id="@+id/post_drive_traffic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <RadioButton
+                        android:id="@+id/post_drive_traffic_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="@string/traffic_light" />
+
+                    <RadioButton
+                        android:id="@+id/post_drive_traffic_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/traffic_medium" />
+
+                    <RadioButton
+                        android:id="@+id/post_drive_traffic_heavy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:gravity="center"
+                        android:text="@string/traffic_heavy" />
+                </RadioGroup>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <RadioButton
-                    android:id="@+id/post_drive_weather_dry"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/dry" />
+                    android:text="@string/distance"
+                    android:textAppearance="@style/text_item_label" />
 
-                <RadioButton
-                    android:id="@+id/post_drive_weather_wet"
+                <TextView
+                    android:id="@+id/post_drive_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/wet" />
-            </RadioGroup>
+                    tools:text="10.2km"
+                    android:textAppearance="@style/text_item"
+                    android:textSize="36sp" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/parking"
+                    android:textAppearance="@style/text_item"
+                    android:gravity="center_vertical" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/parking"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/road_types"
+                    android:textAppearance="@style/text_item"
+                    android:gravity="center_vertical" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_local"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_main"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_city"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_freeway"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_freeway"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_rural_hwy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_rural_hwy"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_rural"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_rural_other"
+                    android:layout_marginTop="8dp" />
+
+                <CheckBox
+                    android:id="@+id/post_drive_road_gravel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/road_gravel"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distance"
-                android:textAppearance="@style/text_item_label" />
-
-            <TextView
-                android:id="@+id/post_drive_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="10.2km"
-                android:textAppearance="@style/text_item"
-                android:textSize="36sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/traffic"
-                android:textAppearance="@style/text_item"
-                android:gravity="center_vertical" />
-
-            <RadioGroup
-                android:id="@+id/post_drive_traffic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <RadioButton
-                    android:id="@+id/post_drive_traffic_light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/traffic_light" />
-
-                <RadioButton
-                    android:id="@+id/post_drive_traffic_medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/traffic_medium" />
-
-                <RadioButton
-                    android:id="@+id/post_drive_traffic_heavy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center"
-                    android:text="@string/traffic_heavy" />
-            </RadioGroup>
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <include layout="@layout/progress_overlay" />
 </FrameLayout>

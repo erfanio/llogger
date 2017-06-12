@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -103,6 +104,16 @@ public class PostDriveActivity extends AppCompatActivity {
                     default:
                         mDrive.setTraffic(Drive.Traffic.LIGHT);
                 }
+
+                // set parking and road type
+                mDrive.setParking(((CheckBox) findViewById(R.id.post_drive_parking)).isChecked());
+                mDrive.setRoadLocal(((CheckBox) findViewById(R.id.post_drive_parking)).isChecked());
+                mDrive.setRoadMain(((CheckBox) findViewById(R.id.post_drive_road_main)).isChecked());
+                mDrive.setRoadCity(((CheckBox) findViewById(R.id.post_drive_road_city)).isChecked());
+                mDrive.setRoadFreeway(((CheckBox) findViewById(R.id.post_drive_road_freeway)).isChecked());
+                mDrive.setRoadRuralHwy(((CheckBox) findViewById(R.id.post_drive_road_rural_hwy)).isChecked());
+                mDrive.setRoadRuralOther(((CheckBox) findViewById(R.id.post_drive_road_rural)).isChecked());
+                mDrive.setRoadGravel(((CheckBox) findViewById(R.id.post_drive_road_gravel)).isChecked());
 
                 // insert into the databse
                 DaoSession daoSession = ((App) getApplication()).getDaoSession();

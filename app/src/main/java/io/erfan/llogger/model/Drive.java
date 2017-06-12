@@ -35,6 +35,7 @@ public class Drive implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
     private Date time;
+    private Integer odometer;
     private Long dayDuration;
     private Long nightDuration;
     private Long distance;
@@ -56,6 +57,14 @@ public class Drive implements Parcelable {
     private Traffic traffic;
     @Convert(converter = WeatherConverter.class, columnType = String.class)
     private Weather weather;
+    private Boolean parking;
+    private Boolean roadLocal;
+    private Boolean roadMain;
+    private Boolean roadCity;
+    private Boolean roadFreeway;
+    private Boolean roadRuralHwy;
+    private Boolean roadRuralOther;
+    private Boolean roadGravel;
 
     public enum Light { DAY, DAWN_DUSK, NIGHT }
     public enum Traffic { LIGHT, MEDIUM, HEAVY }
@@ -207,6 +216,7 @@ public class Drive implements Parcelable {
     private Drive(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.time = (Date) in.readSerializable();
+        this.odometer = (Integer) in.readValue(Integer.class.getClassLoader());
         this.dayDuration = (Long) in.readValue(Long.class.getClassLoader());
         this.nightDuration = (Long) in.readValue(Long.class.getClassLoader());
         this.distance = (Long) in.readValue(Long.class.getClassLoader());
@@ -219,12 +229,21 @@ public class Drive implements Parcelable {
         this.light = (Light) in.readSerializable();
         this.traffic = (Traffic) in.readSerializable();
         this.weather = (Weather) in.readSerializable();
+        this.parking = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadLocal = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadMain = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadCity = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadFreeway = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadRuralHwy = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadRuralOther = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.roadGravel = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeSerializable(time);
+        dest.writeValue(odometer);
         dest.writeValue(dayDuration);
         dest.writeValue(nightDuration);
         dest.writeValue(distance);
@@ -236,17 +255,27 @@ public class Drive implements Parcelable {
         dest.writeSerializable(light);
         dest.writeSerializable(traffic);
         dest.writeSerializable(weather);
+        dest.writeValue(parking);
+        dest.writeValue(roadLocal);
+        dest.writeValue(roadMain);
+        dest.writeValue(roadCity);
+        dest.writeValue(roadFreeway);
+        dest.writeValue(roadRuralHwy);
+        dest.writeValue(roadRuralOther);
+        dest.writeValue(roadGravel);
     }
     //endregion
 
     //region greendao stuff
 
 
-    @Generated(hash = 650349961)
-    public Drive(Long id, Date time, Long dayDuration, Long nightDuration, Long distance, String location, List<String> path, Long driverId, Long carId, Long supervisorId,
-                 Light light, Traffic traffic, Weather weather) {
+    @Generated(hash = 1131592891)
+    public Drive(Long id, Date time, Integer odometer, Long dayDuration, Long nightDuration, Long distance, String location, List<String> path, Long driverId, Long carId,
+            Long supervisorId, Light light, Traffic traffic, Weather weather, Boolean parking, Boolean roadLocal, Boolean roadMain, Boolean roadCity, Boolean roadFreeway,
+            Boolean roadRuralHwy, Boolean roadRuralOther, Boolean roadGravel) {
         this.id = id;
         this.time = time;
+        this.odometer = odometer;
         this.dayDuration = dayDuration;
         this.nightDuration = nightDuration;
         this.distance = distance;
@@ -258,6 +287,14 @@ public class Drive implements Parcelable {
         this.light = light;
         this.traffic = traffic;
         this.weather = weather;
+        this.parking = parking;
+        this.roadLocal = roadLocal;
+        this.roadMain = roadMain;
+        this.roadCity = roadCity;
+        this.roadFreeway = roadFreeway;
+        this.roadRuralHwy = roadRuralHwy;
+        this.roadRuralOther = roadRuralOther;
+        this.roadGravel = roadGravel;
     }
 
     @Generated(hash = 1022087461)
@@ -502,6 +539,78 @@ public class Drive implements Parcelable {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public Boolean getParking() {
+        return this.parking;
+    }
+
+    public void setParking(Boolean parking) {
+        this.parking = parking;
+    }
+
+    public Boolean getRoadLocal() {
+        return this.roadLocal;
+    }
+
+    public void setRoadLocal(Boolean roadLocal) {
+        this.roadLocal = roadLocal;
+    }
+
+    public Boolean getRoadMain() {
+        return this.roadMain;
+    }
+
+    public void setRoadMain(Boolean roadMain) {
+        this.roadMain = roadMain;
+    }
+
+    public Boolean getRoadCity() {
+        return this.roadCity;
+    }
+
+    public void setRoadCity(Boolean roadCity) {
+        this.roadCity = roadCity;
+    }
+
+    public Boolean getRoadFreeway() {
+        return this.roadFreeway;
+    }
+
+    public void setRoadFreeway(Boolean roadFreeway) {
+        this.roadFreeway = roadFreeway;
+    }
+
+    public Boolean getRoadRuralHwy() {
+        return this.roadRuralHwy;
+    }
+
+    public void setRoadRuralHwy(Boolean roadRuralHwy) {
+        this.roadRuralHwy = roadRuralHwy;
+    }
+
+    public Boolean getRoadRuralOther() {
+        return this.roadRuralOther;
+    }
+
+    public void setRoadRuralOther(Boolean roadRuralOther) {
+        this.roadRuralOther = roadRuralOther;
+    }
+
+    public Boolean getRoadGravel() {
+        return this.roadGravel;
+    }
+
+    public void setRoadGravel(Boolean roadGravel) {
+        this.roadGravel = roadGravel;
+    }
+
+    public Integer getOdometer() {
+        return this.odometer;
+    }
+
+    public void setOdometer(Integer odometer) {
+        this.odometer = odometer;
     }
 
     /** called by internal mechanisms, do not call yourself. */

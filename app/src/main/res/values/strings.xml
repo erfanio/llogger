@@ -82,4 +82,13 @@
     <string name="progress_middle">Welcome back %1$s, looks like you\'ve been busy driving! Keep at it and you\'ll have your Ps in no time!</string>
     <string name="progress_end">Welcome back %1$s, looks like you\'re almost done! Just a bit more&#8230;!</string>
     <string name="progress_finish">Welcome back %1$s, looks like you\'re done! 🎉🎉🎉 (time to party!)</string>
+    <string name="parking">Parking</string>
+    <string name="road_types">Road Types</string>
+    <string name="road_local">Local St</string>
+    <string name="road_main">Main Rd</string>
+    <string name="road_city">Inner City</string>
+    <string name="road_freeway">Freeway</string>
+    <string name="road_rural_hwy">Rural Hwy</string>
+    <string name="road_rural_other">Rural Other</string>
+    <string name="road_gravel">Gravel</string>
 </resources>

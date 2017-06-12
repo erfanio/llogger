@@ -131,10 +131,17 @@ public class NewDriveActivity extends AppCompatActivity {
         Car car = mCars.get(mCar.getSelectedItemPosition());
         Supervisor supervisor = mSupervisors.get(mSupervisor.getSelectedItemPosition());
 
+        // convert odometer to int
+        String odometerString = ((TextInputLayout) findViewById(R.id.new_drive_odometer))
+                .getEditText().getText().toString();
+        int odometer = Integer.valueOf(odometerString);
+
         // set car and supervisor
         Drive drive = new Drive();
         drive.setCarId(car.getId());
         drive.setSupervisorId(supervisor.getId());
+        drive.setOdometer(odometer);
+
 
         // set driver as the current user
         Preference prefMan = new Preference(this);
