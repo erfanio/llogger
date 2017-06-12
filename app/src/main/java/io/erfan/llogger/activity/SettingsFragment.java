@@ -1,20 +1,34 @@
 package io.erfan.llogger.activity;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
+import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+    private static int WRITE_REQUEST;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -51,6 +65,121 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+        Preference save = findPreference("save");
+        save.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (!Settings.System.canWrite(getContext())) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_REQUEST);
+                } else {
+                    save();
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == WRITE_REQUEST) {
+            save();
+        }
+    }
+
+    private void save() {
+        // get the directory (or create it)
+        File directory = new File(Environment.getExternalStorageDirectory(), "LearnersLog");
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                Toast.makeText(getContext(), "Writing to file failed", Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+        }
+
+        File outputFile = new File(directory, "logs.csv");
+        try {
+            FileWriter writer = new FileWriter(outputFile);
+            writer.write(getCSV());
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Writing to file failed", Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+    private String getCSV() {
+        io.erfan.llogger.Preference prefMan = new io.erfan.llogger.Preference(getContext());
+        // get the list of drives that the current user has done
+        List<Drive> drives = ((App) getContext().getApplicationContext()).getDaoSession()
+                .getDriveDao().queryBuilder().where(DriveDao.Properties.DriverId.eq(prefMan.getUser()))
+                .list();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        String format = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n";
+        String out = "Date,Start Time,Finish Time,Total This Trip,Total Total,Night This Trip,Night Total," +
+                "Odometer Start,Odometer Finish,Car Rego,Parking,Traffic Light,Traffic Moderate,Traffic Heavy," +
+                "Weather Dry,Weather Wet,Road Local St,Road Main Rd,Road Inner City,Road Freeway,Road Rural Hwy," +
+                "Road Rural Other,Road Gravel,Light Day,Light Dawn/Dusk,Night,Supervisor Licence,Supervisor Name\n";
+
+        long total = 0;
+        long totalNight = 0;
+        for (Drive drive : drives) {
+            String date = dateFormat.format(drive.getTime());
+            String startTime = timeFormat.format(drive.getTime());
+
+            Calendar finishCal = Calendar.getInstance();
+            finishCal.setTime(drive.getTime());
+            finishCal.add(Calendar.SECOND, (drive.getDayDuration().intValue() + drive.getNightDuration().intValue()));
+            String finishTime = timeFormat.format(finishCal.getTime());
+
+            total += drive.getDayDuration() + drive.getNightDuration();
+            String totalDuration = drive.getFormattedDuration();
+            String totalTotalDuration = Utils.formatDuration(total);
+
+            totalNight += drive.getNightDuration();
+            String nightDuration = Utils.formatDuration(drive.getNightDuration());
+            String nightTotalDuration = Utils.formatDuration(totalNight);
+
+            String odometerStart = drive.getOdometer().toString();
+            // start + distance in KM
+            String odometerEnd = String.valueOf(drive.getOdometer() + (drive.getDistance() / 1000));
+
+            String rego = drive.getCar().getPlateNo();
+
+            String parking = (drive.getParking()) ? "Yes" : "No";
+            String trafficLight = (drive.getTraffic() == Drive.Traffic.LIGHT) ? "Yes" : "No";
+            String trafficMedium = (drive.getTraffic() == Drive.Traffic.MEDIUM) ? "Yes" : "No";
+            String trafficHeavy = (drive.getTraffic() == Drive.Traffic.HEAVY) ? "Yes" : "No";
+            String weatherDry = (drive.getWeather() == Drive.Weather.DRY) ? "Yes" : "No";
+            String weatherWet = (drive.getWeather() == Drive.Weather.WET) ? "Yes" : "No";
+            String roadLocal = (drive.getRoadLocal()) ? "Yes" : "No";
+            String roadMain = (drive.getRoadMain()) ? "Yes" : "No";
+            String roadCity = (drive.getRoadCity()) ? "Yes" : "No";
+            String roadFreeway = (drive.getRoadFreeway()) ? "Yes" : "No";
+            String roadRuralHwy = (drive.getRoadRuralHwy()) ? "Yes" : "No";
+            String roadRuralOther = (drive.getRoadRuralOther()) ? "Yes" : "No";
+            String roadGravel = (drive.getRoadGravel()) ? "Yes" : "No";
+            String lightDay = (drive.getLight() == Drive.Light.DAY) ? "Yes" : "No";
+            String lightDawnDusk = (drive.getLight() == Drive.Light.DAWN_DUSK) ? "Yes" : "No";
+            String lightNight = (drive.getLight() == Drive.Light.NIGHT) ? "Yes" : "No";
+
+            String supervisorLicence = drive.getSupervisor().getLicenceNo();
+            String supervisor = drive.getSupervisor().getName();
+
+            out += String.format(format, date, startTime, finishTime, totalDuration, totalTotalDuration,
+                    nightDuration, nightTotalDuration, odometerStart, odometerEnd, rego, parking, trafficLight,
+                    trafficMedium, trafficHeavy, weatherDry, weatherWet, roadLocal, roadMain, roadCity,
+                    roadFreeway, roadRuralHwy, roadRuralOther, roadGravel, lightDay, lightDawnDusk, lightNight,
+                    supervisorLicence, supervisor);
+        }
+
+        return out;
     }
 
     private static Long mSupervisorId;
@@ -71,6 +200,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
         drive.setCarId(mCarId);
         drive.setTime(Calendar.getInstance().getTime());
+        drive.setOdometer(1324);
         drive.setLocation("Clayton");
         List<String> paths = new ArrayList<>();
         paths.add("|xoeFitrtZOE?BGDEJEL?PERCPCRELBLDHHDH?NGNIRKPKPKNININGNGPKNINGJIFCDC@A@?@??????A?????A????@??A??????????");
@@ -83,6 +213,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         drive.setLight(Drive.Light.NIGHT);
         drive.setTraffic(Drive.Traffic.LIGHT);
         drive.setWeather(Drive.Weather.DRY);
+        drive.setParking(true);
+        drive.setRoadLocal(false);
+        drive.setRoadMain(false);
+        drive.setRoadCity(false);
+        drive.setRoadFreeway(false);
+        drive.setRoadRuralHwy(false);
+        drive.setRoadRuralOther(false);
+        drive.setRoadGravel(false);
 
         // insert into database
         DriveDao driveDao = daoSession.getDriveDao();

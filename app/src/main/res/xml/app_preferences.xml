@@ -2,6 +2,11 @@
 <android.support.v7.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <Preference
+        android:title="Save CSV"
+        android:key="save"
+        android:summary="Save a CSV to SD/LearnersLog/logs.csv"/>
+
     <android.support.v7.preference.PreferenceCategory
         android:title="Debug">
 
