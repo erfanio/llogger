@@ -49,6 +49,7 @@
     <string name="daylight">Daylight</string>
     <string name="weather">Weather</string>
     <string name="traffic">Traffic</string>
+    <string name="hours">Hours</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>

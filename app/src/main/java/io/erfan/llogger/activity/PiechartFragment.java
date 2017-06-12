@@ -63,10 +63,12 @@ public class PiechartFragment extends Fragment {
     }
 
     private SpannableString generateCenterText() {
-        String totalHoursString = String.valueOf(StatsUtils.getTotalHours(getContext()));
-        int totalHoursLen = totalHoursString.length();
+        // get the total hours (and calculate its length)
+        String totalHours = String.valueOf(StatsUtils.getTotalHours(getContext()));
+        int totalHoursLen = totalHours.length();
 
-        SpannableString s = new SpannableString(String.format("%s\nTotal Hours", totalHoursString));
+        // create a spannable text where the hours is three times bigger than the rest of the text
+        SpannableString s = new SpannableString(String.format("%s\nTotal Hours", totalHours));
         s.setSpan(new RelativeSizeSpan(3f), 0, totalHoursLen, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), totalHoursLen, s.length(), 0);
         return s;
@@ -76,12 +78,18 @@ public class PiechartFragment extends Fragment {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         ArrayMap<String, Float> data = StatsUtils.getData(getContext());
-        for (String key : data.keySet()) {
-            entries.add(new PieEntry(data.get(key), key));
-        }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Hours");
+        // add entries in order (day then night)
+        entries.add(new PieEntry(data.get(StatsUtils.DAY), R.string.day));
+        entries.add(new PieEntry(data.get(StatsUtils.NIGHT), R.string.night));
+
+
+        // construct the data set from the data
+        PieDataSet dataSet = new PieDataSet(entries, getString(R.string.hours));
+        // first color for day, second for night
         dataSet.setColors(Color.parseColor("#42A5F5"), Color.parseColor("#0D47A1"));
+
+        // formatting
         dataSet.setSliceSpace(2f);
         dataSet.setValueTextColor(mChartTextColor);
         dataSet.setValueTextSize(12f);

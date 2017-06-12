@@ -10,6 +10,9 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class StatsUtils {
+    public static String DAY = "day";
+    public static String NIGHT = "night";
+
     private static ArrayMap<String, Float> mData;
     private static long mDriverId;
     private static int mEntriesCount;
@@ -49,8 +52,8 @@ public class StatsUtils {
 
         mData = new ArrayMap<>();
         // construct the data (convert second to hour)
-        mData.put(context.getString(R.string.day), (float) day / 3600);
-        mData.put(context.getString(R.string.night), (float) night / 3600);
+        mData.put(DAY, (float) day / 3600);
+        mData.put(NIGHT, (float) night / 3600);
     }
 
     public static ArrayMap<String, Float> getData(Context context) {
