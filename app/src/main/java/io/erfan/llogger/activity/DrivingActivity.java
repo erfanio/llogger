@@ -110,8 +110,10 @@ public class DrivingActivity extends AppCompatActivity {
                 mDrive.setLocation("Clayton");
                 mDrive.setPath(mPaths);
                 mDrive.setDistance(mPathDistance);
+                // set both, later will set one to 0
                 mDrive.setDayDuration(mElapsed);
-                mDrive.setNightDuration(0L);
+                mDrive.setNightDuration(mElapsed);
+
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
                 intent.putExtra("Drive", mDrive);
                 startActivity(intent);

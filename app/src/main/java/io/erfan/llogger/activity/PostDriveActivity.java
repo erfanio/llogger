@@ -61,14 +61,17 @@ public class PostDriveActivity extends AppCompatActivity {
                 switch (((RadioGroup) findViewById(R.id.post_drive_light)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_light_day:
                         mDrive.setLight(Drive.Light.DAY);
+                        mDrive.setNightDuration(0L);
                         break;
 
                     case R.id.post_drive_light_night:
                         mDrive.setLight(Drive.Light.NIGHT);
+                        mDrive.setDayDuration(0L);
                         break;
 
                     default:
                         mDrive.setLight(Drive.Light.DAY);
+                        mDrive.setNightDuration(0L);
                 }
 
                 switch (((RadioGroup) findViewById(R.id.post_drive_weather)).getCheckedRadioButtonId()) {
