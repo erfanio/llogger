@@ -36,7 +36,7 @@ public class HistoryFragment extends Fragment {
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         DriveDao driveDao = daoSession.getDriveDao();
         // get the list of drives
-        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.CarId.eq(driverId))
+        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.DriverId.eq(driverId))
                 .orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 

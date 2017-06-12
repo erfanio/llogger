@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         DriveDao driveDao = daoSession.getDriveDao();
         // prepare the query to get drives
-        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.CarId.eq(driverId))
+        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.DriverId.eq(driverId))
                 .orderDesc(DriveDao.Properties.Time).limit(4).build();
         mDrives = mQuery.list();
         mViewHolders = new ArrayList<>();
