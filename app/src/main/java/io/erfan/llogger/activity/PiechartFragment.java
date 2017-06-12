@@ -17,15 +17,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import io.erfan.llogger.App;
-import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.R;
 import io.erfan.llogger.StatsUtils;
-import io.erfan.llogger.model.DaoSession;
-import io.erfan.llogger.model.Drive;
-import io.erfan.llogger.model.DriveDao;
 
 public class PiechartFragment extends Fragment {
     // these will be used to cache (close enough) the data so we don't hit the database everytime
@@ -87,7 +81,7 @@ public class PiechartFragment extends Fragment {
         // construct the data set from the data
         PieDataSet dataSet = new PieDataSet(entries, getString(R.string.hours));
         // first color for day, second for night
-        dataSet.setColors(Color.parseColor("#42A5F5"), Color.parseColor("#0D47A1"));
+        dataSet.setColors(getContext().getColor(R.color.day), getContext().getColor(R.color.night));
 
         // formatting
         dataSet.setSliceSpace(2f);

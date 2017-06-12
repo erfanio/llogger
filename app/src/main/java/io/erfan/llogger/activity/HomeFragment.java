@@ -19,6 +19,7 @@ import java.util.List;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.PreferenceManager;
+import io.erfan.llogger.activity.welcome.ProgressFragment;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.R;
@@ -34,10 +35,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // setup the piechart
+        // setup fragments
         FragmentManager fragmentManager = getChildFragmentManager();
+        // piechart
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.home_pie_chart, new PiechartFragment());
+        ft.commit();
+        // progress
+        ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.home_progress, new ProgressFragment());
         ft.commit();
 
         // get driver ID

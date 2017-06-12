@@ -8,15 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,7 +80,6 @@ public class DrivingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.driving_toolbar);
         setSupportActionBar(toolbar);
 
-        Log.d(TAG, "OnCreate called");
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra("Drive");
         mDrive.setTime(Calendar.getInstance().getTime());
@@ -146,7 +142,6 @@ public class DrivingActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.d(TAG, "New Intent");
         if (intent.getAction().equals(NOTIFICATION_PAUSE)) {
             pause();
         } else if (intent.getAction().equals(NOTIFICATION_RESUME)) {
@@ -170,7 +165,7 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,  int[] grantResults) {
         if (requestCode == App.LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mGoogleApiClient.connect();
@@ -187,7 +182,7 @@ public class DrivingActivity extends AppCompatActivity {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
-                    public void onConnected(@Nullable Bundle bundle) {
+                    public void onConnected(Bundle bundle) {
 
                         // check for permissions
                         if (ActivityCompat.checkSelfPermission(DrivingActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -229,14 +224,12 @@ public class DrivingActivity extends AppCompatActivity {
 
                     @Override
                     public void onConnectionSuspended(int i) {
-                        Log.i(TAG, "Connection Suspended");
                         mTimer.cancel();
                     }
                 })
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.i(TAG, "Connection failed. Error: " + connectionResult.getErrorCode());
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
                     }
                 })
                 .addApi(LocationServices.API)
@@ -244,7 +237,6 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     private void setupTimer() {
-        Log.d(TAG, "SETUP TIMER");
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -253,8 +245,8 @@ public class DrivingActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mElapsed++;
+//                        mElapsed *= 2;
                         mDuration.setText(formatDuration(mElapsed));
-                        Log.d(TAG, String.valueOf(mPaused));
                     }
                 });
             }

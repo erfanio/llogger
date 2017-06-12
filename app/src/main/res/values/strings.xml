@@ -70,5 +70,12 @@
     <string name="new_drive_enter_details">Enter Drive Details</string>
     <string name="choose_car">Choose your car</string>
     <string name="choose_supervisor">Choose your supervisor</string>
+    <string name="progress">Progress</string>
+    <string name="total_progress">Total Progress</string>
+    <string name="night_progress">Night Progress</string>
 
+    <string name="progress_begin">Welcome %1$s, looks like you\'re just starting out!</string>
+    <string name="progress_middle">Welcome back %1$s, looks like you\'ve been busy driving! Keep at it and you\'ll have your Ps in no time!</string>
+    <string name="progress_end">Welcome back %1$s, looks like you\'re almost done! Just a bit more&#8230;!</string>
+    <string name="progress_finish">Welcome back %1$s, looks like you\'re done! 🎉🎉🎉 (time to party!)</string>
 </resources>
