@@ -3,29 +3,35 @@ package io.erfan.llogger.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.gson.Gson;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.DriveConditions;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class PostDriveActivity extends AppCompatActivity {
-
+    private FrameLayout mProgressBarHolder;
     private Drive mDrive;
 
     @Override
@@ -101,23 +107,76 @@ public class PostDriveActivity extends AppCompatActivity {
         });
 
         // show loading
-        final FrameLayout progressBarHolder = (FrameLayout) findViewById(R.id.progress_overlay);
-        progressBarHolder.setVisibility(View.VISIBLE);
+        mProgressBarHolder = (FrameLayout) findViewById(R.id.progress_overlay);
+        mProgressBarHolder.setVisibility(View.VISIBLE);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                progressBarHolder.animate().setDuration(200).alpha(0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            progressBarHolder.setVisibility(View.GONE);
-                        }
-                    });
+//                try {
+//                    URL driveCondition = new URL("https://llogger.erfan.space/drive_conditions?lat=0&lng=0");
+//                    HttpsURLConnection restCall = (HttpsURLConnection) driveCondition.openConnection();
+//
+//                } catch (Exception e) {
+//                    hideOverlay();
+//                    return;
+//                }
+                OkHttpClient client = new OkHttpClient();
+
+                Request request = new Request.Builder()
+                        .url("https://llogger.erfan.space/drive_conditions?lat=0&lng=0")
+                        .header("User-Agent", "OkHttp Headers.java")
+                        .addHeader("Accept", "application/json; q=0.5")
+                        .get()
+                        .build();
+
+
+                try {
+                    Response response = client.newCall(request).execute();
+
+                    if (!response.isSuccessful()) {
+                        throw new Exception();
+                    }
+
+                    Gson gson = new Gson();
+                    DriveConditions driveConditions = gson
+                            .fromJson(response.body().charStream(), DriveConditions.class);
+
+                    setupDriveConditions(driveConditions);
+
+                } catch (Exception e) {
+                    Log.d("TAG", e.getStackTrace().toString());
+                }
+                hideOverlay();
             }
-        }, 10000);
+        });
+    }
+
+    public void setupDriveConditions(DriveConditions driveConditions) {
+        // set weather condition
+        if (driveConditions.getWet()) {
+            ((RadioButton) findViewById(R.id.post_drive_weather_wet)).setChecked(true);
+        } else {
+            ((RadioButton) findViewById(R.id.post_drive_weather_dry)).setChecked(true);
+        }
+
+        // set light
+        if (driveConditions.getLight().equals("day")) {
+            ((RadioButton) findViewById(R.id.post_drive_light_day)).setChecked(true);
+        } else {
+            ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
+        }
+    }
+
+    public void hideOverlay() {
+        mProgressBarHolder.animate().setDuration(200).alpha(0f)
+            .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mProgressBarHolder.setVisibility(View.GONE);
+                }
+            });
     }
 
     @Override

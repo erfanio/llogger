@@ -43,4 +43,5 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
 }
