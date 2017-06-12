@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.PreferenceManager;
+import io.erfan.llogger.Preference;
 import io.erfan.llogger.R;
 import io.erfan.llogger.StatsUtils;
 import io.erfan.llogger.model.Driver;
@@ -27,7 +27,7 @@ public class ProgressFragment extends Fragment {
         RoundCornerProgressBar nightProgress = (RoundCornerProgressBar) view.findViewById(R.id.progress_night);
 
         // load the current user
-        PreferenceManager prefMan = new PreferenceManager(getContext());
+        Preference prefMan = new Preference(getContext());
         Driver driver = ((App) getActivity().getApplication())
                 .getDaoSession().getDriverDao().load(prefMan.getUser());
 

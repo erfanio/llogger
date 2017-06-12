@@ -1,7 +1,6 @@
 package io.erfan.llogger.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -14,13 +13,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.PreferenceManager;
+import io.erfan.llogger.Preference;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.Car;
 import io.erfan.llogger.model.CarDao;
@@ -139,7 +137,7 @@ public class NewDriveActivity extends AppCompatActivity {
         drive.setSupervisorId(supervisor.getId());
 
         // set driver as the current user
-        PreferenceManager prefMan = new PreferenceManager(this);
+        Preference prefMan = new Preference(this);
         drive.setDriverId(prefMan.getUser());
 
         intent.putExtra("Drive", drive);

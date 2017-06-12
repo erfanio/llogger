@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.PreferenceManager;
+import io.erfan.llogger.Preference;
 import io.erfan.llogger.activity.welcome.ProgressFragment;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.DriveDao;
@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
         ft.commit();
 
         // get driver ID
-        PreferenceManager prefMan = new PreferenceManager(view.getContext());
+        Preference prefMan = new Preference(view.getContext());
         Long driverId = prefMan.getUser();
 
         // get the drive DAO

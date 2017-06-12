@@ -3,7 +3,6 @@ package io.erfan.llogger.activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +18,9 @@ import org.greenrobot.greendao.query.Query;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.PreferenceManager;
+import io.erfan.llogger.Preference;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
-import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.model.Driver;
 import io.erfan.llogger.model.DriverDao;
 
@@ -40,7 +38,7 @@ public class RootActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // check if this is the first launching the app
-        PreferenceManager prefMan = new PreferenceManager(this);
+        Preference prefMan = new Preference(this);
         if (prefMan.isFirstLaunch()) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -79,32 +77,41 @@ public class RootActivity extends AppCompatActivity {
             }
         });
 
-        // get a list of mDrivers
+        // connect to database
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         DriverDao driverDao = daoSession.getDriverDao();
-        mQuery = driverDao.queryBuilder().where(DriverDao.Properties.Id.notEq(prefMan.getUser())).build();
-        mDrivers = mQuery.list();
 
         if (prefMan.getUser() == null) {
+            Long driverId;
+
             // realistically this should never happen (since they are required to create a
             // driver in the welcome screen) but just in case
-            if (mDrivers.isEmpty()) {
+            if (driverDao.count() == 0) {
                 // create a driver so we have a driver to work with
                 Driver driver = new Driver();
                 driver.setName("Default");
                 driverDao.insert(driver);
 
-                mDrivers = driverDao.loadAll();
+                // make this the current user
+                driverId = driverDao.getKey(driver);
 
                 Toast.makeText(this,
                         "A default driver has been created",
                         Toast.LENGTH_LONG).show();
+            } else {
+                // choose the first driver from the database
+                List<Driver> drivers = driverDao.queryBuilder().limit(1).list();
+                driverId = driverDao.getKey(drivers.get(0));
             }
 
             // default the current user to the first user in the database
-            Long firstID = driverDao.getKey(mDrivers.get(0));
+            Long firstID = driverId;
             prefMan.setUser(firstID);
         }
+
+        // get a list of non active drivers
+        mQuery = driverDao.queryBuilder().where(DriverDao.Properties.Id.notEq(prefMan.getUser())).build();
+        mDrivers = mQuery.list();
 
         // test only
         Driver driver = driverDao.load(prefMan.getUser());
@@ -143,7 +150,8 @@ public class RootActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
 
             case R.id.action_edit_assets:
@@ -154,7 +162,7 @@ public class RootActivity extends AppCompatActivity {
 
         if (id < mDrivers.size()) {
             // setup context
-            PreferenceManager prefMan = new PreferenceManager(this);
+            Preference prefMan = new Preference(this);
             DaoSession daoSession = ((App) getApplication()).getDaoSession();
             DriverDao driverDao = daoSession.getDriverDao();
 
@@ -203,6 +211,8 @@ public class RootActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // update the list of drivers
-        mDrivers = mQuery.list();
+        if (mQuery != null) {
+            mDrivers = mQuery.list();
+        }
     }
 }

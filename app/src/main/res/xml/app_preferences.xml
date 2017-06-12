@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="Debug">
+
+        <Preference
+            android:title="Add a 20min log"
+            android:key="one"
+            android:summary="This is will add a 22min log for testing purposes"/>
+
+        <Preference
+            android:title="Add 10 x 20min logs"
+            android:key="ten"
+            android:summary="This is will add 10 x 22min (about 4 hours) logs for testing purposes"/>
+
+        <Preference
+            android:title="Add 30 x 20min logs"
+            android:key="thirty"
+            android:summary="This is will add 30 x 22min (about 11 hours) logs for testing purposes"/>
+
+    </android.support.v7.preference.PreferenceCategory>
+</android.support.v7.preference.PreferenceScreen>

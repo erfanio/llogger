@@ -2,28 +2,25 @@ package io.erfan.llogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-public class PreferenceManager {
+public class Preference {
     private SharedPreferences mPreferences;
-    private SharedPreferences.Editor mEditor;
-
-    // shared pref mode
-    private static final String PREF_NAME = "llogger.erfan.io";
 
     // pref names
     private static final String FIRST_LAUNCH = "firstLaunch";
     private static final String CURR_USER = "currentUser";
 
-    public PreferenceManager(Context context) {
-        mPreferences = context.getSharedPreferences(PREF_NAME, 0);
-        mEditor = mPreferences.edit();
+    public Preference(Context context) {
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     // make Long out of long (store null as -1)
     private void setLong(String key, Long origValue) {
         long value = origValue == null ? -1 : origValue;
-        mEditor.putLong(CURR_USER, value);
-        mEditor.commit();
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putLong(CURR_USER, value);
+        editor.apply();
     }
     private Long getLong(String key) {
         long value = mPreferences.getLong(CURR_USER, -1);
@@ -31,8 +28,9 @@ public class PreferenceManager {
     }
 
     public void setFirstLaunch(boolean isFirstLaunch) {
-        mEditor.putBoolean(FIRST_LAUNCH, isFirstLaunch);
-        mEditor.commit();
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(FIRST_LAUNCH, isFirstLaunch);
+        editor.apply();
     }
     public boolean isFirstLaunch() {
         return mPreferences.getBoolean(FIRST_LAUNCH, true);

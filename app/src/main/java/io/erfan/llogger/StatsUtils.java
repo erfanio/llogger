@@ -20,7 +20,7 @@ public class StatsUtils {
 
     private static void updateData(Context context) {
         // get driver ID
-        PreferenceManager prefMan = new PreferenceManager(context);
+        Preference prefMan = new Preference(context);
         Long driverId = prefMan.getUser();
 
         // get the drive DAO
