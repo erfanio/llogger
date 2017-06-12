@@ -99,12 +99,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         }
 
-        File outputFile = new File(directory, "logs.csv");
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH);
+        File outputFile = new File(directory, String.format("logs-%s.csv", dateFormat.format(Calendar.getInstance().getTime())));
         try {
             FileWriter writer = new FileWriter(outputFile);
             writer.write(getCSV());
             writer.flush();
             writer.close();
+            Toast.makeText(getContext(),
+                    String.format("Logs have been saved to %s", outputFile.getAbsolutePath()), Toast.LENGTH_LONG)
+                    .show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Writing to file failed", Toast.LENGTH_LONG)
