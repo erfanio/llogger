@@ -35,6 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@color/cardview_light_background"
+        app:elevation="16dp"
         app:itemTextColor="@color/bottom_nav_item_foreground"
         app:itemIconTint="@color/bottom_nav_item_foreground"
         app:menu="@menu/root_bottom_nav" />

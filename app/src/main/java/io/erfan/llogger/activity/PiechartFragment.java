@@ -74,8 +74,8 @@ public class PiechartFragment extends Fragment {
         ArrayMap<String, Float> data = StatsUtils.getData(getContext());
 
         // add entries in order (day then night)
-        entries.add(new PieEntry(data.get(StatsUtils.DAY), R.string.day));
-        entries.add(new PieEntry(data.get(StatsUtils.NIGHT), R.string.night));
+        entries.add(new PieEntry(data.get(StatsUtils.DAY), getString(R.string.day)));
+        entries.add(new PieEntry(data.get(StatsUtils.NIGHT), getString(R.string.night)));
 
 
         // construct the data set from the data
