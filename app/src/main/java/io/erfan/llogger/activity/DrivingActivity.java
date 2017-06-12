@@ -263,7 +263,7 @@ public class DrivingActivity extends AppCompatActivity {
 
     private void setupNotification() {
         mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
+        mBuilder.setSmallIcon(R.drawable.ic_menu_drive);
         mBuilder.setContentTitle("Learners Digital Logbook");
         mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
