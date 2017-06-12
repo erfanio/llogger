@@ -13,6 +13,7 @@ import org.greenrobot.greendao.query.Query;
 import java.util.List;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.recycleradapters.DriveRecyclerViewAdapter;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
@@ -27,11 +28,16 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler_list, container, false);
 
+        // get driver ID
+        PreferenceManager prefMan = new PreferenceManager(view.getContext());
+        Long driverId = prefMan.getUser();
+
         // get the drive DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         DriveDao driveDao = daoSession.getDriveDao();
         // get the list of drives
-        mQuery = driveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).limit(2).build();
+        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.CarId.eq(driverId))
+                .orderDesc(DriveDao.Properties.Time).build();
         List<Drive> drives = mQuery.list();
 
         // setup recycler adapter with a list of driver (maybe limited to a number in getDrives)

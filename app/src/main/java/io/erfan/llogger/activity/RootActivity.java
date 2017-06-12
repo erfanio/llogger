@@ -192,4 +192,11 @@ public class RootActivity extends AppCompatActivity {
     private void switchFragment(Pages fragment) {
         switchFragment(fragment, false);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // update the list of drivers
+        mDrivers = ((App) getApplication()).getDaoSession().getDriverDao().loadAll();
+    }
 }

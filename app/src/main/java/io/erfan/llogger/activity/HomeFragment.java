@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.PreferenceManager;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.R;
@@ -39,11 +40,16 @@ public class HomeFragment extends Fragment {
         ft.replace(R.id.home_pie_chart, new PiechartFragment());
         ft.commit();
 
+        // get driver ID
+        PreferenceManager prefMan = new PreferenceManager(view.getContext());
+        Long driverId = prefMan.getUser();
+
         // get the drive DAO
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
         DriveDao driveDao = daoSession.getDriveDao();
         // prepare the query to get drives
-        mQuery = driveDao.queryBuilder().orderDesc(DriveDao.Properties.Time).limit(4).build();
+        mQuery = driveDao.queryBuilder().where(DriveDao.Properties.CarId.eq(driverId))
+                .orderDesc(DriveDao.Properties.Time).limit(4).build();
         mDrives = mQuery.list();
         mViewHolders = new ArrayList<>();
 
