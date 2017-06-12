@@ -56,7 +56,7 @@ public class DriveDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        mDrive = driveDao.load(driveId);
+        mDrive = driveDao.loadDeep(driveId);
 
         mViewDuration.setText(mDrive.getFormattedDuration());
         mViewDistance.setText(mDrive.getFormattedDistance());
