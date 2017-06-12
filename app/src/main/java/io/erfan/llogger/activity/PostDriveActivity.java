@@ -1,15 +1,22 @@
 package io.erfan.llogger.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.R;
@@ -18,9 +25,6 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class PostDriveActivity extends AppCompatActivity {
-    private FloatingActionButton mFab;
-    private TextView mDuration;
-    private TextView mDistance;
 
     private Drive mDrive;
 
@@ -34,13 +38,13 @@ public class PostDriveActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra("Drive");
 
-        mDuration = (TextView) findViewById(R.id.post_drive_duration);
+        TextView mDuration = (TextView) findViewById(R.id.post_drive_duration);
         mDuration.setText(mDrive.getFormattedDuration());
 
-        mDistance = (TextView) findViewById(R.id.post_drive_distance);
+        TextView mDistance = (TextView) findViewById(R.id.post_drive_distance);
         mDistance.setText(mDrive.getFormattedDistance());
 
-        mFab = (FloatingActionButton) findViewById(R.id.post_drive_fab);
+        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.post_drive_fab);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +99,25 @@ public class PostDriveActivity extends AppCompatActivity {
                 goHome();
             }
         });
+
+        // show loading
+        final FrameLayout progressBarHolder = (FrameLayout) findViewById(R.id.progress_overlay);
+        progressBarHolder.setVisibility(View.VISIBLE);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                progressBarHolder.animate().setDuration(200).alpha(0f)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            progressBarHolder.setVisibility(View.GONE);
+                        }
+                    });
+            }
+        }, 10000);
     }
 
     @Override
@@ -110,6 +133,18 @@ public class PostDriveActivity extends AppCompatActivity {
                 goHome();
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Snackbar.make(this.findViewById(android.R.id.content), "Do you really want to exit?", Snackbar.LENGTH_LONG)
+                .setAction("Exit", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goHome();
+                    }
+                })
+                .show();
     }
 
     private void goHome() {
