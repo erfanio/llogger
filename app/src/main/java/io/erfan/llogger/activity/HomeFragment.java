@@ -30,6 +30,8 @@ public class HomeFragment extends Fragment {
     List<Drive> mDrives;
     List<ViewHolder> mViewHolders;
 
+    CardView mLoadMore;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -44,6 +46,24 @@ public class HomeFragment extends Fragment {
         ft = fragmentManager.beginTransaction();
         ft.replace(R.id.home_progress, new ProgressFragment());
         ft.commit();
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.new_drive_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), NewDriveActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mLoadMore = (CardView) view.findViewById(R.id.main_load_more);
+        mLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RootActivity) getActivity()).switchFragment(RootActivity.Pages.HISTORY, true);
+            }
+        });
+
 
         // get driver ID
         Preference prefMan = new Preference(view.getContext());
@@ -62,23 +82,6 @@ public class HomeFragment extends Fragment {
         inflateList(mDrives.size(), view);
         bindList();
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.new_drive_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), NewDriveActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        CardView loadMore = (CardView) view.findViewById(R.id.main_load_more);
-        loadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((RootActivity) getActivity()).switchFragment(RootActivity.Pages.HISTORY, true);
-            }
-        });
-
         return view;
     }
 
@@ -89,6 +92,9 @@ public class HomeFragment extends Fragment {
             View listItem = LayoutInflater.from(getActivity()).inflate(R.layout.list_item_drive, historyList, false);
             mViewHolders.add(new ViewHolder(listItem));
             historyList.addView(listItem);
+        }
+        if (!mViewHolders.isEmpty()) {
+            mLoadMore.setVisibility(View.VISIBLE);
         }
     }
 

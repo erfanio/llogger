@@ -26,6 +26,7 @@
 
     <string name="home_stats">Stats</string>
     <string name="home_recent_drives">Recent Drives</string>
+    <string name="home_no_drives">You do not have any drives!</string>
 
     <string name="stats_day_night">Day/Night breakdown</string>
 

@@ -134,7 +134,10 @@ public class NewDriveActivity extends AppCompatActivity {
         // convert odometer to int
         String odometerString = ((TextInputLayout) findViewById(R.id.new_drive_odometer))
                 .getEditText().getText().toString();
-        int odometer = Integer.valueOf(odometerString);
+        int odometer = 0;
+        if (!odometerString.isEmpty()) {
+            Integer.valueOf(odometerString);
+        }
 
         // set car and supervisor
         Drive drive = new Drive();

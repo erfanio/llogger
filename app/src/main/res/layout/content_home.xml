@@ -81,6 +81,15 @@
                     android:text="@string/home_recent_drives"
                     android:textAppearance="@style/text_item" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/home_no_drives"
+                    android:textAppearance="@style/text_item_label" />
+
                 <LinearLayout
                     android:id="@+id/main_history_list"
                     android:layout_width="match_parent"
@@ -95,6 +104,7 @@
                     android:id="@+id/main_load_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     app:cardElevation="0dp"

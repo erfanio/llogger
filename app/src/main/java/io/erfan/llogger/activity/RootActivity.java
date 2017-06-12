@@ -76,12 +76,13 @@ public class RootActivity extends AppCompatActivity {
                 return true;
             }
         });
+        mNavigation.setSelectedItemId(R.id.nav_home);
 
         // connect to database
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
         DriverDao driverDao = daoSession.getDriverDao();
 
-        if (prefMan.getUser() == null) {
+        if (prefMan.getUser() == null || driverDao.count() == 0) {
             Long driverId;
 
             // realistically this should never happen (since they are required to create a
@@ -111,13 +112,15 @@ public class RootActivity extends AppCompatActivity {
 
         // get a list of non active drivers
         mQuery = driverDao.queryBuilder().where(DriverDao.Properties.Id.notEq(prefMan.getUser())).build();
-        mDrivers = mQuery.list();
+    }
 
-        // test only
-        Driver driver = driverDao.load(prefMan.getUser());
-        Toast.makeText(this, String.format("Logged in as %s", driver.getName()),
-                Toast.LENGTH_SHORT).show();
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // update the list of drivers
+        if (mQuery != null) {
+            mDrivers = mQuery.list();
+        }
     }
 
     @Override
@@ -130,6 +133,7 @@ public class RootActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // add driver options
         if (!mDrivers.isEmpty()) {
+            menu.findItem(R.id.action_change_driver).setVisible(true);
             SubMenu subMenu = menu.findItem(R.id.action_change_driver).getSubMenu();
             subMenu.clear();
 
@@ -139,6 +143,8 @@ public class RootActivity extends AppCompatActivity {
                 // add a menu item and advance id by one
                 subMenu.add(Menu.NONE, id++, Menu.NONE, driver.getName());
             }
+        } else {
+            menu.findItem(R.id.action_change_driver).setVisible(false);
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -205,14 +211,5 @@ public class RootActivity extends AppCompatActivity {
     }
     private void switchFragment(Pages fragment) {
         switchFragment(fragment, false);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // update the list of drivers
-        if (mQuery != null) {
-            mDrivers = mQuery.list();
-        }
     }
 }
