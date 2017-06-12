@@ -1,4 +1,4 @@
-package io.erfan.llogger.activity.welcome;
+package io.erfan.llogger.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,7 +48,7 @@ public class ProgressFragment extends Fragment {
             progressText.setText(getString(R.string.progress_begin, driver.getName()));
         } else if (totalHours < 100) {
             progressText.setText(getString(R.string.progress_middle, driver.getName()));
-        } else if (totalHours < 120) {
+        } else if (totalHours < 120 || nightPercent < 100) {
             progressText.setText(getString(R.string.progress_end, driver.getName()));
         } else {
             progressText.setText(getString(R.string.progress_finish, driver.getName()));

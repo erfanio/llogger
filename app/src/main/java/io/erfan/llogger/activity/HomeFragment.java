@@ -19,7 +19,6 @@ import java.util.List;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.Preference;
-import io.erfan.llogger.activity.welcome.ProgressFragment;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.DriveDao;
 import io.erfan.llogger.R;
