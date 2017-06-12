@@ -64,6 +64,11 @@ public class PostDriveActivity extends AppCompatActivity {
                         mDrive.setNightDuration(0L);
                         break;
 
+                    case R.id.post_drive_light_dawn_dusk:
+                        mDrive.setLight(Drive.Light.DAWN_DUSK);
+                        mDrive.setNightDuration(0L);
+                        break;
+
                     case R.id.post_drive_light_night:
                         mDrive.setLight(Drive.Light.NIGHT);
                         mDrive.setDayDuration(0L);
@@ -166,6 +171,8 @@ public class PostDriveActivity extends AppCompatActivity {
         // set light
         if (driveConditions.getLight().equals("day")) {
             ((RadioButton) findViewById(R.id.post_drive_light_day)).setChecked(true);
+        } else if (driveConditions.getLight().equals("dawn/dusk")) {
+            ((RadioButton) findViewById(R.id.post_drive_light_dawn_dusk)).setChecked(true);
         } else {
             ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
         }

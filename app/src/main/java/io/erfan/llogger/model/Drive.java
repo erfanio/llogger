@@ -57,7 +57,7 @@ public class Drive implements Parcelable {
     @Convert(converter = WeatherConverter.class, columnType = String.class)
     private Weather weather;
 
-    public enum Light { DAY, NIGHT }
+    public enum Light { DAY, DAWN_DUSK, NIGHT }
     public enum Traffic { LIGHT, MEDIUM, HEAVY }
     public enum Weather { DRY, WET }
 
@@ -80,6 +80,8 @@ public class Drive implements Parcelable {
         switch (light) {
             case DAY:
                 return R.string.day;
+            case DAWN_DUSK:
+                return R.string.dawn_dusk;
             case NIGHT:
                 return R.string.night;
         }
@@ -90,6 +92,8 @@ public class Drive implements Parcelable {
         switch (light) {
             case DAY:
                 return R.string.emoji_day;
+            case DAWN_DUSK:
+                return R.string.emoji_sunset;
             case NIGHT:
                 return R.string.emoji_night;
         }
