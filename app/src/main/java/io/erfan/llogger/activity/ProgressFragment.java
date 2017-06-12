@@ -21,6 +21,12 @@ public class ProgressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_progress, container, false);
 
+        setupUI(view);
+
+        return view;
+    }
+
+    private void setupUI(View view) {
         // UI
         TextView progressText = (TextView) view.findViewById(R.id.progress_text);
         RoundCornerProgressBar totalProgress = (RoundCornerProgressBar) view.findViewById(R.id.progress_total);
@@ -53,7 +59,12 @@ public class ProgressFragment extends Fragment {
         } else {
             progressText.setText(getString(R.string.progress_finish, driver.getName()));
         }
+    }
 
-        return view;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setupUI(getView());
     }
 }

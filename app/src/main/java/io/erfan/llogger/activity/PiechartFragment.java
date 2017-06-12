@@ -41,12 +41,11 @@ public class PiechartFragment extends Fragment {
         // make the text on the chart white
         mChartTextColor = Color.WHITE;
         mPiechart.setEntryLabelColor(mChartTextColor);
+        mPiechart.setCenterTextSize(10f);
 
         // setup the data
         mPiechart.setData(generatePieData());
-
         mPiechart.setCenterText(generateCenterText());
-        mPiechart.setCenterTextSize(10f);
 
         // radius of the center hole in percent of maximum radius
         mPiechart.setHoleRadius(45f);
@@ -91,5 +90,11 @@ public class PiechartFragment extends Fragment {
         return new PieData(dataSet);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        // refresh data
+        mPiechart.setData(generatePieData());
+        mPiechart.setCenterText(generateCenterText());
+    }
 }
