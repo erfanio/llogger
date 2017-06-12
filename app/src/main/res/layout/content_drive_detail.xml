@@ -155,7 +155,7 @@
                 android:layout_marginBottom="16dp"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/ic_menu_drive"
-                android:text="@string/heavy"
+                android:text="@string/traffic_heavy"
                 android:fontFamily="sans-serif-light"
                 android:textSize="22sp"
                 android:textColor="@android:color/primary_text_light"/>

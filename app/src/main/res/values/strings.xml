@@ -41,11 +41,14 @@
     <string name="night">Night</string>
     <string name="dry">Dry</string>
     <string name="wet">Wet</string>
-    <string name="light">Light</string>
-    <string name="medium">Medium</string>
-    <string name="heavy">Heavy</string>
+    <string name="traffic_light">Light</string>
+    <string name="traffic_medium">Medium</string>
+    <string name="traffic_heavy">Heavy</string>
     <string name="car">Car</string>
     <string name="supervisor">Supervisor</string>
+    <string name="daylight">Daylight</string>
+    <string name="weather">Weather</string>
+    <string name="traffic">Traffic</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
@@ -63,6 +66,7 @@
     <string name="welcome_current_supervisors">Supervisors</string>
     <string name="welcome_current_cars">Cars</string>
 
+    <string name="new_drive_enter_details">Enter Drive Details</string>
     <string name="choose_car">Choose your car</string>
     <string name="choose_supervisor">Choose your supervisor</string>
 

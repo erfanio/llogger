@@ -6,20 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.erfan.llogger.activity.NewDriveActivity"
     tools:showIn="@layout/activity_new_drive">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_drive_enter_details"
+        android:textAppearance="@style/text_item_label"
+        android:layout_marginBottom="16dp" />
     <Spinner
         android:id="@+id/new_drive_car"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:prompt="@string/choose_car"
         android:spinnerMode="dropdown" />
 
@@ -27,20 +29,14 @@
         android:id="@+id/new_drive_supervisor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:prompt="@string/choose_supervisor"
         android:spinnerMode="dropdown" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/new_drive_odometer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"

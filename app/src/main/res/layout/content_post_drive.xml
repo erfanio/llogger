@@ -20,25 +20,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Duration"/>
+            android:text="@string/duration"
+            android:textAppearance="@style/text_item_label" />
 
         <TextView
             android:id="@+id/post_drive_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0s"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp"/>
+            tools:text="1hr 20min"
+            android:textAppearance="@style/text_item"
+            android:textSize="36sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Daylight"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_detail_light"
-            android:drawablePadding="8dp"/>
+            android:text="@string/daylight"
+            android:textAppearance="@style/text_item"
+            android:gravity="center_vertical" />
 
         <RadioGroup
             android:id="@+id/post_drive_light"
@@ -50,26 +49,26 @@
                 android:id="@+id/post_drive_light_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Day"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/day" />
 
             <RadioButton
                 android:id="@+id/post_drive_light_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Night"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/night" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Weather"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_detail_cloud"
-            android:drawablePadding="8dp"/>
+            android:text="@string/weather"
+            android:textAppearance="@style/text_item"
+            android:gravity="center_vertical" />
 
         <RadioGroup
             android:id="@+id/post_drive_weather"
@@ -81,15 +80,17 @@
                 android:id="@+id/post_drive_weather_dry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Dry"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/dry" />
 
             <RadioButton
                 android:id="@+id/post_drive_weather_wet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="wet"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/wet" />
         </RadioGroup>
 
     </LinearLayout>
@@ -103,25 +104,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Distance"/>
+            android:text="@string/distance"
+            android:textAppearance="@style/text_item_label" />
 
         <TextView
             android:id="@+id/post_drive_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0m"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp"/>
+            tools:text="10.2km"
+            android:textAppearance="@style/text_item"
+            android:textSize="36sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Traffic"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_menu_drive"
-            android:drawablePadding="8dp"/>
+            android:text="@string/traffic"
+            android:textAppearance="@style/text_item"
+            android:gravity="center_vertical" />
 
         <RadioGroup
             android:id="@+id/post_drive_traffic"
@@ -133,22 +133,26 @@
                 android:id="@+id/post_drive_traffic_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Light"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/traffic_light" />
 
             <RadioButton
                 android:id="@+id/post_drive_traffic_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Medium"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/traffic_medium" />
 
             <RadioButton
                 android:id="@+id/post_drive_traffic_heavy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Heavy"/>
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:text="@string/traffic_heavy" />
         </RadioGroup>
 
     </LinearLayout>

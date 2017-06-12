@@ -1,6 +1,5 @@
 package io.erfan.llogger.model;
 
-import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -100,11 +99,11 @@ public class Drive implements Parcelable {
     public Integer getTrafficStringRes() {
         switch (traffic) {
             case LIGHT:
-                return R.string.light;
+                return R.string.traffic_light;
             case MEDIUM:
-                return R.string.medium;
+                return R.string.traffic_medium;
             case HEAVY:
-                return R.string.heavy;
+                return R.string.traffic_heavy;
         }
         return null;
     }

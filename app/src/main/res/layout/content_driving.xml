@@ -1,56 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.erfan.llogger.activity.DrivingActivity"
     tools:showIn="@layout/activity_driving">
     <LinearLayout
         android:id="@+id/driving_text"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Duration"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/driving_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0s"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/duration"
+                android:textAppearance="@style/text_item_label" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Distance"/>
+            <TextView
+                android:id="@+id/driving_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1hr 20min"
+                android:textAppearance="@style/text_item"
+                android:textSize="36sp"/>
 
-        <TextView
-            android:id="@+id/driving_distance"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="0m"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance"
+                android:textAppearance="@style/text_item_label" />
+
+            <TextView
+                android:id="@+id/driving_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="10.2km"
+                android:textAppearance="@style/text_item"
+                android:textSize="36sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/driving_map"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -58,4 +74,4 @@
         app:layout_constraintVertical_bias="0.0"
         class="com.google.android.gms.maps.SupportMapFragment"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
