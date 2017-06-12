@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,8 +18,11 @@ import com.google.maps.android.PolyUtil;
 
 import java.util.List;
 
+import io.erfan.llogger.App;
 import io.erfan.llogger.R;
+import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
+import io.erfan.llogger.model.DriveDao;
 
 public class DriveDetailActivity extends AppCompatActivity {
     private Drive mDrive;
@@ -33,23 +37,36 @@ public class DriveDetailActivity extends AppCompatActivity {
 
         TextView mViewDuration = (TextView) findViewById(R.id.detail_duration);
         TextView mViewDistance = (TextView) findViewById(R.id.detail_distance);
+        TextView mViewWeatherEmoji = (TextView) findViewById(R.id.detail_weather_emoji);
+        TextView mViewLightEmoji = (TextView) findViewById(R.id.detail_light_emoji);
         TextView mViewLight = (TextView) findViewById(R.id.detail_light);
-        TextView mViewTraffic = (TextView) findViewById(R.id.detail_traffic);
         TextView mViewWeather = (TextView) findViewById(R.id.detail_weather);
+        TextView mViewTraffic = (TextView) findViewById(R.id.detail_traffic);
         TextView mViewVehicle = (TextView) findViewById(R.id.detail_vehicle);
         TextView mViewSupervisor = (TextView) findViewById(R.id.detail_supervisor);
 
 
+        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        DriveDao driveDao = daoSession.getDriveDao();
+
         Intent intent = getIntent();
-        mDrive = intent.getParcelableExtra("Drive");
+        Long driveId = intent.getLongExtra("DriveId", -1);
+        if (driveId == -1) {
+            Toast.makeText(this, "Unexpected error occurred", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        mDrive = driveDao.load(driveId);
 
         mViewDuration.setText(mDrive.getFormattedDuration());
         mViewDistance.setText(mDrive.getFormattedDistance());
-//        mViewVehicle.setText(mDrive.car);
-//        mViewSupervisor.setText(mDrive.supervisor);
-        mViewLight.setText(mDrive.getLightString());
-        mViewTraffic.setText(mDrive.getTrafficString());
-        mViewWeather.setText(mDrive.getWeatherString());
+        mViewVehicle.setText(mDrive.getCar().getName());
+        mViewSupervisor.setText(mDrive.getSupervisor().getName());
+        mViewLightEmoji.setText(mDrive.getLightEmojiRes());
+        mViewWeatherEmoji.setText(mDrive.getWeatherEmojiRes());
+        mViewLight.setText(mDrive.getLightStringRes());
+        mViewWeather.setText(mDrive.getWeatherStringRes());
+        mViewTraffic.setText(mDrive.getTrafficStringRes());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.detail_map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {

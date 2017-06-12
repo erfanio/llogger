@@ -42,7 +42,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
                 @Override
                 public void onClick(View v) {
                     Intent openViewDrive = new Intent(v.getContext(), DriveDetailActivity.class);
-                    openViewDrive.putExtra("Drive", mDrive);
+                    openViewDrive.putExtra("DriveId", mDrive.getId());
 
                     v.getContext().startActivity(openViewDrive);
                 }
@@ -54,7 +54,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
             mDrive = drive;
             mViewDuration.setText(drive.getFormattedDuration());
             mViewLocation.setText(drive.getLocation());
-//            mViewCar.setText(drive.getCar());
+            mViewCar.setText(drive.getCar().getName());
             mViewTime.setText(drive.getFormattedTime());
         }
     }

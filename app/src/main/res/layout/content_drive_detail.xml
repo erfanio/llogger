@@ -32,6 +32,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/detail_light_emoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -44,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                tools:text="@string/detail_day"
+                tools:text="@string/day"
                 android:textAppearance="@style/text_item"  />
         </LinearLayout>
 
@@ -64,6 +65,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/detail_weather_emoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -76,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                tools:text="@string/detail_wet"
+                tools:text="@string/wet"
                 android:textAppearance="@style/text_item" />
         </LinearLayout>
 
@@ -100,7 +102,7 @@
                 android:id="@+id/detail_vehicle_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/detail_car"
+                android:text="@string/car"
                 android:textAppearance="@style/text_item_label" />
 
             <TextView
@@ -115,7 +117,7 @@
                 android:id="@+id/detail_supervisor_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/detail_supervisor"
+                android:text="@string/supervisor"
                 android:textAppearance="@style/text_item_label" />
 
             <TextView
@@ -135,7 +137,7 @@
                 android:id="@+id/detail_distance_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/detail_distance"
+                android:text="@string/distance"
                 android:textAppearance="@style/text_item_label" />
 
             <TextView
@@ -153,7 +155,7 @@
                 android:layout_marginBottom="16dp"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/ic_menu_drive"
-                android:text="@string/detail_heavy"
+                android:text="@string/heavy"
                 android:fontFamily="sans-serif-light"
                 android:textSize="22sp"
                 android:textColor="@android:color/primary_text_light"/>

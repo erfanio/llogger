@@ -1,5 +1,6 @@
 package io.erfan.llogger.model;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -25,6 +26,8 @@ import java.util.Locale;
 import static io.erfan.llogger.Utils.formatDistance;
 import static io.erfan.llogger.Utils.formatDuration;
 import org.greenrobot.greendao.DaoException;
+
+import io.erfan.llogger.R;
 
 @Entity(indexes = {
         @Index(value = "time DESC", unique = true)
@@ -74,34 +77,54 @@ public class Drive implements Parcelable {
         return df.format(time);
     }
 
-    public String getLightString() {
+    public Integer getLightStringRes() {
         switch (light) {
             case DAY:
-                return "Day";
+                return R.string.day;
             case NIGHT:
-                return  "Night";
+                return R.string.night;
         }
         return null;
     }
 
-    public String getTrafficString() {
+    public Integer getLightEmojiRes() {
+        switch (light) {
+            case DAY:
+                return R.string.emoji_day;
+            case NIGHT:
+                return R.string.emoji_night;
+        }
+        return null;
+    }
+
+    public Integer getTrafficStringRes() {
         switch (traffic) {
             case LIGHT:
-                return "Light";
+                return R.string.light;
             case MEDIUM:
-                return "Medium";
+                return R.string.medium;
             case HEAVY:
-                return "Heavy";
+                return R.string.heavy;
         }
         return null;
     }
 
-    public String getWeatherString() {
+    public Integer getWeatherStringRes() {
         switch (weather) {
             case DRY:
-                return "Dry";
+                return R.string.dry;
             case WET:
-                return "Wet";
+                return R.string.wet;
+        }
+        return null;
+    }
+
+    public Integer getWeatherEmojiRes() {
+        switch (weather) {
+            case DRY:
+                return R.string.emoji_dry;
+            case WET:
+                return R.string.emoji_wet;
         }
         return null;
     }

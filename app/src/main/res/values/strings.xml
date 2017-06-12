@@ -35,6 +35,17 @@
     <string name="done">Done</string>
     <string name="odometer">Odometer</string>
     <string name="see_more">See More</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="day">Day</string>
+    <string name="night">Night</string>
+    <string name="dry">Dry</string>
+    <string name="wet">Wet</string>
+    <string name="light">Light</string>
+    <string name="medium">Medium</string>
+    <string name="heavy">Heavy</string>
+    <string name="car">Car</string>
+    <string name="supervisor">Supervisor</string>
 
     <string name="welcome_title">Welcome to\nLearners Digital Logbook</string>
     <string name="welcome_text">You can have multiple drivers (learner), supervisors, and cars.\n\nSince this is your first time launching the app we\'ll walk you through setting them up.</string>
@@ -54,12 +65,5 @@
 
     <string name="choose_car">Choose your car</string>
     <string name="choose_supervisor">Choose your supervisor</string>
-    <string name="detail_duration">Duration</string>
-    <string name="detail_day">Day</string>
-    <string name="detail_heavy">Heavy</string>
-    <string name="detail_wet">Wet</string>
-    <string name="detail_distance">Distance</string>
-    <string name="detail_car">Car</string>
-    <string name="detail_supervisor">Supervisor</string>
 
 </resources>
