@@ -31,7 +31,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PostDriveActivity extends AppCompatActivity {
-    private FrameLayout mProgressBarHolder;
     private Drive mDrive;
 
     @Override
@@ -46,7 +45,6 @@ public class PostDriveActivity extends AppCompatActivity {
 
         TextView mDuration = (TextView) findViewById(R.id.post_drive_duration);
         mDuration.setText(mDrive.getFormattedDuration());
-
         TextView mDistance = (TextView) findViewById(R.id.post_drive_distance);
         mDistance.setText(mDrive.getFormattedDistance());
 
@@ -54,10 +52,7 @@ public class PostDriveActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get the drive DAO
-                DaoSession daoSession = ((App) getApplication()).getDaoSession();
-                DriveDao driveDao = daoSession.getDriveDao();
-
+                // choose drive properties based on active radio buttons
                 switch (((RadioGroup) findViewById(R.id.post_drive_light)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_light_day:
                         mDrive.setLight(Drive.Light.DAY);
@@ -109,28 +104,22 @@ public class PostDriveActivity extends AppCompatActivity {
                         mDrive.setTraffic(Drive.Traffic.LIGHT);
                 }
 
+                // insert into the databse
+                DaoSession daoSession = ((App) getApplication()).getDaoSession();
+                DriveDao driveDao = daoSession.getDriveDao();
                 driveDao.insert(mDrive);
+
                 goHome();
             }
         });
 
-        // show loading
-        mProgressBarHolder = (FrameLayout) findViewById(R.id.progress_overlay);
-        mProgressBarHolder.setVisibility(View.VISIBLE);
-
+        // run network on another thread
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-//                try {
-//                    URL driveCondition = new URL("https://llogger.erfan.space/drive_conditions?lat=0&lng=0");
-//                    HttpsURLConnection restCall = (HttpsURLConnection) driveCondition.openConnection();
-//
-//                } catch (Exception e) {
-//                    hideOverlay();
-//                    return;
-//                }
                 OkHttpClient client = new OkHttpClient();
 
+                // query the server
                 Request request = new Request.Builder()
                         .url("https://llogger.erfan.space/drive_conditions?lat=0&lng=0")
                         .header("User-Agent", "OkHttp Headers.java")
@@ -138,14 +127,17 @@ public class PostDriveActivity extends AppCompatActivity {
                         .get()
                         .build();
 
-
+                // wrap everything in a try since every single step _might_ throw
                 try {
+                    // send the query
                     Response response = client.newCall(request).execute();
 
+                    // throw so we don't continue (but also want the last statement in the method to run)
                     if (!response.isSuccessful()) {
-                        throw new Exception();
+                        throw new Exception("Couldn't reach the server");
                     }
 
+                    // get an object from the response
                     Gson gson = new Gson();
                     DriveConditions driveConditions = gson
                             .fromJson(response.body().charStream(), DriveConditions.class);
@@ -155,6 +147,7 @@ public class PostDriveActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.d("TAG", e.getStackTrace().toString());
                 }
+
                 hideOverlay();
             }
         });
@@ -179,12 +172,14 @@ public class PostDriveActivity extends AppCompatActivity {
     }
 
     public void hideOverlay() {
-        mProgressBarHolder.animate().setDuration(200).alpha(0f)
+        final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.progress_overlay);
+        // animate fade out and then hide the overlay
+        frameLayout.animate().setDuration(200).alpha(0f)
             .setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    mProgressBarHolder.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.GONE);
                 }
             });
     }
@@ -206,6 +201,7 @@ public class PostDriveActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // prevent user from exiting accidentally (since this activity was started on a new stack)
         Snackbar.make(this.findViewById(android.R.id.content), "Do you really want to exit?", Snackbar.LENGTH_LONG)
                 .setAction("Exit", new View.OnClickListener() {
                     @Override
@@ -217,6 +213,7 @@ public class PostDriveActivity extends AppCompatActivity {
     }
 
     private void goHome() {
+        // go home and clear activity stack so can't come back to this activity
         Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
