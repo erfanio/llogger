@@ -40,6 +40,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -118,6 +119,9 @@ public class DrivingActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
                 intent.putExtra("Drive", mDrive);
                 startActivity(intent);
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                        .cancel(NOTIFICATION_ID);
+                finish();
             }
         });
 
@@ -260,9 +264,7 @@ public class DrivingActivity extends AppCompatActivity {
     private void setupNotification() {
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black);
-        mBuilder.setContentTitle("Driving with LLogger");
-//        mBuilder.setContentText(String.format(Locale.ENGLISH, "Driving with %s in %s.", mDrive.supervisor, mDrive.car));
-        mBuilder.setContentText("Driving....");
+        mBuilder.setContentTitle("Learners Digital Logbook");
         mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -279,12 +281,14 @@ public class DrivingActivity extends AppCompatActivity {
             intent.setAction(NOTIFICATION_RESUME);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(R.drawable.ic_play_black, "Resume", pendingIntent);
+            mBuilder.setContentText(getString(R.string.title_activity_driving_paused));
         } else {
             // pause button
             intent = new Intent(this, DrivingActivity.class);
             intent.setAction(NOTIFICATION_PAUSE);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.addAction(R.drawable.ic_pause_black, "Pause", pendingIntent);
+            mBuilder.setContentText(getString(R.string.title_activity_driving));
         }
     }
 
@@ -294,6 +298,11 @@ public class DrivingActivity extends AppCompatActivity {
     }
 
     private void goHome() {
+        // remove notification
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                .cancel(NOTIFICATION_ID);
+
+        // go home
         Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
