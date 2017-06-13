@@ -23,6 +23,7 @@ import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
+import io.erfan.llogger.AboutActivity;
 import io.erfan.llogger.App;
 import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
@@ -161,14 +162,20 @@ public class RootActivity extends AppCompatActivity {
         // switch based on item ID
         int id = item.getItemId();
         switch (id) {
+
+            case R.id.action_edit_assets:
+                Intent intent = new Intent(this, AddAssetsActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
 
-            case R.id.action_edit_assets:
-                Intent intent = new Intent(this, AddAssetsActivity.class);
-                startActivity(intent);
+            case R.id.action_about:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
                 return true;
         }
 
