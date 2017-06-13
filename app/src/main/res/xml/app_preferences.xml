@@ -11,17 +11,22 @@
         android:title="Debug">
 
         <Preference
-            android:title="Add a 20min log"
+            android:title="Add a 5min log"
+            android:key="short"
+            android:summary="This is will add a 5min log for testing purposes"/>
+
+        <Preference
+            android:title="Add a 22min log"
             android:key="one"
             android:summary="This is will add a 22min log for testing purposes"/>
 
         <Preference
-            android:title="Add 10 x 20min logs"
+            android:title="Add 10 x 22min logs"
             android:key="ten"
             android:summary="This is will add 10 x 22min (about 4 hours) logs for testing purposes"/>
 
         <Preference
-            android:title="Add 30 x 20min logs"
+            android:title="Add 30 x 22min logs"
             android:key="thirty"
             android:summary="This is will add 30 x 22min (about 11 hours) logs for testing purposes"/>
 
