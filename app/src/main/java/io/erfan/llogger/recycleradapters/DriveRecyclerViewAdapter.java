@@ -1,6 +1,6 @@
 package io.erfan.llogger.recycleradapters;
 
-import android.content.Intent;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +11,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.erfan.llogger.R;
-import io.erfan.llogger.activity.DriveDetailActivity;
 import io.erfan.llogger.model.Drive;
 
 public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecyclerViewAdapter.ViewHolder> {
+    private final OnDriveItemClickListener mOnDriveItemClickListener;
     private List<Drive> mDrives;
+
+    public interface OnDriveItemClickListener {
+        void onClick(Long driveId, View durationView, View carView);
+    }
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -25,9 +29,9 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
         public TextView mViewTime;
         public TextView mViewCar;
 
-        public Drive mDrive;
+        public Long mDriveId;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, final OnDriveItemClickListener onDriveItemClickListener) {
             super(v);
 
             // setup ui widgets
@@ -41,26 +45,27 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
             mItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent openViewDrive = new Intent(v.getContext(), DriveDetailActivity.class);
-                    openViewDrive.putExtra("DriveId", mDrive.getId());
-
-                    v.getContext().startActivity(openViewDrive);
+                    onDriveItemClickListener.onClick(mDriveId, mViewDuration, mViewCar);
                 }
             });
         }
 
         // binding logic is here to be able to use the viewholder outside of recycler view too
         public void bind(Drive drive) {
-            mDrive = drive;
+            mDriveId = drive.getId();
             mViewDuration.setText(drive.getFormattedDuration());
             mViewLocation.setText(drive.getLocation());
             mViewCar.setText(drive.getCar().getName());
             mViewTime.setText(drive.getFormattedTime());
+
+            ViewCompat.setTransitionName(mViewDuration, "duration" + mDriveId);
+            ViewCompat.setTransitionName(mViewCar, "car" + mDriveId);
         }
     }
 
-    public DriveRecyclerViewAdapter(List<Drive> drives) {
+    public DriveRecyclerViewAdapter(List<Drive> drives, OnDriveItemClickListener onDriveItemClickListener) {
         mDrives = drives;
+        mOnDriveItemClickListener = onDriveItemClickListener;
     }
 
     public void updateList(List<Drive> drives) {
@@ -72,7 +77,7 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
     public DriveRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_drive, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, mOnDriveItemClickListener);
     }
 
     @Override

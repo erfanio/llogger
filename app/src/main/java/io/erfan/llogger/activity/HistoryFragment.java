@@ -1,7 +1,11 @@
 package io.erfan.llogger.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +48,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView  recyclerView = (RecyclerView) view.findViewById(R.id.recycler_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new DriveRecyclerViewAdapter(drives);
+        mAdapter = new DriveRecyclerViewAdapter(drives, new OnDriveItemClickListenerFromHistory());
         recyclerView.setAdapter(mAdapter);
 
 
@@ -57,5 +61,20 @@ public class HistoryFragment extends Fragment {
         // update the list
         List<Drive> drives = mQuery.list();
         ((DriveRecyclerViewAdapter) mAdapter).updateList(drives);
+    }
+
+    private class OnDriveItemClickListenerFromHistory implements DriveRecyclerViewAdapter.OnDriveItemClickListener {
+        @Override
+        public void onClick(Long driveId, View durationView, View carView) {
+            Intent openViewDrive = new Intent(getContext(), DriveDetailActivity.class);
+            openViewDrive.putExtra("DriveId", driveId);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    new Pair<View, String>(durationView, ViewCompat.getTransitionName(durationView)),
+                    new Pair<View, String>(carView, ViewCompat.getTransitionName(carView)));
+
+            startActivity(openViewDrive, options.toBundle());
+        }
     }
 }
