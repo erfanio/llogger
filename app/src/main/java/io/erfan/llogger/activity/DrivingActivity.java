@@ -6,7 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +57,7 @@ public class DrivingActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 0;
     private static final String NOTIFICATION_PAUSE = "PAUSE_DRIVING";
     private static final String NOTIFICATION_RESUME = "RESUME_DRIVING";
+    private static final String UNKNOWN = "Unknown";
 
     private FloatingActionButton mMainFab;
     private FloatingActionButton mSecondFab;
@@ -72,6 +77,7 @@ public class DrivingActivity extends AppCompatActivity {
     private String mPath;
     private List<String> mPaths;
     private Long mPathDistance;
+    private Calendar mLocationNameRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,9 @@ public class DrivingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra("Drive");
         mDrive.setTime(Calendar.getInstance().getTime());
+        mDrive.setLocation(UNKNOWN);
+        // get try to get location name asap
+        mLocationNameRetry = Calendar.getInstance();
 
         mPaused = false;
         mElapsed = (long) 0;
@@ -107,7 +116,6 @@ public class DrivingActivity extends AppCompatActivity {
         mSecondFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrive.setLocation("Clayton");
                 mDrive.setPath(mPaths);
                 mDrive.setDistance(mPathDistance);
                 // set both, later will set one to 0
@@ -117,6 +125,8 @@ public class DrivingActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
                 intent.putExtra("Drive", mDrive);
                 startActivity(intent);
+
+                // a bug in android O needs this
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                         .cancel(NOTIFICATION_ID);
                 finish();
@@ -175,11 +185,36 @@ public class DrivingActivity extends AppCompatActivity {
         }
     }
 
+    private void getLocationName(final double lat, final double lng) {
+        final Context context = this;
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(lat, lng, 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (addresses != null && addresses.size() != 0) {
+                    Address address = addresses.get(0);
+                    mDrive.setLocation(address.getLocality());
+                } else {
+                    // if no address found set counter to try later (and not immediately)
+                    mLocationNameRetry.add(Calendar.SECOND, 20);
+                }
+            }
+        });
+    }
+
     private void setupMap() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(500);
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(100);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -207,6 +242,13 @@ public class DrivingActivity extends AppCompatActivity {
                                 double currentLatitude = location.getLatitude();
                                 double currentLongitude = location.getLongitude();
                                 LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+
+                                // retry time throttles the rate of retries
+                                if (mDrive.getLocation().equals(UNKNOWN) &&
+                                        location.getAccuracy() < 100 &&
+                                        mLocationNameRetry.before(Calendar.getInstance())) {
+                                    getLocationName(currentLatitude, currentLongitude);
+                                }
 
                                 List<LatLng> path = new ArrayList<>(PolyUtil.decode(mPath));
 
@@ -330,6 +372,7 @@ public class DrivingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // prevent user from exiting accidentally (since this activity was started on a new stack)
         Snackbar.make(this.findViewById(android.R.id.content), "Do you really want to exit?", Snackbar.LENGTH_LONG)
                 .setAction("Exit", new View.OnClickListener() {
                     @Override
