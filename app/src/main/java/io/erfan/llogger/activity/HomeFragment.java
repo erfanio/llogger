@@ -118,7 +118,8 @@ public class HomeFragment extends Fragment {
         if (mDrives.size() > prevLen) {
             // inflate a more drive list items to have enough to display all drives
             inflateList(mDrives.size() - prevLen, getView());
-            bindList();
         }
+        // rebind the data to include any new entries
+        bindList();
     }
 }
