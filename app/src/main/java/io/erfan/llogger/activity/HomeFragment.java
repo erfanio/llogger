@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.greenrobot.greendao.query.Query;
 
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mLoadMore = (CardView) view.findViewById(R.id.main_load_more);
+        mLoadMore = (CardView) view.findViewById(R.id.home_load_more);
         mLoadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
 
     private void inflateList(int count, View view) {
         // inflate list items and add it to the list LinearLayout
-        LinearLayout historyList = (LinearLayout) view.findViewById(R.id.main_history_list);
+        LinearLayout historyList = (LinearLayout) view.findViewById(R.id.home_history_list);
         for (int i = 0; i < count; i++) {
             View listItem = LayoutInflater.from(getActivity()).inflate(R.layout.list_item_drive, historyList, false);
             mViewHolders.add(new ViewHolder(listItem));
@@ -95,6 +96,7 @@ public class HomeFragment extends Fragment {
         }
         if (!mViewHolders.isEmpty()) {
             mLoadMore.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.home_empty_list).setVisibility(View.GONE);
         }
     }
 
