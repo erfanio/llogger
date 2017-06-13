@@ -13,7 +13,7 @@ import org.greenrobot.greendao.query.Query;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.Preference;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.recycleradapters.DriveRecyclerViewAdapter;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
@@ -29,7 +29,7 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.recycler_list, container, false);
 
         // get driver ID
-        Preference prefMan = new Preference(view.getContext());
+        PrefMan prefMan = new PrefMan(view.getContext());
         Long driverId = prefMan.getUser();
 
         // get the drive DAO

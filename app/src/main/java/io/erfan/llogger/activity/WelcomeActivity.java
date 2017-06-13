@@ -11,7 +11,7 @@ import android.os.Bundle;
 import java.util.Arrays;
 import java.util.List;
 
-import io.erfan.llogger.Preference;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
 import io.erfan.llogger.activity.welcome.WelcomeCarFragment;
 import io.erfan.llogger.activity.welcome.WelcomeDriverFragment;
@@ -59,7 +59,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void done() {
-        Preference prefMan = new Preference(this);
+        PrefMan prefMan = new PrefMan(this);
         prefMan.setFirstLaunch(false);
 
         Intent intent = new Intent(this, RootActivity.class);

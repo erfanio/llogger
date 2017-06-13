@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class Preference {
+// PreferenceManager, but that would conflict with android.preference.PreferenceManager
+public class PrefMan {
     private SharedPreferences mPreferences;
 
     // pref names
     private static final String FIRST_LAUNCH = "firstLaunch";
     private static final String CURR_USER = "currentUser";
 
-    public Preference(Context context) {
+    public PrefMan(Context context) {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 

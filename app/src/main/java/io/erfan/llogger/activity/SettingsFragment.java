@@ -16,11 +16,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
 import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.DaoSession;
@@ -117,7 +117,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private String getCSV() {
-        io.erfan.llogger.Preference prefMan = new io.erfan.llogger.Preference(getContext());
+        PrefMan prefMan = new PrefMan(getContext());
         // get the list of drives that the current user has done
         List<Drive> drives = ((App) getContext().getApplicationContext()).getDaoSession()
                 .getDriveDao().queryBuilder().where(DriveDao.Properties.DriverId.eq(prefMan.getUser()))
@@ -189,7 +189,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static Long mSupervisorId;
     private static Long mCarId;
     private void createLog() {
-        io.erfan.llogger.Preference prefMan = new io.erfan.llogger.Preference(getContext());
+        PrefMan prefMan = new PrefMan(getContext());
         DaoSession daoSession = ((App) getActivity().getApplication()).getDaoSession();
 
         Drive drive = new Drive();

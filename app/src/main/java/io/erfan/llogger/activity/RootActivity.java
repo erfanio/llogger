@@ -18,7 +18,7 @@ import org.greenrobot.greendao.query.Query;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.Preference;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Driver;
@@ -38,7 +38,7 @@ public class RootActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // check if this is the first launching the app
-        Preference prefMan = new Preference(this);
+        PrefMan prefMan = new PrefMan(this);
         if (prefMan.isFirstLaunch()) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -168,7 +168,7 @@ public class RootActivity extends AppCompatActivity {
 
         if (id < mDrivers.size()) {
             // setup context
-            Preference prefMan = new Preference(this);
+            PrefMan prefMan = new PrefMan(this);
             DaoSession daoSession = ((App) getApplication()).getDaoSession();
             DriverDao driverDao = daoSession.getDriverDao();
 

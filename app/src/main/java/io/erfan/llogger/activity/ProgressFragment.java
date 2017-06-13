@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.Preference;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
 import io.erfan.llogger.StatsUtils;
 import io.erfan.llogger.model.Driver;
@@ -33,28 +33,28 @@ public class ProgressFragment extends Fragment {
         RoundCornerProgressBar nightProgress = (RoundCornerProgressBar) view.findViewById(R.id.progress_night);
 
         // load the current user
-        Preference prefMan = new Preference(getContext());
+        PrefMan prefMan = new PrefMan(getContext());
         Driver driver = ((App) getActivity().getApplication())
                 .getDaoSession().getDriverDao().load(prefMan.getUser());
 
         // get data
         ArrayMap<String, Float> data = StatsUtils.getData(getContext());
+        float totalPercent = (data.get(StatsUtils.DAY) + data.get(StatsUtils.NIGHT)) / 120 * 100;
         float dayPercent = data.get(StatsUtils.DAY) / 120 * 100;
-        float nightPercent = data.get(StatsUtils.NIGHT) / 20 * 100;
+        float nightDrivingPercent = data.get(StatsUtils.NIGHT) / 20 * 100;
 
         // total progress (day progress and night as secondary)
         totalProgress.setProgress(dayPercent);
-        totalProgress.setSecondaryProgress(nightPercent);
+        // day + night (to appear in front of primary progress
+        totalProgress.setSecondaryProgress(totalPercent);
         // night progress
-        nightProgress.setProgress(nightPercent);
+        nightProgress.setProgress(nightDrivingPercent);
 
-        int totalHours = StatsUtils.getTotalHours(getContext());
-
-        if (totalHours < 20) {
+        if (totalPercent < 15) {
             progressText.setText(getString(R.string.progress_begin, driver.getName()));
-        } else if (totalHours < 100) {
+        } else if (totalPercent < 80) {
             progressText.setText(getString(R.string.progress_middle, driver.getName()));
-        } else if (totalHours < 120 || nightPercent < 100) {
+        } else if (totalPercent < 100 || nightDrivingPercent < 100) {
             progressText.setText(getString(R.string.progress_end, driver.getName()));
         } else {
             progressText.setText(getString(R.string.progress_finish, driver.getName()));

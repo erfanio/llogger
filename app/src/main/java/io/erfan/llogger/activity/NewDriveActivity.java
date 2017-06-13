@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.Preference;
+import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;
 import io.erfan.llogger.model.Car;
 import io.erfan.llogger.model.CarDao;
@@ -147,7 +147,7 @@ public class NewDriveActivity extends AppCompatActivity {
 
 
         // set driver as the current user
-        Preference prefMan = new Preference(this);
+        PrefMan prefMan = new PrefMan(this);
         drive.setDriverId(prefMan.getUser());
 
         intent.putExtra("Drive", drive);
