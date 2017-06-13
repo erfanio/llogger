@@ -1,12 +1,18 @@
 package io.erfan.llogger.activity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import java.io.File;
@@ -28,7 +34,7 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    private static int WRITE_REQUEST;
+    private static int WRITE_REQUEST = 0;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -100,14 +106,31 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH);
-        File outputFile = new File(directory, String.format("logs-%s.csv", dateFormat.format(Calendar.getInstance().getTime())));
+        final File outputFile = new File(directory,
+                String.format("logs-%s.csv", dateFormat.format(Calendar.getInstance().getTime())));
         try {
             FileWriter writer = new FileWriter(outputFile);
             writer.write(getCSV());
             writer.flush();
             writer.close();
-            Toast.makeText(getContext(),
-                    String.format("Logs have been saved to %s", outputFile.getAbsolutePath()), Toast.LENGTH_LONG)
+
+            Snackbar.make(getView(),
+                    String.format("Logs have been saved to %s", outputFile.getAbsolutePath()),
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Open", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".CSV");
+
+                            Intent intent = new Intent();
+                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setDataAndType(FileProvider.getUriForFile(getContext(),
+                                    "io.erfan.llogger.provider", outputFile), mime);
+                            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(intent);
+                        }
+                    })
                     .show();
         } catch (IOException e) {
             e.printStackTrace();
