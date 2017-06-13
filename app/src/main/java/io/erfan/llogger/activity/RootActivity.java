@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.TransitionSet;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
 import android.widget.Toast;
 
 import org.greenrobot.greendao.query.Query;
@@ -184,7 +190,7 @@ public class RootActivity extends AppCompatActivity {
 
 
     // allows children fragment to change the current fragment
-    public void switchFragment(Pages fragment, boolean updateNav) {
+    public void switchFragment(Pages fragment, boolean updateNav, Pair<View, String> sharedElement) {
         FragmentTransaction ft = mFragmentManager.beginTransaction();
         ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
 
@@ -195,7 +201,11 @@ public class RootActivity extends AppCompatActivity {
                 destRes = R.id.nav_home;
                 break;
             case STATS:
-                ft.replace(R.id.root_fragment, new StatsFragment());
+                StatsFragment statsFragment = new StatsFragment();
+                if (sharedElement != null) {
+                    statsFragment.setSharedElementEnterTransition(new StatsTransition());
+                }
+                ft.replace(R.id.root_fragment,statsFragment);
                 destRes = R.id.nav_stats;
                 break;
             case HISTORY:
@@ -203,6 +213,11 @@ public class RootActivity extends AppCompatActivity {
                 destRes = R.id.nav_history;
                 break;
         }
+
+        if (sharedElement != null) {
+            ft.addSharedElement(sharedElement.first, sharedElement.second);
+        }
+
         ft.commit();
 
         if (updateNav && destRes != null) {
@@ -210,6 +225,13 @@ public class RootActivity extends AppCompatActivity {
         }
     }
     private void switchFragment(Pages fragment) {
-        switchFragment(fragment, false);
+        switchFragment(fragment, false, null);
+    }
+
+    public class StatsTransition extends TransitionSet {
+        public StatsTransition() {
+            addTransition(new ChangeBounds()).
+                    addTransition(new ChangeTransform());
+        }
     }
 }

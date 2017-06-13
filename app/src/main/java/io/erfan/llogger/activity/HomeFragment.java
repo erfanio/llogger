@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // setup fragments
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -64,7 +64,17 @@ public class HomeFragment extends Fragment {
         mLoadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((RootActivity) getActivity()).switchFragment(RootActivity.Pages.HISTORY, true);
+                ((RootActivity) getActivity()).switchFragment(RootActivity.Pages.HISTORY, true, null);
+            }
+        });
+
+        CardView statsCard = (CardView) view.findViewById(R.id.home_stats_card);
+        statsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((RootActivity) getActivity())
+                        .switchFragment(RootActivity.Pages.STATS, true,
+                                new Pair<>(view.findViewById(R.id.home_pie_chart), "piechart"));
             }
         });
 
