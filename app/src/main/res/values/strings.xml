@@ -94,5 +94,5 @@
     <string name="road_rural_other">Rural Other</string>
     <string name="road_gravel">Gravel</string>
 
-    <string name="about_page">Libraries Used:\nhttps://github.com/google/gson\nhttps://github.com/greenrobot/greenDAO\nhttps://github.com/PhilJay/MPAndroidChart\nhttps://github.com/akexorcist/Android-RoundCornerProgressBar\nhttps://github.com/square/okhttp\n\nAlso used a sample app to learn how to do custom transitions and text resizing:\nhttps://github.com/alexjlockwood/custom-lollipop-transitions\n\nGoogle Maps is also used but since the libraries are bundled with Google Play... I'll just leave their homepage here:\nhttps://developers.google.com/maps/documentation/android-api/</string>
+    <string name="about_page">Libraries Used:\nhttps://github.com/google/gson\nhttps://github.com/greenrobot/greenDAO\nhttps://github.com/PhilJay/MPAndroidChart\nhttps://github.com/akexorcist/Android-RoundCornerProgressBar\nhttps://github.com/square/okhttp\n\nAlso used a sample app to learn how to do custom transitions and text resizing:\nhttps://github.com/alexjlockwood/custom-lollipop-transitions\n\nGoogle Maps is also used but since the libraries are bundled with Google Play... I\'ll just leave their homepage here:\nhttps://developers.google.com/maps/documentation/android-api/</string>
 </resources>
