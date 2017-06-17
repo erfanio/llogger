@@ -312,7 +312,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
 
     @Override
     protected void onDestroy() {
-        super.onStop();
+        super.onDestroy();
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);
