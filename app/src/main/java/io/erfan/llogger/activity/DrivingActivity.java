@@ -311,7 +311,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         super.onStop();
         // Unbind from the service
         if (mBound) {
