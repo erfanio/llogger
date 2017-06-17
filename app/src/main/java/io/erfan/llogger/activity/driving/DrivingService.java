@@ -139,7 +139,7 @@ public class DrivingService extends Service {
         // clear the previous action (i.e. pause button)
         mBuilder.mActions.clear();
 
-        // pause button will send to a BroadcaseReceiver which will
+        // pause button will send to a BroadcastReceiver which will
         // acquire an instance of this and will call pause()
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(PAUSE);
