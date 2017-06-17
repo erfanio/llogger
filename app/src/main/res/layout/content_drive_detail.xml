@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="top">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,20 +39,21 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:textSize="36sp"
-                tools:text="@string/emoji_day" />
+                tools:text=".W." />
 
             <TextView
                 android:id="@+id/detail_light"
-                android:layout_width="wrap_content"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                tools:text="@string/day"
-                android:textAppearance="@style/text_item"  />
+                tools:text="@string/dawn_dusk"
+                android:textAlignment="center"
+                android:textAppearance="@style/text_item_label" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1"
             android:gravity="center">
@@ -80,15 +81,16 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:textSize="36sp"
-                tools:text="@string/emoji_wet" />
+                tools:text=".W." />
 
             <TextView
                 android:id="@+id/detail_weather"
-                android:layout_width="wrap_content"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 tools:text="@string/wet"
-                android:textAppearance="@style/text_item" />
+                android:textAlignment="center"
+                android:textAppearance="@style/text_item_label" />
         </LinearLayout>
 
     </LinearLayout>
