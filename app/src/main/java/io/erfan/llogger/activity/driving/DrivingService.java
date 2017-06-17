@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,6 +26,8 @@ import io.erfan.llogger.R;
 import io.erfan.llogger.activity.DrivingActivity;
 
 public class DrivingService extends Service {
+    // a listener interface so the client can listen for events
+    // that happen inside this service
     public interface DrivingServiceListener {
         void connected();
         void locationUpdated(Location location);
@@ -38,8 +39,6 @@ public class DrivingService extends Service {
     public static final String PAUSE = "Pause";
     public static final String RESUME = "Resume";
 
-    private static final String NOTIFICATION_PAUSE = "PAUSE_DRIVING";
-    private static final String NOTIFICATION_RESUME = "RESUME_DRIVING";
     private static final int NOTIFICATION_ID = 11;
 
     private NotificationManager mNotificationManager;
@@ -49,9 +48,11 @@ public class DrivingService extends Service {
     private LocationRequest mLocationRequest;
     private DrivingServiceListener mListener = null;
 
+    // this will be returned to bound clients to access public methods
     private final IBinder mBinder = new DrivingBinder();
     public class DrivingBinder extends Binder {
         public DrivingService getService() {
+            // return an instance of this class so they can access public methods
             return DrivingService.this;
         }
     }
@@ -66,8 +67,6 @@ public class DrivingService extends Service {
     public void onDestroy() {
         mNotificationManager.cancelAll();
         stopForeground(true);
-        // a bug in android O needs this
-//        mNotificationManager.cancel(NOTIFICATION_ID);
     }
 
     @Override
@@ -75,56 +74,58 @@ public class DrivingService extends Service {
         return mBinder;
     }
 
-    private void setupMap() {
+    //
+    private void startLocationTracking() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(100);
 
+        // connect to google api and get location services to track location
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle bundle) {
-                        // check for permissions
-                        if (ActivityCompat.checkSelfPermission(DrivingService.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                                ActivityCompat.checkSelfPermission(DrivingService.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            mGoogleApiClient.disconnect();
-                            stopSelf();
-                            return;
-                        }
-
-                        mListener.connected();
-
-                        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
-                            @Override
-                            public void onLocationChanged(Location location) {
-                                if (mListener != null) {
-                                    mListener.locationUpdated(location);
-                                }
-                            }
-                        });
+            .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(Bundle bundle) {
+                    // check for permissions
+                    if (ActivityCompat.checkSelfPermission(DrivingService.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                            ActivityCompat.checkSelfPermission(DrivingService.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        mGoogleApiClient.disconnect();
+                        // stop since there is no point running without permission to do its job
+                        stopSelf();
+                        return;
                     }
 
-                    @Override
-                    public void onConnectionSuspended(int i) {}
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
-                })
-                .addApi(LocationServices.API)
-                .build();
+                    mListener.connected();
+
+                    // this will start tracking the location
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            mListener.locationUpdated(location);
+                        }
+                    });
+                }
+
+                @Override
+                public void onConnectionSuspended(int i) {}
+            })
+            .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                @Override
+                public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+            })
+            .addApi(LocationServices.API)
+            .build();
 
         mGoogleApiClient.connect();
     }
 
+    // this will build a notification (we'll keep the same notification and modify it later)
     private void setupNotification() {
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.ic_menu_drive);
-        mBuilder.setContentTitle("Learners Digital Logbook");
         mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
         mBuilder.setOngoing(true);
         mBuilder.setShowWhen(false);
 
@@ -135,22 +136,34 @@ public class DrivingService extends Service {
     }
 
     private Notification runningNotification() {
+        // clear the previous action (i.e. pause button)
         mBuilder.mActions.clear();
+
+        // pause button will send to a BroadcaseReceiver which will
+        // acquire an instance of this and will call pause()
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(PAUSE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        mBuilder.addAction(R.drawable.ic_pause_black, "Pause", pendingIntent);
-        mBuilder.setContentText(getString(R.string.title_activity_driving));
+        mBuilder.addAction(R.drawable.ic_pause_black, getString(R.string.pause), pendingIntent);
+
+        mBuilder.setContentTitle(getString(R.string.title_activity_driving));
+
         return mBuilder.build();
     }
 
     private Notification pausedNotification() {
+        // clear the previous action (i.e. resume button)
         mBuilder.mActions.clear();
+
+        // resume button will send to a BroadcaseReceiver which will
+        // acquire an instance of this and will call resume()
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(RESUME);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        mBuilder.addAction(R.drawable.ic_play_black, "Resume", pendingIntent);
-        mBuilder.setContentText(getString(R.string.title_activity_driving_paused));
+        mBuilder.addAction(R.drawable.ic_play_black, getString(R.string.resume), pendingIntent);
+
+        mBuilder.setContentTitle(getString(R.string.title_activity_driving_paused));
+
         return mBuilder.build();
     }
 
@@ -160,20 +173,22 @@ public class DrivingService extends Service {
 
     public void start(DrivingServiceListener listener) {
         mListener = listener;
-        setupMap();
+        startLocationTracking();
+        // having the service in the foreground will stop the system from killing the service
+        // when it needs memory
         startForeground(NOTIFICATION_ID, runningNotification());
     }
 
     public void resume() {
-        Log.d("TAG", "resume");
         mListener.resumed();
+        // start tracking location
         mGoogleApiClient.connect();
         showNotification(runningNotification());
     }
 
     public void pause() {
-        Log.d("TAG", "pause");
         mListener.paused();
+        // stop tracking location
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }

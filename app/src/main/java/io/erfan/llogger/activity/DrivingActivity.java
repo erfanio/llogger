@@ -2,7 +2,6 @@ package io.erfan.llogger.activity;
 
 import android.Manifest;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -21,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,14 +58,15 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     private GoogleMap mMap;
     private Polyline mPolyline;
 
-    private boolean mPaused;
     private Drive mDrive;
-    private Long mElapsed;
     private Timer mTimer;
-    private String mPath;
-    private List<String> mPaths;
-    private Long mPathDistance;
-    private Calendar mLocationNameRetry;
+
+    private boolean mPaused = false;
+    private Long mElapsed = 0L;
+    private String mPath = "";
+    private List<String> mPaths = new ArrayList<>();
+    private Long mPathDistance = 0L;
+    private Calendar mLocationNameRetry = Calendar.getInstance(); // get location name asap
 
     private ServiceConnection mConnection;
     DrivingService mService;
@@ -79,28 +80,26 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         Toolbar toolbar = (Toolbar) findViewById(R.id.driving_toolbar);
         setSupportActionBar(toolbar);
 
+        // get the drive object passed to this
         Intent intent = getIntent();
+        if (!intent.hasExtra("Drive")) {
+            // we need a drive object to be passed to this activity
+            Toast.makeText(this, "Unexpected error occurred!", Toast.LENGTH_LONG).show();
+            finish();
+        }
         mDrive = intent.getParcelableExtra("Drive");
         mDrive.setTime(Calendar.getInstance().getTime());
-        mDrive.setLocation(UNKNOWN);
-        // get try to get location name asap
-        mLocationNameRetry = Calendar.getInstance();
-
-        mPaused = false;
-        mElapsed = (long) 0;
-        mPath = "";
-        mPaths = new ArrayList<>();
-
-        mPathDistance = (long) 0;
+        mDrive.setLocation(UNKNOWN); // will be changed later if we find an address
 
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName className,
                                            IBinder service) {
-                // We've bound to LocalService, cast the IBinder and get LocalService instance
+                // we've bound to DrivingService, cast the IBinder and get DrivingService instance
                 DrivingService.DrivingBinder binder = (DrivingService.DrivingBinder) service;
                 mService = binder.getService();
                 mBound = true;
+                // tell the service to start (and pass DrivingActivity's instance as the listener)
                 mService.start(DrivingActivity.this);
             }
 
@@ -110,14 +109,15 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
             }
         };
 
-
+        // check for permission
         if (ActivityCompat.checkSelfPermission(DrivingActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(DrivingActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+            // if we don't have permission ask user for it before we start the service
             ActivityCompat.requestPermissions(DrivingActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     App.LOCATION_PERMISSION_REQUEST_CODE);
         } else {
+            // if we have permission start the service
             bindService();
         }
 
@@ -125,6 +125,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         mMainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // only respond if we're bound to the service (otherwise we can't do anything)
                 if (mBound) {
                     if (mPaused) {
                         mService.resume();
@@ -139,12 +140,14 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         mSecondFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // set Drive info
                 mDrive.setPath(mPaths);
                 mDrive.setDistance(mPathDistance);
                 // set both, later will set one to 0
                 mDrive.setDayDuration(mElapsed);
                 mDrive.setNightDuration(mElapsed);
 
+                // go to PostDrive to ask for driving conditions
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
                 intent.putExtra("Drive", mDrive);
                 startActivity(intent);
@@ -156,12 +159,15 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         mDuration = (TextView) findViewById(R.id.driving_duration);
         mDistance = (TextView) findViewById(R.id.driving_distance);
 
+        // get the google maps fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.driving_map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                // a new polyline to draw the current path
                 mPolyline = googleMap.addPolyline(new PolylineOptions());
+                // zoom close (16 works pretty well)
                 mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
             }
         });
@@ -186,6 +192,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == App.LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // start service now that we have the proper permissions
                 bindService();
             }
         }
@@ -197,14 +204,15 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     }
 
     private void getLocationName(final double lat, final double lng) {
-        final Context context = this;
+        // run on another thread since it might take a while
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                Geocoder geocoder = new Geocoder(DrivingActivity.this, Locale.getDefault());
 
                 List<Address> addresses = null;
                 try {
+                    // a list of one address from the current coordinates
                     addresses = geocoder.getFromLocation(lat, lng, 1);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -212,6 +220,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
 
                 if (addresses != null && addresses.size() != 0) {
                     Address address = addresses.get(0);
+                    // set the location of the drive to the suburb (of the address) we found
                     mDrive.setLocation(address.getLocality());
                 } else {
                     // if no address found set counter to try later (and not immediately)
@@ -222,6 +231,8 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     }
 
     public void connected() {
+        // in theory we should always have this permission (since we check for before we start the service)
+        // but this is just in case to now crash the app
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
