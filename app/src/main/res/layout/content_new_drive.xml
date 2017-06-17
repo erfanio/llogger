@@ -14,23 +14,27 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/new_drive_enter_details"
+        android:text="@string/choose_car"
         android:textAppearance="@style/text_item_label"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/new_drive_car"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:prompt="@string/choose_car"
         android:spinnerMode="dropdown" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_supervisor"
+        android:textAppearance="@style/text_item_label"
+        android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/new_drive_supervisor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:prompt="@string/choose_supervisor"
         android:spinnerMode="dropdown" />
 
     <android.support.design.widget.TextInputLayout
