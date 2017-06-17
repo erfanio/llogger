@@ -134,20 +134,20 @@ public class DrivingService extends Service {
     }
 
     private Notification runningNotification() {
-        Intent intent = new Intent(this, DrivingService.class);
-        intent.setAction(RESUME);
         mBuilder.mActions.clear();
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intent = new Intent(this, DrivingReceiver.class);
+        intent.setAction(PAUSE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         mBuilder.addAction(R.drawable.ic_pause_black, "Pause", pendingIntent);
         mBuilder.setContentText(getString(R.string.title_activity_driving));
         return mBuilder.build();
     }
 
     private Notification pausedNotification() {
-        Intent intent = new Intent(this, DrivingActivity.class);
-        intent.setAction(PAUSE);
         mBuilder.mActions.clear();
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intent = new Intent(this, DrivingReceiver.class);
+        intent.setAction(RESUME);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         mBuilder.addAction(R.drawable.ic_play_black, "Resume", pendingIntent);
         mBuilder.setContentText(getString(R.string.title_activity_driving_paused));
         return mBuilder.build();
