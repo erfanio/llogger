@@ -89,7 +89,12 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/settingsTheme" />
-        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".AboutActivity" />
+
+        <service
+            android:name=".activity.DrivingService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
