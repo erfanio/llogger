@@ -40,6 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.activity.driving.DrivingService;
 import io.erfan.llogger.R;
 import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.Drive;

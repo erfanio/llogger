@@ -1,4 +1,4 @@
-package io.erfan.llogger.activity;
+package io.erfan.llogger.activity.driving;
 
 import android.Manifest;
 import android.app.Notification;
@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import io.erfan.llogger.R;
+import io.erfan.llogger.activity.DrivingActivity;
 
 public class DrivingService extends Service {
     public interface DrivingServiceListener {
@@ -50,7 +51,7 @@ public class DrivingService extends Service {
 
     private final IBinder mBinder = new DrivingBinder();
     public class DrivingBinder extends Binder {
-        DrivingService getService() {
+        public DrivingService getService() {
             return DrivingService.this;
         }
     }

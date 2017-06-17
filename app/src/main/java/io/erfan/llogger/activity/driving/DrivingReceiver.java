@@ -1,9 +1,8 @@
-package io.erfan.llogger.activity;
+package io.erfan.llogger.activity.driving;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 
 public class DrivingReceiver extends BroadcastReceiver {
 

@@ -92,12 +92,12 @@
         <activity android:name=".AboutActivity" />
 
         <service
-            android:name=".activity.DrivingService"
+            android:name=".activity.driving.DrivingService"
             android:enabled="true"
             android:exported="true" />
 
         <receiver
-            android:name=".activity.DrivingReceiver"
+            android:name=".activity.driving.DrivingReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
     </application>
