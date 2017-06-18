@@ -152,14 +152,22 @@ public class Utils {
      * @return the overlap of the two ranges
      */
     public static long findOverlap(long r1Start, long r1End, long r2Start, long r2End) {
+        // |------------|
+        //    |-----|
+        if (r1Start <= r2Start && r1End >= r2End) {
+            return r2End - r2Start;
+        //    |-----|
+        // |------------|
+        } else if (r2Start <= r1Start && r2End >= r1End) {
+            return r1End - r1Start;
         // |----|
         //    |-----|
-        if (r2Start < r1End && r2End > r1End) {
-            return r1End - r2Start + 1;
+        } else if (r2Start <= r1End && r2End >= r1End) {
+            return r1End - r2Start;
             //    |-----|
             // |----|
-        } else if (r1Start < r2End && r1End > r2End) {
-            return r2End - r1Start + 1;
+        } else if (r1Start <= r2End && r1End >= r2End) {
+            return r2End - r1Start;
             //          |-----|
             // |----|
             // ----------------
