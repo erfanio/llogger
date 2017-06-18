@@ -30,39 +30,50 @@ public class UtilsTest {
         calculateDayNightDuration(dayStart, dayEnd);
     }
 
-    public void calculateDayNightDuration(long am7, long pm7) throws Exception {
+    public void calculateDayNightDuration(long dayStart, long dayEnd) throws Exception {
         // constants to use
         final long am5 = 1497726000;
         final long am6 = 1497729600;
+        final long am7 = 1497733200;
         final long am8 = 1497736800;
         final long pm5 = 1497769200;
         final long pm6 = 1497772800;
+        final long pm7 = 1497776400;
         final long pm8 = 1497780000;
         final long pm9 = 1497783600;
         final long anHour = 3600;
 
-        DriveConditions driveConditions = new DriveConditions(am7, pm7, "Day", true);
+        DriveConditions driveConditions = new DriveConditions(dayStart, dayEnd, "Day", true);
         List<Utils.Timespan> timespans;
         Map<Integer, Long> durations;
 
         // all day
         timespans = Arrays.asList(new Utils.Timespan(pm5, pm6));
         durations = Utils.calculateDayNightDuration(timespans, driveConditions);
-
         assertEquals(Long.valueOf(anHour), durations.get(Utils.DAY));
         assertEquals(Long.valueOf(0L), durations.get(Utils.NIGHT));
+
+        // all day, edge to edge
+        timespans = Arrays.asList(new Utils.Timespan(am7, pm7));
+        durations = Utils.calculateDayNightDuration(timespans, driveConditions);
+        assertEquals(Long.valueOf(anHour*12), durations.get(Utils.DAY));
+        assertEquals(Long.valueOf(0L), durations.get(Utils.NIGHT));
+
+        // all night, edge to edge (last night til this morning)
+        timespans = Arrays.asList(new Utils.Timespan(pm7 - anHour*24, am7));
+        durations = Utils.calculateDayNightDuration(timespans, driveConditions);
+        assertEquals(Long.valueOf(0L), durations.get(Utils.DAY));
+        assertEquals(Long.valueOf(anHour*12), durations.get(Utils.NIGHT));
 
         // all night (after runset)
         timespans = Arrays.asList(new Utils.Timespan(pm8, pm9));
         durations = Utils.calculateDayNightDuration(timespans, driveConditions);
-
         assertEquals(Long.valueOf(0L), durations.get(Utils.DAY));
         assertEquals(Long.valueOf(anHour), durations.get(Utils.NIGHT));
 
         // all night (before sunrise)
         timespans = Arrays.asList(new Utils.Timespan(am5, am6));
         durations = Utils.calculateDayNightDuration(timespans, driveConditions);
-
         assertEquals(Long.valueOf(0L), durations.get(Utils.DAY));
         assertEquals(Long.valueOf(anHour), durations.get(Utils.NIGHT));
 
