@@ -42,7 +42,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.erfan.llogger.App;
-import io.erfan.llogger.Timespan;
 import io.erfan.llogger.activity.driving.DrivingService;
 import io.erfan.llogger.R;
 import io.erfan.llogger.Utils;
@@ -67,7 +66,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     private Drive mDrive;
 
     private boolean mPaused = false;
-    private List<Timespan> mTimespans = new ArrayList<>();
+    private List<Utils.Timespan> mTimespans = new ArrayList<>();
     private Long mStartTime;
     private String mPath = "";
     private List<String> mPaths = new ArrayList<>();
@@ -245,9 +244,8 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
             currentElapsed += (System.currentTimeMillis() / 1000) - mStartTime;
         }
         // duration of previous stretches (start then pause)
-        for (Timespan timespan : mTimespans) {
-            currentElapsed += timespan.end - timespan.start;
-        }
+        currentElapsed += Utils.calculateTimespansDuration(mTimespans);
+
         return currentElapsed;
     }
 
@@ -337,8 +335,8 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         mPaths.add(mPath);
         mPath = "";
 
-        // add a new timespan
-        mTimespans.add(new Timespan(mStartTime, System.currentTimeMillis() / 1000));
+        // add a new timespan (use a parcelable class to be able to send it to post drive activity)
+        mTimespans.add(new Utils.Timespan(mStartTime, System.currentTimeMillis() / 1000));
         mTimer.cancel();
     }
 

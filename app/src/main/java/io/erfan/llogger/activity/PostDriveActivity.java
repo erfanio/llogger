@@ -24,11 +24,11 @@ import com.google.gson.Gson;
 import com.google.maps.android.PolyUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.DriveConditions;
 import io.erfan.llogger.R;
-import io.erfan.llogger.Timespan;
 import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
@@ -42,7 +42,7 @@ public class PostDriveActivity extends AppCompatActivity {
     public static String EXTRA_TIMESPANS = "Timespans";
 
     private Drive mDrive;
-    private List<Timespan> mTimespans;
+    private List<Utils.Timespan> mTimespans;
 
     TextView mViewDuration;
 
@@ -56,12 +56,9 @@ public class PostDriveActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mDrive = intent.getParcelableExtra(EXTRA_DRIVE);
         mTimespans = intent.getParcelableArrayListExtra(EXTRA_TIMESPANS);
-        for (Timespan timespan : mTimespans) {
-            Log.d("TAG", String.valueOf(timespan.start));
-        }
 
         mViewDuration = (TextView) findViewById(R.id.post_drive_duration);
-        mViewDuration.setText(Utils.formatDuration(0L));
+        mViewDuration.setText(Utils.formatDuration(Utils.calculateTimespansDuration(mTimespans)));
         TextView viewDistance = (TextView) findViewById(R.id.post_drive_distance);
         viewDistance.setText(mDrive.getFormattedDistance());
 
@@ -184,7 +181,7 @@ public class PostDriveActivity extends AppCompatActivity {
         });
     }
 
-    public void setupDriveConditions(DriveConditions driveConditions) {
+    private void setupDriveConditions(DriveConditions driveConditions) {
         // set weather condition
         if (driveConditions.getWet()) {
             ((RadioButton) findViewById(R.id.post_drive_weather_wet)).setChecked(true);
@@ -201,46 +198,15 @@ public class PostDriveActivity extends AppCompatActivity {
             ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
         }
 
-        // calculate day and night duration
-        long day = 0;
-        long night = 0;
-        for (Timespan timespan : mTimespans) {
-            // calculate the duration of day in this timespan
-            long thisDay = findOverlap(timespan.start, timespan.end,
-                    driveConditions.getDayStart(), driveConditions.getDayEnd());
-            thisDay += findOverlap(timespan.start, timespan.end,
-                    driveConditions.getDayStart() - 86400, driveConditions.getDayEnd() - 86400); // yesterday
+        // get day and night duration (and set them in drive)
+        Map<Integer, Long> durations = Utils.calculateDayNightDuration(mTimespans, driveConditions);
+        mDrive.setDayDuration(durations.get(Utils.DAY));
+        mDrive.setNightDuration(durations.get(Utils.NIGHT));
 
-            // add anything that's not day to night
-            night += (timespan.end - timespan.start) - thisDay;
-            day += thisDay;
-        }
-
-        mDrive.setDayDuration(day);
-        mDrive.setNightDuration(night);
         mViewDuration.setText(mDrive.getFormattedDuration());
     }
 
-    private long findOverlap(long r1Start, long r1End, long r2Start, long r2End) {
-        // |----|
-        //    |-----|
-        if (r2Start < r1End && r2End > r1End) {
-            return r1End - r2Start + 1;
-        //    |-----|
-        // |----|
-        } else if (r1Start < r2End && r1End > r2End) {
-            return r2End - r1Start + 1;
-        //          |-----|
-        // |----|
-        // ----------------
-        // |----|
-        //          |-----|
-        } else {
-            return 0L;
-        }
-    }
-
-    public void hideOverlay() {
+    private void hideOverlay() {
         final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.progress_overlay);
         // animate fade out and then hide the overlay
         frameLayout.animate().setDuration(200).alpha(0f)
