@@ -19,11 +19,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.maps.android.PolyUtil;
+
+import java.util.List;
 
 import io.erfan.llogger.App;
 import io.erfan.llogger.DriveConditions;
 import io.erfan.llogger.R;
+import io.erfan.llogger.Timespan;
+import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.DaoSession;
 import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
@@ -32,7 +38,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PostDriveActivity extends AppCompatActivity {
+    public static String EXTRA_DRIVE = "Drive";
+    public static String EXTRA_TIMESPANS = "Timespans";
+
     private Drive mDrive;
+    private List<Timespan> mTimespans;
+
+    TextView mViewDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,37 +54,37 @@ public class PostDriveActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        mDrive = intent.getParcelableExtra("Drive");
+        mDrive = intent.getParcelableExtra(EXTRA_DRIVE);
+        mTimespans = intent.getParcelableArrayListExtra(EXTRA_TIMESPANS);
+        for (Timespan timespan : mTimespans) {
+            Log.d("TAG", String.valueOf(timespan.start));
+        }
 
-        TextView mDuration = (TextView) findViewById(R.id.post_drive_duration);
-        mDuration.setText(mDrive.getFormattedDuration());
-        TextView mDistance = (TextView) findViewById(R.id.post_drive_distance);
-        mDistance.setText(mDrive.getFormattedDistance());
+        mViewDuration = (TextView) findViewById(R.id.post_drive_duration);
+        mViewDuration.setText(Utils.formatDuration(0L));
+        TextView viewDistance = (TextView) findViewById(R.id.post_drive_distance);
+        viewDistance.setText(mDrive.getFormattedDistance());
 
-        FloatingActionButton mFab = (FloatingActionButton) findViewById(R.id.post_drive_fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.post_drive_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // choose drive properties based on active radio buttons
                 switch (((RadioGroup) findViewById(R.id.post_drive_light)).getCheckedRadioButtonId()) {
                     case R.id.post_drive_light_day:
                         mDrive.setLight(Drive.Light.DAY);
-                        mDrive.setNightDuration(0L);
                         break;
 
                     case R.id.post_drive_light_dawn_dusk:
                         mDrive.setLight(Drive.Light.DAWN_DUSK);
-                        mDrive.setNightDuration(0L);
                         break;
 
                     case R.id.post_drive_light_night:
                         mDrive.setLight(Drive.Light.NIGHT);
-                        mDrive.setDayDuration(0L);
                         break;
 
                     default:
                         mDrive.setLight(Drive.Light.DAY);
-                        mDrive.setNightDuration(0L);
                 }
 
                 switch (((RadioGroup) findViewById(R.id.post_drive_weather)).getCheckedRadioButtonId()) {
@@ -115,7 +127,7 @@ public class PostDriveActivity extends AppCompatActivity {
                 mDrive.setRoadRuralOther(((CheckBox) findViewById(R.id.post_drive_road_rural)).isChecked());
                 mDrive.setRoadGravel(((CheckBox) findViewById(R.id.post_drive_road_gravel)).isChecked());
 
-                // insert into the databse
+                // insert into the database
                 DaoSession daoSession = ((App) getApplication()).getDaoSession();
                 DriveDao driveDao = daoSession.getDriveDao();
                 driveDao.insert(mDrive);
@@ -130,9 +142,17 @@ public class PostDriveActivity extends AppCompatActivity {
             public void run() {
                 OkHttpClient client = new OkHttpClient();
 
+                // get the last coord
+                List<String> paths = mDrive.getPath();
+                List<LatLng> lastPath = PolyUtil.decode(paths.get(paths.size() - 1));
+                LatLng coord = lastPath.get(lastPath.size() - 1);
+
+                // create the params
+                String params = String.format("lat=%s&lng=%s", String.valueOf(coord.latitude), String.valueOf(coord.longitude));
+
                 // query the server
                 Request request = new Request.Builder()
-                        .url("https://llogger.erfan.space/drive_conditions?lat=0&lng=0")
+                        .url("https://llogger.erfan.space/drive_conditions?" + params)
                         .header("User-Agent", "OkHttp Headers.java")
                         .addHeader("Accept", "application/json; q=0.5")
                         .get()
@@ -156,7 +176,7 @@ public class PostDriveActivity extends AppCompatActivity {
                     setupDriveConditions(driveConditions);
 
                 } catch (Exception e) {
-                    Log.d("TAG", e.getStackTrace().toString());
+                    e.printStackTrace();
                 }
 
                 hideOverlay();
@@ -179,6 +199,44 @@ public class PostDriveActivity extends AppCompatActivity {
             ((RadioButton) findViewById(R.id.post_drive_light_dawn_dusk)).setChecked(true);
         } else {
             ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
+        }
+
+        // calculate day and night duration
+        long day = 0;
+        long night = 0;
+        for (Timespan timespan : mTimespans) {
+            // calculate the duration of day in this timespan
+            long thisDay = findOverlap(timespan.start, timespan.end,
+                    driveConditions.getDayStart(), driveConditions.getDayEnd());
+            thisDay += findOverlap(timespan.start, timespan.end,
+                    driveConditions.getDayStart() - 86400, driveConditions.getDayEnd() - 86400); // yesterday
+
+            // add anything that's not day to night
+            night += (timespan.end - timespan.start) - thisDay;
+            day += thisDay;
+        }
+
+        mDrive.setDayDuration(day);
+        mDrive.setNightDuration(night);
+        mViewDuration.setText(mDrive.getFormattedDuration());
+    }
+
+    private long findOverlap(long r1Start, long r1End, long r2Start, long r2End) {
+        // |----|
+        //    |-----|
+        if (r2Start < r1End && r2End > r1End) {
+            return r1End - r2Start + 1;
+        //    |-----|
+        // |----|
+        } else if (r1Start < r2End && r1End > r2End) {
+            return r2End - r1Start + 1;
+        //          |-----|
+        // |----|
+        // ----------------
+        // |----|
+        //          |-----|
+        } else {
+            return 0L;
         }
     }
 

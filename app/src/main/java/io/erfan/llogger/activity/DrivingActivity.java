@@ -11,6 +11,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -40,12 +42,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.erfan.llogger.App;
+import io.erfan.llogger.Timespan;
 import io.erfan.llogger.activity.driving.DrivingService;
 import io.erfan.llogger.R;
 import io.erfan.llogger.Utils;
 import io.erfan.llogger.model.Drive;
 
 import static io.erfan.llogger.Utils.formatDuration;
+import static io.erfan.llogger.activity.PostDriveActivity.EXTRA_DRIVE;
+import static io.erfan.llogger.activity.PostDriveActivity.EXTRA_TIMESPANS;
 
 public class DrivingActivity extends AppCompatActivity implements DrivingService.DrivingServiceListener {
     private static final String UNKNOWN = "Unknown";
@@ -57,12 +62,13 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
 
     private GoogleMap mMap;
     private Polyline mPolyline;
-
-    private Drive mDrive;
     private Timer mTimer;
 
+    private Drive mDrive;
+
     private boolean mPaused = false;
-    private Long mElapsed = 0L;
+    private List<Timespan> mTimespans = new ArrayList<>();
+    private Long mStartTime;
     private String mPath = "";
     private List<String> mPaths = new ArrayList<>();
     private Long mPathDistance = 0L;
@@ -71,7 +77,6 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     private ServiceConnection mConnection;
     DrivingService mService;
     boolean mBound = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,21 +148,23 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
                 // set Drive info
                 mDrive.setPath(mPaths);
                 mDrive.setDistance(mPathDistance);
-                // set both, later will set one to 0
-                mDrive.setDayDuration(mElapsed);
-                mDrive.setNightDuration(mElapsed);
 
                 // go to PostDrive to ask for driving conditions
                 Intent intent = new Intent(v.getContext(), PostDriveActivity.class);
-                intent.putExtra("Drive", mDrive);
+                intent.putExtra(EXTRA_DRIVE, mDrive);
+                intent.putExtra(EXTRA_TIMESPANS, mTimespans.toArray());
+                intent.putParcelableArrayListExtra(EXTRA_TIMESPANS, new ArrayList<Parcelable>(mTimespans));
                 startActivity(intent);
 
                 finish();
             }
         });
 
+        // init textviews with 0 (in case location takes long to get accurate location)
         mDuration = (TextView) findViewById(R.id.driving_duration);
+        mDuration.setText(formatDuration(0L));
         mDistance = (TextView) findViewById(R.id.driving_distance);
+        mDistance.setText(Utils.formatDistance(0L));
 
         // get the google maps fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.driving_map);
@@ -189,7 +196,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == App.LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // start service now that we have the proper permissions
@@ -230,7 +237,41 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         });
     }
 
+    private long currentElapsed() {
+        long currentElapsed = 0;
+        // if not paused
+        if (!mPaused) {
+            // time elapsed since the last start
+            currentElapsed += (System.currentTimeMillis() / 1000) - mStartTime;
+        }
+        // duration of previous stretches (start then pause)
+        for (Timespan timespan : mTimespans) {
+            currentElapsed += timespan.end - timespan.start;
+        }
+        return currentElapsed;
+    }
+
+    private void setupTimer() {
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // update the textview
+                        mDuration.setText(formatDuration(currentElapsed()));
+                    }
+                });
+            }
+        }, 1000, 1000);
+    }
+
     public void connected() {
+        // will measure duration from this moment (for the current stretch of driving)
+        mStartTime = System.currentTimeMillis() / 1000;
+        setupTimer();
+
         // in theory we should always have this permission (since we check for before we start the service)
         // but this is just in case to now crash the app
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -238,10 +279,14 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
             return;
         }
         mMap.setMyLocationEnabled(true);
-        setupTimer();
     }
 
     public void locationUpdated(Location location) {
+        // too inaccurate ignore
+        if (location.getAccuracy() > 30) {
+            return;
+        }
+
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
@@ -253,56 +298,52 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
             getLocationName(currentLatitude, currentLongitude);
         }
 
+        // get a path (list of  from the encoded coordinates
         List<LatLng> path = new ArrayList<>(PolyUtil.decode(mPath));
 
+        // the first point doesn't add any distance
         if (path.size() > 0) {
             mPathDistance += (long) SphericalUtil.computeDistanceBetween(latLng, path.get(path.size() - 1));
-            mDistance.setText(String.valueOf(Utils.formatDistance(mPathDistance)));
+            mDistance.setText(Utils.formatDistance(mPathDistance));
         }
 
+        // add this point to path
         path.add(latLng);
         mPath = PolyUtil.encode(path);
 
+        // update the map
         mPolyline.setPoints(path);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     public void paused() {
         mPaused = true;
+        // update UI
         mMainFab.setImageResource(R.drawable.ic_play_white);
         mSecondFab.setVisibility(View.VISIBLE);
         setTitle(R.string.title_activity_driving_paused);
-        mTimer.cancel();
+
+        // make the current path permanent on the map
         mMap.addPolyline(new PolylineOptions().addAll(PolyUtil.decode(mPath)));
+        // create a new path (and current one to the list)
         mPaths.add(mPath);
         mPath = "";
+
+        // add a new timespan
+        mTimespans.add(new Timespan(mStartTime, System.currentTimeMillis() / 1000));
+        mTimer.cancel();
     }
 
     public void resumed() {
         mPaused = false;
+        // update UI
         mMainFab.setImageResource(R.drawable.ic_pause_white);
         mSecondFab.setVisibility(View.GONE);
         setTitle(R.string.title_activity_driving);
     }
 
-    private void setupTimer() {
-        mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mElapsed++;
-                        mDuration.setText(formatDuration(mElapsed));
-                    }
-                });
-            }
-        }, 1000, 1000);
-    }
-
     private void goHome() {
-        // go home
+        // open RootActivity (launcher activity) on a new/cleared stack
         Intent intent = new Intent(this, RootActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
