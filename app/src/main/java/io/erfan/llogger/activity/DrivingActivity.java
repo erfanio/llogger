@@ -261,6 +261,10 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
                     public void run() {
                         // update the textview
                         mDuration.setText(formatDuration(currentElapsed()));
+
+                        // update the notification
+                        mService.updateNotification(formatDuration(currentElapsed()),
+                                Utils.formatDistance(mPathDistance));
                     }
                 });
             }

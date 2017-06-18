@@ -167,7 +167,12 @@ public class DrivingService extends Service {
         return mBuilder.build();
     }
 
-    public void showNotification(Notification notification) {
+    public void updateNotification(String duration, String distance) {
+        mBuilder.setContentTitle(getString(R.string.driving_notification_text, duration, distance));
+        showNotification(mBuilder.build());
+    }
+
+    private void showNotification(Notification notification) {
         mNotificationManager.notify(NOTIFICATION_ID, notification);
     }
 
