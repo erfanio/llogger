@@ -93,11 +93,11 @@
 
         <service
             android:name=".activity.driving.DrivingService"
-            android:enabled="false" />
+            android:enabled="true" />
 
         <receiver
             android:name=".activity.driving.DrivingReceiver"
-            android:enabled="false" />
+            android:enabled="true" />
     </application>
 
 </manifest>

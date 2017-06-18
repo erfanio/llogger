@@ -126,7 +126,8 @@ public class DrivingService extends Service {
         mBuilder.setSmallIcon(R.drawable.ic_menu_drive);
         mBuilder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0));
         mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+        mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        mBuilder.setCategory(NotificationCompat.CATEGORY_SERVICE);
         mBuilder.setOngoing(true);
         mBuilder.setShowWhen(false);
 

@@ -259,16 +259,21 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // update the textview
-                        mDuration.setText(formatDuration(currentElapsed()));
-
-                        // update the notification
-                        mService.updateNotification(formatDuration(currentElapsed()),
-                                Utils.formatDistance(mPathDistance));
+                        updateUI();
                     }
                 });
             }
         }, 1000, 1000);
+    }
+
+    private void updateUI() {
+        // update the textviews
+        mDuration.setText(formatDuration(currentElapsed()));
+        mDistance.setText(Utils.formatDistance(mPathDistance));
+
+        // update the notification
+        mService.updateNotification(formatDuration(currentElapsed()),
+                Utils.formatDistance(mPathDistance));
     }
 
     public void connected() {
@@ -308,7 +313,6 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         // the first point doesn't add any distance
         if (path.size() > 0) {
             mPathDistance += (long) SphericalUtil.computeDistanceBetween(latLng, path.get(path.size() - 1));
-            mDistance.setText(Utils.formatDistance(mPathDistance));
         }
 
         // add this point to path
