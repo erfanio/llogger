@@ -7,6 +7,13 @@ public class DriveConditions {
     private String light;
     private Boolean wet;
 
+    public DriveConditions(Long dayStart, Long dayEnd, String light, Boolean wet) {
+        this.dayStart = dayStart;
+        this.dayEnd = dayEnd;
+        this.light = light;
+        this.wet = wet;
+    }
+
     public Long getDayStart() {
         return dayStart;
     }
