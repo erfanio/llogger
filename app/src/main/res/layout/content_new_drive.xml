@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose_car"
+        android:text="@string/new_drive_choose_car"
         android:textAppearance="@style/text_item_label"
         android:layout_marginBottom="8dp" />
     <Spinner
@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose_supervisor"
+        android:text="@string/new_drive_choose_supervisor"
         android:textAppearance="@style/text_item_label"
         android:layout_marginBottom="8dp" />
     <Spinner
