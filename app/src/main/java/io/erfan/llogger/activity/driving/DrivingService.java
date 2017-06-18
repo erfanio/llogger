@@ -136,10 +136,10 @@ public class DrivingService extends Service {
         mBuilder.setContentIntent(pendingIntent);
 
         // setup the notification content
-        setupRemoteView("0sec", "0m");
+        updateContent("0sec", "0m");
     }
 
-    private void setupRemoteView(String duration, String distance) {
+    private void updateContent(String duration, String distance) {
         mBuilder.setContentTitle(getString(mNotificationTitleRes, duration));
         mBuilder.setContentText(getString(R.string.driving_notification_text, distance));
     }
@@ -179,7 +179,7 @@ public class DrivingService extends Service {
     }
 
     public void updateNotification(String duration, String distance) {
-        setupRemoteView(duration, distance);
+        updateContent(duration, distance);
         showNotification(mBuilder.build());
     }
 
