@@ -43,6 +43,7 @@ public class DrivingService extends Service {
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mBuilder;
+    private int mNotificationTitleRes = R.string.driving_notification_title;
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -133,6 +134,14 @@ public class DrivingService extends Service {
         Intent intent = new Intent(this, DrivingActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
+
+        // setup the notification content
+        setupRemoteView("0sec", "0m");
+    }
+
+    private void setupRemoteView(String duration, String distance) {
+        mBuilder.setContentTitle(getString(mNotificationTitleRes, duration));
+        mBuilder.setContentText(getString(R.string.driving_notification_text, distance));
     }
 
     private Notification runningNotification() {
@@ -146,7 +155,8 @@ public class DrivingService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         mBuilder.addAction(R.drawable.ic_pause_black, getString(R.string.pause), pendingIntent);
 
-        mBuilder.setContentTitle(getString(R.string.title_activity_driving));
+        // set the title text template
+        mNotificationTitleRes = R.string.driving_notification_title;
 
         return mBuilder.build();
     }
@@ -162,13 +172,14 @@ public class DrivingService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         mBuilder.addAction(R.drawable.ic_play_black, getString(R.string.resume), pendingIntent);
 
-        mBuilder.setContentTitle(getString(R.string.title_activity_driving_paused));
+        // set the title text template
+        mNotificationTitleRes = R.string.driving_notification_title_paused;
 
         return mBuilder.build();
     }
 
     public void updateNotification(String duration, String distance) {
-        mBuilder.setContentTitle(getString(R.string.driving_notification_text, duration, distance));
+        setupRemoteView(duration, distance);
         showNotification(mBuilder.build());
     }
 
