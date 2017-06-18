@@ -71,10 +71,6 @@
     <string name="welcome_add_supervisor">Add New Supervisors</string>
     <string name="welcome_add_car">Add New Cars</string>
 
-    <string name="welcome_current_drivers">Drivers</string>
-    <string name="welcome_current_supervisors">Supervisors</string>
-    <string name="welcome_current_cars">Cars</string>
-
     <string name="new_drive_enter_details">Enter Drive Details</string>
     <string name="choose_car">Choose your car</string>
     <string name="choose_supervisor">Choose your supervisor</string>
