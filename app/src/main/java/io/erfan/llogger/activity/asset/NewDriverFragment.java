@@ -71,7 +71,10 @@ public class NewDriverFragment extends Fragment {
         if (!name.isEmpty()) {
             Driver driver = new Driver();
             driver.setName(name);
+
             mDriverDao.insert(driver);
+
+            mNameInput.getEditText().setText("");
 
             // Check if no view has focus:
             View view = getActivity().getCurrentFocus();
