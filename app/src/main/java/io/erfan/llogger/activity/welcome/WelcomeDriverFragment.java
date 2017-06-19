@@ -28,11 +28,11 @@ public class WelcomeDriverFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (driverDao.count() > 0) {
-                ((WelcomeActivity) getActivity()).nextPage();
-            } else {
-                Toast.makeText(getContext(), R.string.haveto_create_driver, Toast.LENGTH_SHORT).show();
-            }
+                if (driverDao.count() > 0) {
+                    ((WelcomeActivity) getActivity()).nextPage();
+                } else {
+                    Toast.makeText(getContext(), R.string.haveto_create_driver, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
