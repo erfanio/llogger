@@ -33,7 +33,7 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    private static int WRITE_REQUEST = 0;
+    private static final int WRITE_REQUEST = 0;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -92,7 +92,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_REQUEST);
                 } else {
-                    save();
+                    save(getView());
                 }
                 return true;
             }
@@ -102,11 +102,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == WRITE_REQUEST) {
-            save();
+            save(getView());
         }
     }
 
-    private void save() {
+    private void save(View view) {
         // get the directory (or create it)
         File directory = new File(Environment.getExternalStorageDirectory(), "LearnersLog");
         if (!directory.exists()) {
@@ -126,7 +126,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             writer.flush();
             writer.close();
 
-            Snackbar.make(getView(),
+            Snackbar.make(view,
                     String.format("Logs have been saved to %s", outputFile.getAbsolutePath()),
                     Snackbar.LENGTH_LONG)
                     .setAction("Open", new View.OnClickListener() {

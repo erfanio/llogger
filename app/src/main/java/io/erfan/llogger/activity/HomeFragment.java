@@ -107,8 +107,8 @@ public class HomeFragment extends Fragment {
 
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     getActivity(),
-                    new Pair<View, String>(durationView, ViewCompat.getTransitionName(durationView)),
-                    new Pair<View, String>(carView, ViewCompat.getTransitionName(carView)));
+                    new Pair<>(durationView, ViewCompat.getTransitionName(durationView)),
+                    new Pair<>(carView, ViewCompat.getTransitionName(carView)));
 
             startActivity(openViewDrive, options.toBundle());
         }

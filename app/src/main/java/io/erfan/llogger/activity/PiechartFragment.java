@@ -22,7 +22,7 @@ import io.erfan.llogger.R;
 import io.erfan.llogger.StatsUtils;
 
 public class PiechartFragment extends Fragment {
-    // these will be used to cache (close enough) the data so we don't hit the database everytime
+    // these will be used to cache (close enough) the data so we don't hit the database every time
 
     private PieChart mPiechart;
     private int mChartTextColor;

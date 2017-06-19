@@ -67,11 +67,11 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
 
     private boolean mPaused = false;
     private List<Utils.Timespan> mTimespans = new ArrayList<>();
+    private List<String> mPaths = new ArrayList<>();
+    private Calendar mLocationNameRetry = Calendar.getInstance(); // get location name asap
     private Long mStartTime;
     private String mPath = "";
-    private List<String> mPaths = new ArrayList<>();
     private Long mPathDistance = 0L;
-    private Calendar mLocationNameRetry = Calendar.getInstance(); // get location name asap
 
     private ServiceConnection mConnection;
     DrivingService mService;

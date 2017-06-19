@@ -30,7 +30,6 @@ import io.erfan.llogger.model.SupervisorDao;
 public class NewDriveActivity extends AppCompatActivity {
     private Spinner mCar;
     private Spinner mSupervisor;
-    private TextInputLayout mOdometer;
 
     private List<Supervisor> mSupervisors;
     private List<Car> mCars;
@@ -45,7 +44,7 @@ public class NewDriveActivity extends AppCompatActivity {
 
         mCar = (Spinner) findViewById(R.id.new_drive_car);
         mSupervisor = (Spinner) findViewById(R.id.new_drive_supervisor);
-        mOdometer = (TextInputLayout) findViewById(R.id.new_drive_odometer);
+        TextInputLayout odometer = (TextInputLayout) findViewById(R.id.new_drive_odometer);
 
         // get a list of all supervisors and cars
         DaoSession daoSession = ((App) getApplication()).getDaoSession();
@@ -101,7 +100,7 @@ public class NewDriveActivity extends AppCompatActivity {
                 start();
             }
         });
-        mOdometer.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        odometer.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 // the go action on the keyboard (instead of return key) will start the drive
@@ -136,7 +135,7 @@ public class NewDriveActivity extends AppCompatActivity {
                 .getEditText().getText().toString();
         int odometer = 0;
         if (!odometerString.isEmpty()) {
-            Integer.valueOf(odometerString);
+            odometer = Integer.valueOf(odometerString);
         }
 
         // set car and supervisor

@@ -16,7 +16,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="App Icon"
+            android:contentDescription="@string/app_icon"
             android:src="@mipmap/ic_launcher_round"/>
 
         <TextView

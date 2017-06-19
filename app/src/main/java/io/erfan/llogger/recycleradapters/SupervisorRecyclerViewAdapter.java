@@ -1,12 +1,10 @@
 package io.erfan.llogger.recycleradapters;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,10 +16,8 @@ public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<Supervis
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mName;
-        public TextView mLicence;
-
-        public Supervisor mSupervisor;
+        public final TextView mName;
+        public final TextView mLicence;
 
         public ViewHolder(View v) {
             super(v);
@@ -46,7 +42,6 @@ public class SupervisorRecyclerViewAdapter extends RecyclerView.Adapter<Supervis
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // set the correct data in the list
-        holder.mSupervisor = mSupervisors.get(position);
         holder.mName.setText(mSupervisors.get(position).getName());
         holder.mLicence.setText(mSupervisors.get(position).getLicenceNo());
 

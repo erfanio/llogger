@@ -3,6 +3,7 @@ package io.erfan.llogger.activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
 import android.transition.TransitionSet;
-import android.transition.ChangeImageTransform;
 import android.transition.ChangeTransform;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,7 +68,7 @@ public class RootActivity extends AppCompatActivity {
         mNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 // switch to fragment based on the ID
                 switch (item.getItemId()) {
                     case R.id.nav_home:

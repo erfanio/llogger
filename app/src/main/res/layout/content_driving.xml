@@ -9,12 +9,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="io.erfan.llogger.activity.DrivingActivity"
     tools:showIn="@layout/activity_driving">
+
     <LinearLayout
         android:id="@+id/driving_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"

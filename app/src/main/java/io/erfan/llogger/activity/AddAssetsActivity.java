@@ -1,7 +1,6 @@
 package io.erfan.llogger.activity;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -22,10 +21,10 @@ import io.erfan.llogger.activity.asset.NewSupervisorFragment;
 
 public class AddAssetsActivity extends AppCompatActivity {
     // The list of fragments to use
-    private static List<Fragment> PAGES = Arrays.asList(new NewDriverFragment(),
+    private static final List<Fragment> PAGES = Arrays.asList(new NewDriverFragment(),
             new NewSupervisorFragment(), new NewCarFragment());
     // list of corresponding titles for each tab
-    private static List<Integer> PAGES_TITLE = Arrays.asList(R.string.drivers,
+    private static final List<Integer> PAGES_TITLE = Arrays.asList(R.string.drivers,
             R.string.supervisors, R.string.cars);
 
     @Override

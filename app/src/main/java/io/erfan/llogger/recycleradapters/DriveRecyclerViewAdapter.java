@@ -23,11 +23,11 @@ public class DriveRecyclerViewAdapter extends RecyclerView.Adapter<DriveRecycler
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView mItem;
-        public TextView mViewDuration;
-        public TextView mViewLocation;
-        public TextView mViewTime;
-        public TextView mViewCar;
+        public final CardView mItem;
+        public final TextView mViewDuration;
+        public final TextView mViewLocation;
+        public final TextView mViewTime;
+        public final TextView mViewCar;
 
         public Long mDriveId;
 

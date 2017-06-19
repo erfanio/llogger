@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +37,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PostDriveActivity extends AppCompatActivity {
-    public static String EXTRA_DRIVE = "Drive";
-    public static String EXTRA_TIMESPANS = "Timespans";
+    public static final String EXTRA_DRIVE = "Drive";
+    public static final String EXTRA_TIMESPANS = "Timespans";
 
     private Drive mDrive;
     private List<Utils.Timespan> mTimespans;
@@ -190,12 +189,17 @@ public class PostDriveActivity extends AppCompatActivity {
         }
 
         // set light
-        if (driveConditions.getLight().equals("day")) {
-            ((RadioButton) findViewById(R.id.post_drive_light_day)).setChecked(true);
-        } else if (driveConditions.getLight().equals("dawn/dusk")) {
-            ((RadioButton) findViewById(R.id.post_drive_light_dawn_dusk)).setChecked(true);
-        } else {
-            ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
+        switch (driveConditions.getLight()) {
+            default:
+            case "day":
+                ((RadioButton) findViewById(R.id.post_drive_light_day)).setChecked(true);
+                break;
+            case "dawn/dusk":
+                ((RadioButton) findViewById(R.id.post_drive_light_dawn_dusk)).setChecked(true);
+                break;
+            case "night":
+                ((RadioButton) findViewById(R.id.post_drive_light_night)).setChecked(true);
+                break;
         }
 
         // get day and night duration (and set them in drive)

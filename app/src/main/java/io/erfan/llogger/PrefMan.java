@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 // PreferenceManager, but that would conflict with android.preference.PreferenceManager
 public class PrefMan {
-    private SharedPreferences mPreferences;
+    private final SharedPreferences mPreferences;
 
     // pref names
     private static final String FIRST_LAUNCH = "firstLaunch";
@@ -20,11 +20,11 @@ public class PrefMan {
     private void setLong(String key, Long origValue) {
         long value = origValue == null ? -1 : origValue;
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putLong(CURR_USER, value);
+        editor.putLong(key, value);
         editor.apply();
     }
     private Long getLong(String key) {
-        long value = mPreferences.getLong(CURR_USER, -1);
+        long value = mPreferences.getLong(key, -1);
         return value == -1 ? null : value;
     }
 

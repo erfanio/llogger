@@ -10,8 +10,8 @@ import io.erfan.llogger.model.Drive;
 import io.erfan.llogger.model.DriveDao;
 
 public class StatsUtils {
-    public static String DAY = "day";
-    public static String NIGHT = "night";
+    public static final String DAY = "day";
+    public static final String NIGHT = "night";
 
     private static ArrayMap<String, Float> mData;
     private static long mDriverId;

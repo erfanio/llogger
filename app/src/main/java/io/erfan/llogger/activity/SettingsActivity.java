@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import io.erfan.llogger.R;
-import io.erfan.llogger.activity.HomeFragment;
 import io.erfan.llogger.activity.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {

@@ -69,11 +69,11 @@ public class Utils {
     /**
      * The key of the day value in the map returned by calculateDayNightDuration
      */
-    public static int DAY = 0;
+    public static final int DAY = 0;
     /**
      * The key of the night value in the map returned by calculateDayNightDuration
      */
-    public static int NIGHT = 1;
+    public static final int NIGHT = 1;
 
     /**
      * calculate the amount driven during day/night from timespans and drive conditions

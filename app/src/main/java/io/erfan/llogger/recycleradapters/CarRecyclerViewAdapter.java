@@ -1,12 +1,10 @@
 package io.erfan.llogger.recycleradapters;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,10 +16,8 @@ public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerView
 
     // provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mName;
-        public TextView mPlate;
-
-        public Car mCar;
+        public final TextView mName;
+        public final TextView mPlate;
 
         public ViewHolder(View v) {
             super(v);
@@ -46,7 +42,6 @@ public class CarRecyclerViewAdapter extends RecyclerView.Adapter<CarRecyclerView
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // set the correct data in the list
-        holder.mCar = mCars.get(position);
         holder.mName.setText(mCars.get(position).getName());
         holder.mPlate.setText(mCars.get(position).getPlateNo());
 

@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private int mPosition;
 
     // create a list of fragments
-    private List<Fragment> pages = Arrays.asList(new WelcomeFragment(),
+    private final List<Fragment> pages = Arrays.asList(new WelcomeFragment(),
             new WelcomeDriverFragment(), new WelcomeSupervisorFragment(),
             new WelcomeCarFragment());
 

@@ -166,7 +166,7 @@ public class DrivingService extends Service {
         // clear the previous action (i.e. resume button)
         mBuilder.mActions.clear();
 
-        // resume button will send to a BroadcaseReceiver which will
+        // resume button will send to a BroadcastReceiver which will
         // acquire an instance of this and will call resume()
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(RESUME);
