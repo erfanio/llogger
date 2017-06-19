@@ -23,7 +23,6 @@ import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
-import io.erfan.llogger.AboutActivity;
 import io.erfan.llogger.App;
 import io.erfan.llogger.PrefMan;
 import io.erfan.llogger.R;

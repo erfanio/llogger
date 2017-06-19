@@ -31,7 +31,7 @@ public class WelcomeSupervisorFragment extends Fragment {
                 if (supervisorDao.count() > 0) {
                     ((WelcomeActivity) getActivity()).nextPage();
                 } else {
-                    Toast.makeText(getContext(), "Please create a supervisor before proceeding!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.haveto_create_supervisor, Toast.LENGTH_SHORT).show();
                 }
             }
         });

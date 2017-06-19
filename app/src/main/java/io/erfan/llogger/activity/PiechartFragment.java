@@ -61,7 +61,7 @@ public class PiechartFragment extends Fragment {
         int totalHoursLen = totalHours.length();
 
         // create a spannable text where the hours is three times bigger than the rest of the text
-        SpannableString s = new SpannableString(String.format("%s\nTotal Hours", totalHours));
+        SpannableString s = new SpannableString(getString(R.string.total_hours_param, totalHours));
         s.setSpan(new RelativeSizeSpan(3f), 0, totalHoursLen, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), totalHoursLen, s.length(), 0);
         return s;

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -211,14 +212,14 @@ public class PostDriveActivity extends AppCompatActivity {
     }
 
     private void hideOverlay() {
-        final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.progress_overlay);
+        final LinearLayout overlayLayout = (LinearLayout) findViewById(R.id.progress_overlay);
         // animate fade out and then hide the overlay
-        frameLayout.animate().setDuration(200).alpha(0f)
+        overlayLayout.animate().setDuration(200).alpha(0f)
             .setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    frameLayout.setVisibility(View.GONE);
+                    overlayLayout.setVisibility(View.GONE);
                 }
             });
     }

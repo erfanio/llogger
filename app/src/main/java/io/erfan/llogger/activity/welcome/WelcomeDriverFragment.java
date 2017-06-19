@@ -31,7 +31,7 @@ public class WelcomeDriverFragment extends Fragment {
             if (driverDao.count() > 0) {
                 ((WelcomeActivity) getActivity()).nextPage();
             } else {
-                Toast.makeText(getContext(), "Please create a driver before proceeding!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.haveto_create_driver, Toast.LENGTH_SHORT).show();
             }
             }
         });

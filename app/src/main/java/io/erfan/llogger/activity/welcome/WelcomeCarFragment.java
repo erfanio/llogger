@@ -31,7 +31,7 @@ public class WelcomeCarFragment extends Fragment {
                 if (carDao.count() > 0) {
                     ((WelcomeActivity) getActivity()).done();
                 } else {
-                    Toast.makeText(getContext(), "Please create a car before proceeding!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.haveto_create_car, Toast.LENGTH_SHORT).show();
                 }
             }
         });

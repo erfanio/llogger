@@ -1,7 +1,9 @@
-package io.erfan.llogger;
+package io.erfan.llogger.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import io.erfan.llogger.R;
 
 public class AboutActivity extends AppCompatActivity {
 

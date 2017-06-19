@@ -111,7 +111,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         File directory = new File(Environment.getExternalStorageDirectory(), "LearnersLog");
         if (!directory.exists()) {
             if (!directory.mkdirs()) {
-                Toast.makeText(getContext(), "Writing to file failed", Toast.LENGTH_LONG)
+                Toast.makeText(getContext(), R.string.write_file_failed, Toast.LENGTH_LONG)
                         .show();
                 return;
             }
@@ -127,15 +127,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             writer.close();
 
             Snackbar.make(view,
-                    String.format("Logs have been saved to %s", outputFile.getAbsolutePath()),
+                    getString(R.string.write_file_success, outputFile.getAbsolutePath()),
                     Snackbar.LENGTH_LONG)
-                    .setAction("Open", new View.OnClickListener() {
+                    .setAction(R.string.open, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(".CSV");
 
                             Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setAction(Intent.ACTION_VIEW);
                             intent.setDataAndType(FileProvider.getUriForFile(getContext(),
                                     "io.erfan.llogger.provider", outputFile), mime);
                             intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -146,7 +146,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     .show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "Writing to file failed", Toast.LENGTH_LONG)
+            Toast.makeText(getContext(), R.string.write_file_failed, Toast.LENGTH_LONG)
                     .show();
         }
     }

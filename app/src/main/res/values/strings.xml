@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Learners Digital Logbook</string>
 
+    <string name="about_page">Libraries Used:\nhttps://github.com/google/gson\nhttps://github.com/greenrobot/greenDAO\nhttps://github.com/PhilJay/MPAndroidChart\nhttps://github.com/akexorcist/Android-RoundCornerProgressBar\nhttps://github.com/square/okhttp\n\nAlso used a sample app to learn how to do custom transitions and text resizing:\nhttps://github.com/alexjlockwood/custom-lollipop-transitions\n\nGoogle Maps is also used but since the libraries are bundled with Google Play... I\'ll just leave their homepage here:\nhttps://developers.google.com/maps/documentation/android-api/</string>
+
     <string name="title_activity_drive_detail">Drive Detail</string>
     <string name="title_activity_new_drive">Start Driving</string>
     <string name="title_activity_driving">Driving</string>
@@ -58,6 +60,12 @@
     <string name="road_rural_hwy">Rural Hwy</string>
     <string name="road_rural_other">Rural Other</string>
     <string name="road_gravel">Gravel</string>
+    <string name="unknown">Unknown</string>
+    <string name="cancel">Cancel</string>
+    <string name="app_icon">App Icon</string>
+    <string name="home">Home</string>
+    <string name="past_drives">Past Drives</string>
+    <string name="exit">Exit</string>
 
     <string name="emoji_day">☀️</string>
     <string name="emoji_sunset">🌇</string>
@@ -88,9 +96,14 @@
     <string name="progress_end">Welcome back %1$s, looks like you\'re almost done! Just a bit more&#8230;!</string>
     <string name="progress_finish">Welcome back %1$s, looks like you\'re done! 🎉🎉🎉 (time to party!)</string>
 
-    <string name="about_page">Libraries Used:\nhttps://github.com/google/gson\nhttps://github.com/greenrobot/greenDAO\nhttps://github.com/PhilJay/MPAndroidChart\nhttps://github.com/akexorcist/Android-RoundCornerProgressBar\nhttps://github.com/square/okhttp\n\nAlso used a sample app to learn how to do custom transitions and text resizing:\nhttps://github.com/alexjlockwood/custom-lollipop-transitions\n\nGoogle Maps is also used but since the libraries are bundled with Google Play... I\'ll just leave their homepage here:\nhttps://developers.google.com/maps/documentation/android-api/</string>
-    <string name="cancel">Cancel</string>
-    <string name="app_icon">App Icon</string>
-    <string name="home">Home</string>
-    <string name="past_drives">Past Drives</string>
+    <string name="unexpected_error">Unexpected error occurred!</string>
+    <string name="exit_confirm">Do you really want to exit?</string>
+    <string name="total_hours_param">%1$s\nTotal Hours</string>
+    <string name="write_file_failed">Writing to file failed</string>
+    <string name="write_file_success">Logs have been saved to %1$s</string>
+    <string name="open">Open</string>
+    <string name="haveto_create_car">Please create a car before proceeding!</string>
+    <string name="haveto_create_driver">Please create a driver before proceeding!</string>
+    <string name="haveto_create_supervisor">Please create a supervisor before proceeding!</string>
+
 </resources>

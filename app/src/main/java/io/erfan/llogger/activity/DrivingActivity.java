@@ -52,8 +52,6 @@ import static io.erfan.llogger.activity.PostDriveActivity.EXTRA_DRIVE;
 import static io.erfan.llogger.activity.PostDriveActivity.EXTRA_TIMESPANS;
 
 public class DrivingActivity extends AppCompatActivity implements DrivingService.DrivingServiceListener {
-    private static final String UNKNOWN = "Unknown";
-
     private FloatingActionButton mMainFab;
     private FloatingActionButton mSecondFab;
     private TextView mDuration;
@@ -88,12 +86,12 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         Intent intent = getIntent();
         if (!intent.hasExtra("Drive")) {
             // we need a drive object to be passed to this activity
-            Toast.makeText(this, "Unexpected error occurred!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.unexpected_error, Toast.LENGTH_LONG).show();
             finish();
         }
         mDrive = intent.getParcelableExtra("Drive");
         mDrive.setTime(Calendar.getInstance().getTime());
-        mDrive.setLocation(UNKNOWN); // will be changed later if we find an address
+        mDrive.setLocation(getString(R.string.unknown)); // will be changed later if we find an address
 
         mConnection = new ServiceConnection() {
             @Override
@@ -299,7 +297,7 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
         // retry time throttles the rate of retries
-        if (mDrive.getLocation().equals(UNKNOWN) &&
+        if (mDrive.getLocation().equals(getString(R.string.unknown)) &&
                 location.getAccuracy() < 100 &&
                 mLocationNameRetry.before(Calendar.getInstance())) {
             getLocationName(currentLatitude, currentLongitude);
@@ -359,8 +357,8 @@ public class DrivingActivity extends AppCompatActivity implements DrivingService
     @Override
     public void onBackPressed() {
         // prevent user from exiting accidentally (since this activity was started on a new stack)
-        Snackbar.make(this.findViewById(android.R.id.content), "Do you really want to exit?", Snackbar.LENGTH_LONG)
-                .setAction("Exit", new View.OnClickListener() {
+        Snackbar.make(this.findViewById(android.R.id.content), R.string.exit_confirm, Snackbar.LENGTH_LONG)
+                .setAction(R.string.exit, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         goHome();
