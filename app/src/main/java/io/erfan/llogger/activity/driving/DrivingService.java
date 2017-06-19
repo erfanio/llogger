@@ -154,7 +154,7 @@ public class DrivingService extends Service {
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(PAUSE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        mBuilder.addAction(R.drawable.ic_pause_black, getString(R.string.pause), pendingIntent);
+        mBuilder.addAction(R.drawable.ic_notification_pause, getString(R.string.pause), pendingIntent);
 
         // set the title text template
         mNotificationTitleRes = R.string.driving_notification_title;
@@ -171,7 +171,7 @@ public class DrivingService extends Service {
         Intent intent = new Intent(this, DrivingReceiver.class);
         intent.setAction(RESUME);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        mBuilder.addAction(R.drawable.ic_play_black, getString(R.string.resume), pendingIntent);
+        mBuilder.addAction(R.drawable.ic_notification_play, getString(R.string.resume), pendingIntent);
 
         // set the title text template
         mNotificationTitleRes = R.string.driving_notification_title_paused;
